@@ -166,12 +166,12 @@ function Navbar() {
       transition={{ duration: 0.6 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'bg-[#E0F2FE]/95 backdrop-blur-xl border-b-2 border-[#93C5FD] shadow-md'
+          ? 'bg-[#0F2537]/90 backdrop-blur-xl border-b border-sky-500/30 shadow-md'
           : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Nav links */}
+        {/* Discover GoG Button (High Visibility Pill) */}
         <div className="hidden md:flex items-center gap-1">
           <motion.a
             href="https://www.geeksofgurukul.com/"
@@ -180,13 +180,9 @@ function Navbar() {
             onMouseEnter={() => setHoveredItem('discover')}
             onMouseLeave={() => setHoveredItem(null)}
             whileHover={{ y: -2 }}
-            className="discover-cta relative px-4 py-2 text-[13px] font-bold text-blue-900 rounded-lg cursor-pointer backdrop-blur-sm transition-all duration-300 hover:text-blue-950 hover:bg-sky-100"
-            style={{
-              background: 'linear-gradient(135deg, rgba(37,99,235,0.08), rgba(147,197,253,0.1))',
-              border: '1px solid #93C5FD',
-            }}
+            className="relative px-5 py-2 text-xs font-black text-white bg-white/20 backdrop-blur-md rounded-full border-2 border-white/40 shadow-md hover:bg-white hover:text-[#0F172A] transition-all duration-300 cursor-pointer"
           >
-            <span className="flex items-center gap-1.5 font-black">
+            <span className="flex items-center gap-1.5 font-black drop-shadow-sm">
               Discover GoG
               <motion.span
                 className="inline-block"
@@ -205,15 +201,15 @@ function Navbar() {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate('/login')}
-            className="rounded-full border-2 border-[#93C5FD] bg-white px-5 py-2 text-[13px] font-black text-[#2563EB] transition-all hover:bg-sky-50 shadow-xs cursor-pointer"
+            className="rounded-full border-2 border-white/50 bg-white/20 backdrop-blur-md px-5 py-2 text-[13px] font-black text-white transition-all hover:bg-white hover:text-[#0F172A] shadow-xs cursor-pointer"
           >
             Login
           </motion.button>
           <motion.button
-            whileHover={{ scale: 1.03, boxShadow: '0 4px 20px rgba(37, 99, 235, 0.3)' }}
+            whileHover={{ scale: 1.03, boxShadow: '0 4px 20px rgba(37, 99, 235, 0.4)' }}
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate('/login')}
-            className="rounded-full bg-[#2563EB] hover:bg-[#1D4ED8] px-5 py-2 text-[13px] font-black text-white shadow-lg shadow-blue-600/30 transition-all cursor-pointer"
+            className="rounded-full bg-[#2563EB] hover:bg-[#1D4ED8] px-5 py-2 text-[13px] font-black text-white shadow-lg shadow-blue-600/40 transition-all cursor-pointer"
           >
             Sign Up
           </motion.button>

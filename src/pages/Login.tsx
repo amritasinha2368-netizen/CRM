@@ -93,8 +93,8 @@ export default function Login() {
         onSubmit={handleSubmit}
         className="space-y-4"
       >
-        {/* Email + Password side by side */}
-        <div className="grid grid-cols-2 gap-4">
+        {/* Full-width Stacked Email and Password */}
+        <div className="space-y-4">
           {/* Email */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -102,16 +102,16 @@ export default function Login() {
             transition={{ delay: 0.3 }}
             className="space-y-1.5"
           >
-            <label className="text-xs font-bold text-slate-600">Email Address</label>
-            <div className="relative group">
-              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#2563EB] transition-colors" />
+            <label className="text-xs font-bold text-slate-600 block">Email Address</label>
+            <div className="relative flex items-center">
+              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#2563EB] z-10 pointer-events-none" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setErrors((p) => ({ ...p, email: undefined })); }}
                 placeholder="you@example.com"
                 className={cn(
-                  'w-full rounded-xl bg-slate-50 border-2 py-3 pl-10 pr-3 text-xs font-bold text-slate-900 placeholder-slate-400 outline-none transition-all duration-300',
+                  'w-full rounded-xl bg-slate-50 border-2 py-3 pl-11 pr-4 text-xs font-bold text-slate-900 placeholder-slate-400 outline-none transition-all duration-300',
                   'focus:border-[#2563EB] focus:bg-white focus:shadow-[0_0_20px_rgba(37,99,235,0.15)]',
                   errors.email ? 'border-red-500' : 'border-slate-300 hover:border-slate-400',
                 )}
@@ -133,21 +133,21 @@ export default function Login() {
             transition={{ delay: 0.35 }}
             className="space-y-1.5"
           >
-            <label className="text-xs font-bold text-slate-600">Password</label>
-            <div className="relative group">
-              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#2563EB] transition-colors" />
+            <label className="text-xs font-bold text-slate-600 block">Password</label>
+            <div className="relative flex items-center">
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#2563EB] z-10 pointer-events-none" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setErrors((p) => ({ ...p, password: undefined })); }}
                 placeholder="Enter password"
                 className={cn(
-                  'w-full rounded-xl bg-slate-50 border-2 py-3 pl-10 pr-10 text-xs font-bold text-slate-900 placeholder-slate-400 outline-none transition-all duration-300',
+                  'w-full rounded-xl bg-slate-50 border-2 py-3 pl-11 pr-10 text-xs font-bold text-slate-900 placeholder-slate-400 outline-none transition-all duration-300',
                   'focus:border-[#2563EB] focus:bg-white focus:shadow-[0_0_20px_rgba(37,99,235,0.15)]',
                   errors.password ? 'border-red-500' : 'border-slate-300 hover:border-slate-400',
                 )}
               />
-              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors z-10">
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
