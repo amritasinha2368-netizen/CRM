@@ -1,11 +1,10 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, Plus, Bell, ChevronRight, Search, LogOut, User, ArrowLeftRight, Check } from 'lucide-react';
+import { Menu, Plus, Bell, ChevronRight, Search, LogOut, User, ArrowLeftRight, Check, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store';
 import { SearchInput } from '@/components/ui/SearchInput';
-import { getRelativeTime } from '@/lib/utils';
 
 const ROUTE_NAMES: Record<string, string> = {
   dashboard: 'Dashboard', leads: 'Leads', my: 'My Leads', pipeline: 'Pipeline',
@@ -56,6 +55,14 @@ export function TopNav({ onMenuToggle }: TopNavProps) {
   }, []);
 
   const roles = ['super_admin', 'crm_admin', 'team_leader', 'counsellor', 'admissions'] as const;
+
+  const handleLogout = () => {
+    setShowProfileMenu(false);
+    logout();
+    navigate('/login');
+  };
+
+  if (!currentUser) return null;
 
   return (
     <header className="sticky top-0 z-20 flex h-20 items-center border-b-2 border-[#93C5FD] bg-[#E0F2FE] backdrop-blur-2xl shadow-sm">
@@ -157,17 +164,65 @@ export function TopNav({ onMenuToggle }: TopNavProps) {
             </AnimatePresence>
           </div>
 
-          {/* Profile & Role Switcher */}
+          {/* Profile & Log Out Menu */}
           <div ref={profileRef} className="relative">
             <button
               onClick={() => setShowProfileMenu(!showProfileMenu)}
-              className="flex items-center gap-2 rounded-xl bg-white border border-[#93C5FD] p-1.5 pr-3 text-xs font-black text-[#0F172A] hover:bg-sky-50 shadow-xs"
+              className="flex items-center gap-2 rounded-xl bg-white border border-[#93C5FD] p-1.5 pr-3 text-xs font-black text-[#0F172A] hover:bg-sky-50 shadow-xs cursor-pointer"
             >
               <div className="h-7 w-7 rounded-lg bg-[#2563EB] text-white flex items-center justify-center font-black">
                 {currentUser.name.charAt(0)}
               </div>
               <span className="hidden sm:inline">{currentUser.name}</span>
             </button>
+
+            <AnimatePresence>
+              {showProfileMenu && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute right-0 top-full mt-3 w-64 rounded-2xl border-2 border-[#93C5FD] bg-white p-3 shadow-2xl z-50 text-xs font-bold space-y-2"
+                >
+                  <div className="p-2 border-b border-slate-100">
+                    <div className="font-black text-slate-900 text-sm">{currentUser.name}</div>
+                    <div className="text-[11px] text-slate-500 font-semibold">{currentUser.email}</div>
+                    <div className="mt-1.5 inline-flex items-center gap-1 rounded-md bg-[#E0F2FE] px-2 py-0.5 text-[10px] font-black text-[#1E40AF]">
+                      <Shield className="h-3 w-3" />
+                      {ROLE_LABELS[currentUser.role]}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="px-2 text-[10px] font-black text-slate-400 uppercase tracking-wider">Switch Role</div>
+                    {roles.map((r) => (
+                      <button
+                        key={r}
+                        onClick={() => switchRole(r)}
+                        className={cn(
+                          'w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-extrabold flex items-center justify-between transition-colors',
+                          currentUser.role === r ? 'bg-blue-50 text-[#2563EB]' : 'text-slate-700 hover:bg-slate-50'
+                        )}
+                      >
+                        <span>{ROLE_LABELS[r]}</span>
+                        {currentUser.role === r && <Check className="h-3.5 w-3.5 text-[#2563EB]" />}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="pt-1 border-t border-slate-100">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-rose-600 hover:bg-rose-50 font-black text-xs transition-colors cursor-pointer"
+                    >
+                      <LogOut className="h-4 w-4 text-rose-600" />
+                      <span>Log Out</span>
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
         </div>

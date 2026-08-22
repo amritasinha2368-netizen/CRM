@@ -54,17 +54,25 @@ interface SidebarProps {
 }
 
 export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose }: SidebarProps) {
-  const { currentUser, notifications } = useAppStore();
+  const { currentUser, notifications, logout } = useAppStore();
   const navigate = useNavigate();
 
   const unreadCount = useMemo(() => notifications.filter((n) => !n.read).length, [notifications]);
 
   const filteredItems = useMemo(
-    () => NAV_ITEMS.filter((item) => item.roles.includes(currentUser.role)),
-    [currentUser.role]
+    () => (currentUser ? NAV_ITEMS.filter((item) => item.roles.includes(currentUser.role)) : []),
+    [currentUser?.role]
   );
 
   const handleNavClick = () => { if (isMobile) onClose?.(); };
+
+  const handleLogout = () => {
+    logout();
+    if (isMobile) onClose?.();
+    navigate('/login');
+  };
+
+  if (!currentUser) return null;
 
   return (
     <motion.aside
@@ -205,8 +213,13 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
           )}
         </motion.div>
 
-        <motion.button whileHover={{ x: 2 }} className={cn('group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-700 transition-all duration-200 hover:bg-rose-50 hover:text-rose-600', collapsed && 'justify-center px-0')}>
-          <LogOut className="h-4.5 w-4.5 shrink-0 group-hover:-rotate-12 transition-transform" />
+        {/* Working LogOut Button */}
+        <motion.button
+          whileHover={{ x: 2 }}
+          onClick={handleLogout}
+          className={cn('group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-bold text-rose-600 transition-all duration-200 hover:bg-rose-50 hover:text-rose-700 cursor-pointer', collapsed && 'justify-center px-0')}
+        >
+          <LogOut className="h-4.5 w-4.5 shrink-0 group-hover:-rotate-12 transition-transform text-rose-600" />
           {!collapsed && <span>Log Out</span>}
         </motion.button>
       </div>
