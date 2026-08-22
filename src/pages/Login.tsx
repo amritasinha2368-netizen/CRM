@@ -67,9 +67,9 @@ export default function Login() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-white p-8 rounded-3xl border-2 border-[#93C5FD] shadow-2xl">
       {/* Glow backdrop */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-purple-600/8 blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-blue-600/10 blur-[120px] pointer-events-none" />
 
       {/* Header */}
       <motion.div
@@ -77,11 +77,11 @@ export default function Login() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
-        <h2 className="text-3xl font-bold text-white tracking-tight">
+        <h2 className="text-3xl font-black text-[#0F172A] tracking-tight">
           Welcome Back
         </h2>
-        <p className="mt-2 text-sm text-white/35">
-          Enter your credentials to access the CRM dashboard.
+        <p className="mt-2 text-xs font-bold text-slate-500">
+          Enter your credentials to access the 12th Pass Admissions Suite.
         </p>
       </motion.div>
 
@@ -102,24 +102,24 @@ export default function Login() {
             transition={{ delay: 0.3 }}
             className="space-y-1.5"
           >
-            <label className="text-xs font-medium text-white/40">Email</label>
+            <label className="text-xs font-bold text-slate-600">Email Address</label>
             <div className="relative group">
-              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-purple-400/40 group-focus-within:text-purple-400 transition-colors" />
+              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#2563EB] transition-colors" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setErrors((p) => ({ ...p, email: undefined })); }}
                 placeholder="you@example.com"
                 className={cn(
-                  'w-full rounded-xl bg-white/[0.05] border py-3 pl-10 pr-3 text-sm text-white placeholder-white/25 outline-none transition-all duration-300',
-                  'focus:border-purple-400/60 focus:bg-white/[0.08] focus:shadow-[0_0_20px_rgba(147,97,213,0.15)]',
-                  errors.email ? 'border-red-500/50' : 'border-white/10 hover:border-white/15',
+                  'w-full rounded-xl bg-slate-50 border-2 py-3 pl-10 pr-3 text-xs font-bold text-slate-900 placeholder-slate-400 outline-none transition-all duration-300',
+                  'focus:border-[#2563EB] focus:bg-white focus:shadow-[0_0_20px_rgba(37,99,235,0.15)]',
+                  errors.email ? 'border-red-500' : 'border-slate-300 hover:border-slate-400',
                 )}
               />
             </div>
             <AnimatePresence>
               {errors.email && (
-                <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="text-[11px] text-red-400">
+                <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="text-[11px] font-bold text-red-600">
                   {errors.email}
                 </motion.p>
               )}
@@ -133,27 +133,27 @@ export default function Login() {
             transition={{ delay: 0.35 }}
             className="space-y-1.5"
           >
-            <label className="text-xs font-medium text-white/40">Password</label>
+            <label className="text-xs font-bold text-slate-600">Password</label>
             <div className="relative group">
-              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-purple-400/40 group-focus-within:text-purple-400 transition-colors" />
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#2563EB] transition-colors" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setErrors((p) => ({ ...p, password: undefined })); }}
                 placeholder="Enter password"
                 className={cn(
-                  'w-full rounded-xl bg-white/[0.05] border py-3 pl-10 pr-10 text-sm text-white placeholder-white/25 outline-none transition-all duration-300',
-                  'focus:border-purple-400/60 focus:bg-white/[0.08] focus:shadow-[0_0_20px_rgba(147,97,213,0.15)]',
-                  errors.password ? 'border-red-500/50' : 'border-white/10 hover:border-white/15',
+                  'w-full rounded-xl bg-slate-50 border-2 py-3 pl-10 pr-10 text-xs font-bold text-slate-900 placeholder-slate-400 outline-none transition-all duration-300',
+                  'focus:border-[#2563EB] focus:bg-white focus:shadow-[0_0_20px_rgba(37,99,235,0.15)]',
+                  errors.password ? 'border-red-500' : 'border-slate-300 hover:border-slate-400',
                 )}
               />
-              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/50 transition-colors">
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
             <AnimatePresence>
               {errors.password && (
-                <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="text-[11px] text-red-400">
+                <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="text-[11px] font-bold text-red-600">
                   {errors.password}
                 </motion.p>
               )}
@@ -162,8 +162,8 @@ export default function Login() {
         </div>
 
         {/* Forgot password + Login button row */}
-        <div className="flex items-center gap-4">
-          <button type="button" className="text-xs text-purple-400/60 hover:text-purple-300 transition-colors whitespace-nowrap">
+        <div className="flex items-center gap-4 pt-2">
+          <button type="button" className="text-xs text-[#2563EB] font-bold hover:underline transition-colors whitespace-nowrap">
             Forgot Password?
           </button>
 
@@ -171,16 +171,16 @@ export default function Login() {
           <motion.button
             type="submit"
             disabled={loading}
-            whileHover={{ scale: 1.02, boxShadow: '0 0 40px rgba(147,97,213,0.3)' }}
+            whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(37,99,235,0.3)' }}
             whileTap={{ scale: 0.98 }}
             className={cn(
-              'flex-1 flex items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold text-white transition-all duration-300',
-              'bg-gradient-to-r from-purple-500 via-purple-600 to-purple-500 hover:from-purple-400 hover:via-purple-500 hover:to-purple-400',
+              'flex-1 flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-black text-white transition-all duration-300 cursor-pointer',
+              'bg-[#2563EB] hover:bg-[#1D4ED8]',
               'disabled:opacity-60 disabled:cursor-not-allowed',
-              'shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40',
+              'shadow-lg shadow-blue-600/30',
             )}
           >
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Login'}
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Login to Portal'}
           </motion.button>
         </div>
       </motion.form>
@@ -188,10 +188,10 @@ export default function Login() {
       {/* Divider */}
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-white/8" />
+          <div className="w-full border-t border-slate-200" />
         </div>
         <div className="relative flex justify-center">
-          <span className="px-3 text-[10px] text-white/25 uppercase tracking-wider">or login as demo</span>
+          <span className="px-3 bg-white text-[10px] font-black text-slate-400 uppercase tracking-wider">or login as demo role</span>
         </div>
       </div>
 
@@ -208,18 +208,18 @@ export default function Login() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55 + i * 0.04, duration: 0.3 }}
-            whileHover={{ y: -2, backgroundColor: 'rgba(255,255,255,0.04)' }}
+            whileHover={{ y: -2 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => handleDemoLogin(demo)}
             disabled={loading}
-            className="flex items-center gap-2 rounded-xl border border-white/5 bg-white/[0.02] px-3 py-2.5 text-left transition-all hover:border-purple-500/20 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-xl border border-sky-200 bg-[#E0F2FE]/50 px-3 py-2.5 text-left transition-all hover:bg-sky-100 hover:border-[#93C5FD] disabled:opacity-50 cursor-pointer"
           >
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-purple-500/10 text-[9px] font-bold text-purple-400">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#2563EB] text-[9px] font-black text-white shadow-xs">
               {demo.role.split('_').map(w => w[0]).join('').toUpperCase()}
             </div>
             <div className="min-w-0">
-              <p className="text-[11px] font-semibold text-white/65 truncate">{demo.label}</p>
-              <p className="text-[9px] text-white/20 truncate">{demo.password}</p>
+              <p className="text-[11px] font-black text-[#0F172A] truncate">{demo.label}</p>
+              <p className="text-[9px] text-blue-800 font-bold truncate">{demo.password}</p>
             </div>
           </motion.button>
         ))}
@@ -230,15 +230,15 @@ export default function Login() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
-        className="flex items-center justify-between text-[11px] text-white/25 pt-1"
+        className="flex items-center justify-between text-[11px] text-slate-500 font-bold pt-1"
       >
         <span>
           Don't have an account?{' '}
-          <button className="font-semibold text-purple-400 hover:text-purple-300 transition-colors">
+          <button className="font-extrabold text-[#2563EB] hover:underline transition-colors">
             Sign Up
           </button>
         </span>
-        <button className="hover:text-white/50 transition-colors">
+        <button className="hover:text-slate-900 transition-colors font-extrabold">
           Contact Support
         </button>
       </motion.div>

@@ -3,37 +3,37 @@ import { motion } from 'framer-motion';
 
 export function AuthLayout() {
   return (
-    <div className="flex min-h-screen bg-[#0a0615]">
-      {/* Left: Video */}
-      <div className="relative hidden lg:flex w-[55%] items-center justify-center overflow-hidden">
+    <div className="flex min-h-screen bg-[#F8FAFC]">
+      {/* Left: Video / Image side */}
+      <div className="relative hidden lg:flex w-[55%] items-center justify-center overflow-hidden bg-[#0F2537]">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover opacity-80"
         >
           <source src="/login-bg.mp4" type="video/mp4" />
         </video>
 
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-blue-950/40" />
 
         {/* Right edge fade into form */}
-        <div className="absolute top-0 right-0 bottom-0 w-40 z-10 pointer-events-none bg-gradient-to-l from-[#0a0615] via-[#0a0615]/60 to-transparent" />
+        <div className="absolute top-0 right-0 bottom-0 w-40 z-10 pointer-events-none bg-gradient-to-l from-[#F8FAFC] via-[#F8FAFC]/60 to-transparent" />
 
         {/* Top fade */}
-        <div className="absolute top-0 left-0 right-0 h-20 z-10 pointer-events-none bg-gradient-to-b from-[#0a0615]/60 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-20 z-10 pointer-events-none bg-gradient-to-b from-[#0F2537]/60 to-transparent" />
 
         {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 z-10 pointer-events-none bg-gradient-to-t from-[#0a0615]/60 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 z-10 pointer-events-none bg-gradient-to-t from-[#0F2537]/60 to-transparent" />
       </div>
 
-      {/* Right: Form */}
-      <div className="relative flex flex-1 items-center justify-center px-6 py-12">
-        {/* Purple orbs */}
-        <div className="absolute top-[15%] right-[10%] w-64 h-64 rounded-full blur-[100px] bg-purple-600/8" />
-        <div className="absolute bottom-[20%] left-[5%] w-48 h-48 rounded-full blur-[80px] bg-purple-500/6" />
+      {/* Right: Form Container */}
+      <div className="relative flex flex-1 items-center justify-center px-6 py-12 bg-[#F8FAFC]">
+        {/* CampusDirect Azure Orbs */}
+        <div className="absolute top-[15%] right-[10%] w-64 h-64 rounded-full blur-[100px] bg-blue-600/10" />
+        <div className="absolute bottom-[20%] left-[5%] w-48 h-48 rounded-full blur-[80px] bg-sky-400/15" />
 
         <motion.div
           initial={{ opacity: 0, x: 30, scale: 0.98 }}
