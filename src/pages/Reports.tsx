@@ -1,44 +1,54 @@
 import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
-  BarChart3, TrendingUp, Users, Phone, FileText, IndianRupee,
-  Download, Calendar, ChevronDown, Target, PieChart as PieIcon
+  TrendingUp, Users, Phone, FileText, IndianRupee,
+  Download, Target, PieChart as PieIcon, GraduationCap, Award
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useAppStore } from '@/store';
 import {
-  leads, calls, applications, payments, campaigns, users, courses
+  leads, calls, applications, campaigns, users, courses
 } from '@/data/mockData';
-import { formatCurrency, formatDate } from '@/lib/utils';
+import { formatCurrency } from '@/lib/utils';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, AreaChart, Area, Legend, LineChart, Line
+  PieChart, Pie, Cell, AreaChart, Area, Legend
 } from 'recharts';
 import toast from 'react-hot-toast';
 
-const COLORS = ['#6366f1', '#22c55e', '#f59e0b', '#ef4444', '#06b6d4', '#8b5cf6'];
+const LEETCODE_COLORS = ['#FFA116', '#2CBB5D', '#007AFF', '#FFB800', '#FF2D55', '#38BDF8', '#E08800'];
 
 const reportCategories = [
-  { id: 'lead_funnel', label: 'Lead Funnel', icon: Target, color: 'bg-primary-100 text-primary-600' },
-  { id: 'lead_source', label: 'Lead Source', icon: PieIcon, color: 'bg-blue-100 text-blue-600' },
-  { id: 'campaign_roi', label: 'Campaign ROI', icon: TrendingUp, color: 'bg-success-100 text-success-600' },
-  { id: 'counsellor', label: 'Counsellor Performance', icon: Users, color: 'bg-warning-100 text-warning-600' },
-  { id: 'call', label: 'Call Performance', icon: Phone, color: 'bg-danger-100 text-danger-600' },
-  { id: 'application', label: 'Application', icon: FileText, color: 'bg-cyan-100 text-cyan-600' },
-  { id: 'admission', label: 'Admission', icon: Target, color: 'bg-emerald-100 text-emerald-600' },
-  { id: 'revenue', label: 'Revenue', icon: IndianRupee, color: 'bg-purple-100 text-purple-600' },
+  { id: 'lead_funnel', label: 'Lead Funnel', icon: Target },
+  { id: 'lead_source', label: 'Lead Source', icon: PieIcon },
+  { id: 'campaign_roi', label: 'Campaign ROI', icon: TrendingUp },
+  { id: 'counsellor', label: 'Counsellor Perf.', icon: Users },
+  { id: 'call', label: 'Call Quality', icon: Phone },
+  { id: 'application', label: 'Applications', icon: FileText },
+  { id: 'admission', label: 'Admissions', icon: GraduationCap },
+  { id: 'revenue', label: 'Revenue', icon: IndianRupee },
 ];
 
+const stageLabels: Record<string, string> = {
+  new: 'New Lead',
+  assigned: 'Assigned Counsellor',
+  contacted: 'Contacted Lead',
+  interested: 'Interested Student',
+  counselling: 'Counselling Session',
+  visit: 'Visited Campus / Portal',
+  application: 'Application Submitted',
+  documents: 'Documents Verified',
+  payment: 'Payment Pending',
+  enrolled: 'Student Enrolled',
+};
+
 export default function Reports() {
-  const { currentUser } = useAppStore();
   const [activeReport, setActiveReport] = useState('lead_funnel');
   const [datePreset, setDatePreset] = useState('this_month');
-  const [showCustomDate, setShowCustomDate] = useState(false);
 
   const leadFunnelData = useMemo(() => {
     const statuses = ['new', 'assigned', 'contacted', 'interested', 'counselling', 'visit', 'application', 'documents', 'payment', 'enrolled'];
     return statuses.map(s => ({
-      name: s.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+      name: stageLabels[s] || s,
       count: leads.filter(l => l.status === s).length,
     }));
   }, []);
@@ -46,7 +56,7 @@ export default function Reports() {
   const sourceData = useMemo(() => {
     const map: Record<string, number> = {};
     leads.forEach(l => { map[l.source] = (map[l.source] || 0) + 1; });
-    return Object.entries(map).map(([name, value]) => ({ name: name.replace(/_/g, ' '), value }));
+    return Object.entries(map).map(([name, value]) => ({ name: name.replace(/_/g, ' ').toUpperCase(), value }));
   }, []);
 
   const counsellorData = useMemo(() => {
@@ -70,14 +80,14 @@ export default function Reports() {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
     return months.map((m, i) => ({
       name: m,
-      revenue: Math.floor(Math.random() * 300000) + 150000,
-      collected: Math.floor(Math.random() * 250000) + 100000,
+      revenue: Math.floor(Math.random() * 300000) + 200000 + i * 40000,
+      collected: Math.floor(Math.random() * 250000) + 150000 + i * 35000,
     }));
   }, []);
 
   const courseAdmissions = useMemo(() => {
     return courses.map(c => ({
-      name: c.name.length > 15 ? c.name.substring(0, 15) + '...' : c.name,
+      name: c.name.length > 18 ? c.name.substring(0, 18) + '...' : c.name,
       applications: applications.filter(a => a.courseId === c.id).length,
       enrolled: applications.filter(a => a.courseId === c.id && a.status === 'enrolled').length,
     }));
@@ -87,6 +97,16 @@ export default function Reports() {
     const map: Record<string, number> = {};
     calls.forEach(c => { map[c.disposition] = (map[c.disposition] || 0) + 1; });
     return Object.entries(map).map(([name, count]) => ({ name, count }));
+  }, []);
+
+  const campaignRoiData = useMemo(() => {
+    return campaigns.map(c => ({
+      name: c.name,
+      spend: c.spent,
+      leads: c.leadsCount,
+      costPerLead: Math.round(c.spent / (c.leadsCount || 1)),
+      conversions: c.conversionsCount,
+    }));
   }, []);
 
   const avgCallDuration = calls.length > 0 ? Math.round(calls.reduce((s, c) => s + c.duration, 0) / calls.length) : 0;
@@ -101,78 +121,107 @@ export default function Reports() {
       case 'lead_funnel':
         return (
           <div className="space-y-6">
-            <div className="h-80">
+            <div className="h-96">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={leadFunnelData} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis type="number" tick={{ fontSize: 11, fill: '#64748b' }} />
-                  <YAxis type="category" dataKey="name" tick={{ fontSize: 10, fill: '#64748b' }} width={100} />
-                  <Tooltip />
-                  <Bar dataKey="count" fill="#6366f1" radius={[0, 4, 4, 0]} />
+                <BarChart data={leadFunnelData} layout="vertical" margin={{ left: 40, right: 30, top: 10, bottom: 10 }}>
+                  <defs>
+                    <linearGradient id="amberGradient" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#FFA116" />
+                      <stop offset="100%" stopColor="#E08800" />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#3E3E3E" horizontal={false} />
+                  <XAxis type="number" tick={{ fontSize: 11, fill: '#A0A0A0' }} stroke="#3E3E3E" />
+                  <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: '#FFFFFF', fontWeight: 'bold' }} width={160} stroke="#3E3E3E" />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#1A1A1A', borderColor: '#3E3E3E', borderRadius: '8px', color: '#fff' }}
+                    cursor={{ fill: 'rgba(255, 161, 22, 0.08)' }}
+                  />
+                  <Bar dataKey="count" fill="url(#amberGradient)" radius={[0, 6, 6, 0]} barSize={22} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <div className="grid grid-cols-5 gap-3">
-              {leadFunnelData.slice(0, 5).map((d, i) => (
-                <div key={d.name} className="rounded-lg bg-surface-50 p-3 text-center">
-                  <p className="text-xl font-bold text-surface-900">{d.count}</p>
-                  <p className="text-[10px] text-surface-500">{d.name}</p>
+
+            {/* Stat Cards */}
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-5 lg:grid-cols-5">
+              {leadFunnelData.slice(0, 5).map((d) => (
+                <div key={d.name} className="rounded-xl bg-[#1A1A1A] border border-[#3E3E3E] p-4 text-center hover:border-[#FFA116] transition-all">
+                  <p className="text-2xl font-black text-[#FFA116] font-mono">{d.count}</p>
+                  <p className="text-xs font-bold text-white mt-1">{d.name}</p>
+                </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-5 lg:grid-cols-5">
+              {leadFunnelData.slice(5).map((d) => (
+                <div key={d.name} className="rounded-xl bg-[#1A1A1A] border border-[#3E3E3E] p-4 text-center hover:border-[#FFA116] transition-all">
+                  <p className="text-2xl font-black text-[#2CBB5D] font-mono">{d.count}</p>
+                  <p className="text-xs font-bold text-white mt-1">{d.name}</p>
                 </div>
               ))}
             </div>
           </div>
         );
+
       case 'lead_source':
         return (
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={sourceData} cx="50%" cy="50%" outerRadius={100} dataKey="value" label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
-                  {sourceData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        );
-      case 'counsellor':
-        return (
           <div className="space-y-6">
-            <div className="h-72">
+            <div className="h-80 flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={counsellorData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#64748b' }} />
-                  <YAxis tick={{ fontSize: 10, fill: '#64748b' }} />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="leads" fill="#6366f1" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="calls" fill="#22c55e" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="enrolled" fill="#f59e0b" radius={[4, 4, 0, 0]} />
-                </BarChart>
+                <PieChart>
+                  <Pie
+                    data={sourceData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={70}
+                    outerRadius={110}
+                    paddingAngle={4}
+                    dataKey="value"
+                    label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                  >
+                    {sourceData.map((_, i) => (
+                      <Cell key={i} fill={LEETCODE_COLORS[i % LEETCODE_COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip contentStyle={{ backgroundColor: '#1A1A1A', borderColor: '#3E3E3E', borderRadius: '8px', color: '#fff' }} />
+                </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="overflow-x-auto rounded-xl border border-surface-200 bg-white">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {sourceData.map((s, i) => (
+                <div key={s.name} className="rounded-xl bg-[#1A1A1A] border border-[#3E3E3E] p-3.5 flex items-center gap-3">
+                  <div className="h-3 w-3 rounded-full shrink-0" style={{ backgroundColor: LEETCODE_COLORS[i % LEETCODE_COLORS.length] }} />
+                  <div>
+                    <p className="text-xs font-bold text-white">{s.name}</p>
+                    <p className="text-sm font-black text-[#FFA116] font-mono">{s.value} Leads</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'campaign_roi':
+        return (
+          <div className="space-y-6">
+            <div className="overflow-x-auto rounded-xl border border-[#3E3E3E] bg-[#1A1A1A]">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-surface-200 bg-surface-50">
-                    <th className="px-4 py-3 text-xs font-semibold uppercase text-surface-500">Counsellor</th>
-                    <th className="px-4 py-3 text-xs font-semibold uppercase text-surface-500">Leads</th>
-                    <th className="px-4 py-3 text-xs font-semibold uppercase text-surface-500">Calls</th>
-                    <th className="px-4 py-3 text-xs font-semibold uppercase text-surface-500">Connected</th>
-                    <th className="px-4 py-3 text-xs font-semibold uppercase text-surface-500">Enrolled</th>
-                    <th className="px-4 py-3 text-xs font-semibold uppercase text-surface-500">Conv. Rate</th>
+                  <tr className="border-b border-[#3E3E3E] bg-[#1A1A1A]">
+                    <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Campaign Name</th>
+                    <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Spend</th>
+                    <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Leads Acquired</th>
+                    <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Cost / Lead</th>
+                    <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Conversions</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {counsellorData.map((c, i) => (
-                    <tr key={i} className="border-b border-surface-100 last:border-0">
-                      <td className="px-4 py-3 font-medium text-surface-900">{c.name}</td>
-                      <td className="px-4 py-3 text-surface-700">{c.leads}</td>
-                      <td className="px-4 py-3 text-surface-700">{c.calls}</td>
-                      <td className="px-4 py-3 text-surface-700">{c.connected}</td>
-                      <td className="px-4 py-3 text-surface-700">{c.enrolled}</td>
-                      <td className="px-4 py-3"><span className={cn('font-medium', c.rate >= 20 ? 'text-success-600' : c.rate >= 10 ? 'text-warning-600' : 'text-danger-600')}>{c.rate}%</span></td>
+                <tbody className="divide-y divide-[#3E3E3E]">
+                  {campaignRoiData.map((c, i) => (
+                    <tr key={i} className="hover:bg-[#282828] transition-colors">
+                      <td className="px-4 py-3.5 font-bold text-white">{c.name}</td>
+                      <td className="px-4 py-3.5 text-[#FFA116] font-mono font-bold">{formatCurrency(c.spend)}</td>
+                      <td className="px-4 py-3.5 text-white font-bold">{c.leads}</td>
+                      <td className="px-4 py-3.5 text-slate-300 font-mono">₹{c.costPerLead}</td>
+                      <td className="px-4 py-3.5 text-[#2CBB5D] font-extrabold">{c.conversions}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -180,110 +229,188 @@ export default function Reports() {
             </div>
           </div>
         );
+
+      case 'counsellor':
+        return (
+          <div className="space-y-6">
+            <div className="h-72">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={counsellorData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#3E3E3E" />
+                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#FFFFFF', fontWeight: 'bold' }} stroke="#3E3E3E" />
+                  <YAxis tick={{ fontSize: 11, fill: '#A0A0A0' }} stroke="#3E3E3E" />
+                  <Tooltip contentStyle={{ backgroundColor: '#1A1A1A', borderColor: '#3E3E3E', borderRadius: '8px', color: '#fff' }} />
+                  <Legend wrapperStyle={{ color: '#fff' }} />
+                  <Bar dataKey="leads" fill="#FFA116" radius={[4, 4, 0, 0]} name="Assigned Leads" />
+                  <Bar dataKey="calls" fill="#007AFF" radius={[4, 4, 0, 0]} name="Calls Made" />
+                  <Bar dataKey="enrolled" fill="#2CBB5D" radius={[4, 4, 0, 0]} name="Enrolled" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="overflow-x-auto rounded-xl border border-[#3E3E3E] bg-[#1A1A1A]">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-[#3E3E3E] bg-[#1A1A1A]">
+                    <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Counsellor</th>
+                    <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Leads</th>
+                    <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Calls</th>
+                    <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Connected</th>
+                    <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Enrolled</th>
+                    <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Conv. Rate</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#3E3E3E]">
+                  {counsellorData.map((c, i) => (
+                    <tr key={i} className="hover:bg-[#282828] transition-colors">
+                      <td className="px-4 py-3.5 font-bold text-white">{c.name}</td>
+                      <td className="px-4 py-3.5 text-white font-bold">{c.leads}</td>
+                      <td className="px-4 py-3.5 text-white font-bold">{c.calls}</td>
+                      <td className="px-4 py-3.5 text-slate-300">{c.connected}</td>
+                      <td className="px-4 py-3.5 text-[#2CBB5D] font-extrabold">{c.enrolled}</td>
+                      <td className="px-4 py-3.5">
+                        <span className={cn('font-bold', c.rate >= 20 ? 'text-[#2CBB5D]' : c.rate >= 10 ? 'text-[#FFB800]' : 'text-[#FF2D55]')}>
+                          {c.rate}%
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        );
+
       case 'call':
         return (
           <div className="space-y-6">
-            <div className="grid grid-cols-3 gap-4">
-              <div className="rounded-lg bg-surface-50 p-4 text-center">
-                <p className="text-2xl font-bold text-surface-900">{calls.length}</p>
-                <p className="text-xs text-surface-500">Total Calls</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="rounded-xl bg-[#1A1A1A] border border-[#3E3E3E] p-4 text-center">
+                <p className="text-3xl font-black text-white font-mono">{calls.length}</p>
+                <p className="text-xs font-bold text-[#FFA116] uppercase mt-1">Total Logged Calls</p>
               </div>
-              <div className="rounded-lg bg-surface-50 p-4 text-center">
-                <p className="text-2xl font-bold text-success-600">{connectedRate}%</p>
-                <p className="text-xs text-surface-500">Connection Rate</p>
+              <div className="rounded-xl bg-[#1A1A1A] border border-[#3E3E3E] p-4 text-center">
+                <p className="text-3xl font-black text-[#2CBB5D] font-mono">{connectedRate}%</p>
+                <p className="text-xs font-bold text-[#2CBB5D] uppercase mt-1">Connection Rate</p>
               </div>
-              <div className="rounded-lg bg-surface-50 p-4 text-center">
-                <p className="text-2xl font-bold text-primary-600">{Math.floor(avgCallDuration / 60)}m {avgCallDuration % 60}s</p>
-                <p className="text-xs text-surface-500">Avg Duration</p>
+              <div className="rounded-xl bg-[#1A1A1A] border border-[#3E3E3E] p-4 text-center">
+                <p className="text-3xl font-black text-[#007AFF] font-mono">{Math.floor(avgCallDuration / 60)}m {avgCallDuration % 60}s</p>
+                <p className="text-xs font-bold text-[#007AFF] uppercase mt-1">Average Duration</p>
               </div>
             </div>
-            <div className="h-64">
+            <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={callDispositionData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="name" tick={{ fontSize: 9, fill: '#64748b' }} />
-                  <YAxis tick={{ fontSize: 10, fill: '#64748b' }} />
-                  <Tooltip />
-                  <Bar dataKey="count" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#3E3E3E" />
+                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#FFFFFF', fontWeight: 'bold' }} stroke="#3E3E3E" />
+                  <YAxis tick={{ fontSize: 11, fill: '#A0A0A0' }} stroke="#3E3E3E" />
+                  <Tooltip contentStyle={{ backgroundColor: '#1A1A1A', borderColor: '#3E3E3E', borderRadius: '8px', color: '#fff' }} />
+                  <Bar dataKey="count" fill="#FFA116" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </div>
         );
+
       case 'revenue':
         return (
           <div className="space-y-6">
-            <div className="h-72">
+            <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={revenueData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#64748b' }} />
-                  <YAxis tick={{ fontSize: 11, fill: '#64748b' }} tickFormatter={v => `${(v / 100000).toFixed(1)}L`} />
-                  <Tooltip formatter={(v: number) => formatCurrency(v)} />
-                  <Area type="monotone" dataKey="revenue" stroke="#6366f1" fill="#6366f1" fillOpacity={0.1} />
-                  <Area type="monotone" dataKey="collected" stroke="#22c55e" fill="#22c55e" fillOpacity={0.1} />
+                  <defs>
+                    <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#2CBB5D" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#2CBB5D" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#3E3E3E" />
+                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#FFFFFF', fontWeight: 'bold' }} stroke="#3E3E3E" />
+                  <YAxis tick={{ fontSize: 11, fill: '#A0A0A0' }} tickFormatter={v => `₹${(v / 100000).toFixed(1)}L`} stroke="#3E3E3E" />
+                  <Tooltip formatter={(v: number) => formatCurrency(v)} contentStyle={{ backgroundColor: '#1A1A1A', borderColor: '#3E3E3E', borderRadius: '8px', color: '#fff' }} />
+                  <Area type="monotone" dataKey="revenue" stroke="#FFA116" strokeWidth={2.5} fill="#FFA116" fillOpacity={0.1} name="Total Billed" />
+                  <Area type="monotone" dataKey="collected" stroke="#2CBB5D" strokeWidth={2.5} fill="url(#revGrad)" name="Cash Collected" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>
         );
+
       case 'admission':
         return (
-          <div className="h-72">
+          <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={courseAdmissions}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="name" tick={{ fontSize: 9, fill: '#64748b' }} />
-                <YAxis tick={{ fontSize: 10, fill: '#64748b' }} />
-                <Tooltip />
+                <CartesianGrid strokeDasharray="3 3" stroke="#3E3E3E" />
+                <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#FFFFFF', fontWeight: 'bold' }} stroke="#3E3E3E" />
+                <YAxis tick={{ fontSize: 11, fill: '#A0A0A0' }} stroke="#3E3E3E" />
+                <Tooltip contentStyle={{ backgroundColor: '#1A1A1A', borderColor: '#3E3E3E', borderRadius: '8px', color: '#fff' }} />
                 <Legend />
-                <Bar dataKey="applications" fill="#6366f1" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="enrolled" fill="#22c55e" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="applications" fill="#007AFF" radius={[4, 4, 0, 0]} name="Applications" />
+                <Bar dataKey="enrolled" fill="#2CBB5D" radius={[4, 4, 0, 0]} name="Enrolled Students" />
               </BarChart>
             </ResponsiveContainer>
           </div>
         );
+
       default:
         return (
-          <div className="flex items-center justify-center h-64">
-            <p className="text-sm text-surface-400">Report data will be displayed here</p>
+          <div className="flex flex-col items-center justify-center h-64 text-center">
+            <Award className="h-10 w-10 text-[#FFA116] mb-2" />
+            <p className="text-sm font-bold text-white">Report Analytics Dashboard</p>
+            <p className="text-xs text-slate-400 mt-1">Select a category above to view detailed insights.</p>
           </div>
         );
     }
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 pb-12">
+      {/* Header & Controls */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-surface-900">Reports & Analytics</h1>
-          <p className="text-sm text-surface-500">Comprehensive business intelligence dashboard</p>
+          <h1 className="text-2xl font-bold tracking-tight text-white">Reports & Analytics</h1>
+          <p className="text-xs font-bold text-[#FFA116] mt-1">Comprehensive Business Intelligence & Conversion Metrics</p>
         </div>
-        <div className="flex items-center gap-3">
-          <select value={datePreset} onChange={e => setDatePreset(e.target.value)} className="rounded-lg border border-surface-200 bg-white px-3 py-2 text-sm focus:border-primary-300 focus:outline-none">
+        <div className="flex flex-wrap items-center gap-3">
+          <select
+            value={datePreset}
+            onChange={e => setDatePreset(e.target.value)}
+            className="rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3.5 py-2 text-xs font-bold text-white outline-none focus:border-[#FFA116] cursor-pointer"
+          >
             <option value="today">Today</option>
             <option value="this_week">This Week</option>
             <option value="this_month">This Month</option>
             <option value="last_month">Last Month</option>
             <option value="custom">Custom Range</option>
           </select>
-          <div className="flex items-center gap-1">
-            <button onClick={() => handleExport('csv')} className="inline-flex items-center gap-1 rounded-lg border border-surface-200 bg-white px-3 py-2 text-xs font-medium text-surface-600 hover:bg-surface-50 transition-colors">
-              <Download className="h-3.5 w-3.5" /> CSV
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => handleExport('csv')}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-[#FFA116] transition-colors cursor-pointer"
+            >
+              <Download className="h-3.5 w-3.5 text-[#FFA116]" /> CSV
             </button>
-            <button onClick={() => handleExport('excel')} className="inline-flex items-center gap-1 rounded-lg border border-surface-200 bg-white px-3 py-2 text-xs font-medium text-surface-600 hover:bg-surface-50 transition-colors">
-              <Download className="h-3.5 w-3.5" /> Excel
+            <button
+              onClick={() => handleExport('excel')}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-[#FFA116] transition-colors cursor-pointer"
+            >
+              <Download className="h-3.5 w-3.5 text-[#FFA116]" /> Excel
             </button>
-            <button onClick={() => handleExport('pdf')} className="inline-flex items-center gap-1 rounded-lg border border-surface-200 bg-white px-3 py-2 text-xs font-medium text-surface-600 hover:bg-surface-50 transition-colors">
-              <Download className="h-3.5 w-3.5" /> PDF
+            <button
+              onClick={() => handleExport('pdf')}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-[#FFA116] transition-colors cursor-pointer"
+            >
+              <Download className="h-3.5 w-3.5 text-[#FFA116]" /> PDF
             </button>
           </div>
         </div>
       </motion.div>
 
+      {/* Report Categories Bar */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
         {reportCategories.map((cat, idx) => {
           const Icon = cat.icon;
+          const isActive = activeReport === cat.id;
           return (
             <motion.button
               key={cat.id}
@@ -292,31 +419,40 @@ export default function Reports() {
               transition={{ delay: idx * 0.03 }}
               onClick={() => setActiveReport(cat.id)}
               className={cn(
-                'rounded-xl border p-3 text-center transition-all duration-200',
-                activeReport === cat.id
-                  ? 'border-primary-300 bg-primary-50 ring-1 ring-primary-200'
-                  : 'border-surface-200 bg-white hover:border-surface-300 hover:shadow-sm'
+                'rounded-xl border p-3 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center gap-2',
+                isActive
+                  ? 'border-[#FFA116] bg-[#383838] text-white shadow-lg ring-1 ring-[#FFA116]/50'
+                  : 'border-[#3E3E3E] bg-[#282828] text-slate-300 hover:border-[#555555] hover:bg-[#303030]'
               )}
             >
-              <div className={cn('mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-lg', cat.color)}>
+              <div className={cn(
+                'flex h-9 w-9 items-center justify-center rounded-lg border transition-colors',
+                isActive ? 'bg-[#FFA116] text-[#1A1A1A] border-[#FFA116]' : 'bg-[#1A1A1A] text-[#FFA116] border-[#3E3E3E]'
+              )}>
                 <Icon className="h-4 w-4" />
               </div>
-              <p className="text-[10px] font-medium text-surface-700">{cat.label}</p>
+              <p className="text-[11px] font-bold truncate w-full">{cat.label}</p>
             </motion.button>
           );
         })}
       </div>
 
+      {/* Main Report Container */}
       <motion.div
         key={activeReport}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.25 }}
-        className="rounded-xl border border-surface-200 bg-white p-5"
+        className="rounded-xl border border-[#3E3E3E] bg-[#282828] p-6 shadow-2xl space-y-4"
       >
-        <h3 className="text-sm font-semibold text-surface-900 mb-4">
-          {reportCategories.find(c => c.id === activeReport)?.label} Report
-        </h3>
+        <div className="flex items-center justify-between border-b border-[#3E3E3E] pb-4">
+          <h3 className="text-base font-extrabold text-white">
+            {reportCategories.find(c => c.id === activeReport)?.label} Analytics
+          </h3>
+          <span className="text-xs font-mono font-bold text-[#FFA116]">
+            Updated Just Now
+          </span>
+        </div>
         {renderReport()}
       </motion.div>
     </div>
