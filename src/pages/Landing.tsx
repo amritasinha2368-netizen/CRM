@@ -217,7 +217,7 @@ function Hero() {
             <div className="flex items-center gap-2">
               <div className="h-2 w-2 rounded-full bg-[#FFA116] animate-pulse" />
               <span className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">
-                Geeksofgurukul Applications
+                QuantNexa ai Solutions
               </span>
             </div>
           </motion.div>
