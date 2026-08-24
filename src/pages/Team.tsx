@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Users, UserPlus, Phone, Star, ChevronDown, ChevronUp, Shield, Target,
+  Users, UserPlus, Phone, Star, ChevronDown, ChevronUp, Target,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { users, leads, calls, applications } from '@/data/mockData';
@@ -14,7 +14,7 @@ const roleBadgeColors: Record<string, string> = {
   super_admin: 'bg-[#3B181A] border border-[#FF2D55]/60 text-[#FF2D55]',
   crm_admin: 'bg-[#1E293B] border border-[#007AFF]/60 text-[#38BDF8]',
   team_leader: 'bg-[#3A2E12] border border-[#FFB800]/60 text-[#FFB800]',
-  counsellor: 'bg-[#132E1F] border border-[#2CBB5D]/60 text-[#2CBB5D]',
+  counsellor: 'bg-[#383838] border border-[#FFA116]/60 text-[#FFA116]',
   admissions: 'bg-[#1E293B] border border-[#007AFF]/60 text-[#38BDF8]',
 };
 
@@ -35,7 +35,6 @@ export default function Team() {
 
   const getMemberStats = (userId: string, role: string) => {
     if (role === 'super_admin' || role === 'crm_admin') {
-      // System-wide metrics for Leadership & Super Admin
       const totalLeads = leads.length;
       const totalCalls = calls.length;
       const totalConnected = calls.filter(c => c.disposition === 'Connected').length;
@@ -61,7 +60,6 @@ export default function Team() {
     }
 
     if (role === 'team_leader') {
-      // Team-wide metrics for Team Leaders
       const teamCounsellors = users.filter(u => u.role === 'counsellor' || u.id === userId).map(u => u.id);
       const teamLeads = leads.filter(l => teamCounsellors.includes(l.assignedTo));
       const teamCalls = calls.filter(c => teamCounsellors.includes(c.counsellorId));
@@ -90,7 +88,6 @@ export default function Team() {
       };
     }
 
-    // Direct metrics for Counsellors
     const memberLeads = leads.filter(l => l.assignedTo === userId);
     const memberCalls = calls.filter(c => c.counsellorId === userId);
     const connectedCalls = memberCalls.filter(c => c.disposition === 'Connected');
@@ -188,18 +185,18 @@ export default function Team() {
                       <h3 className="text-base font-extrabold text-white truncate">{member.name}</h3>
                       <p className="text-xs text-slate-400 truncate">{member.email}</p>
                       <div className="mt-2 flex flex-wrap items-center gap-2">
-                        <span className={cn('inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-extrabold capitalize', roleBadgeColors[member.role] || 'bg-[#303030] text-slate-300')}>
+                        <span className={cn('inline-flex items-center rounded-md px-2.5 py-0.5 text-[10px] font-extrabold capitalize', roleBadgeColors[member.role] || 'bg-[#303030] text-slate-300')}>
                           {member.role.replace(/_/g, ' ')}
                         </span>
-                        <div className="flex items-center gap-1.5 bg-[#132E1F] border border-[#2CBB5D]/40 px-2 py-0.5 rounded-md">
-                          <div className="h-1.5 w-1.5 rounded-full bg-[#2CBB5D] animate-pulse" />
-                          <span className="text-[10px] font-bold text-[#2CBB5D]">Active</span>
+                        <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium">
+                          <div className="h-2 w-2 rounded-full bg-[#2CBB5D] animate-pulse" />
+                          <span className="text-[11px] font-bold text-slate-300">Active</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Stat Grid */}
+                  {/* Clean Stat Grid with Uniform Cards */}
                   <div className="mt-5 grid grid-cols-3 gap-2">
                     <div className="rounded-lg bg-[#1A1A1A] border border-[#3E3E3E] p-2.5 text-center">
                       <p className="text-base font-extrabold text-[#FFA116] font-mono">{stats.leads}</p>
@@ -209,9 +206,9 @@ export default function Team() {
                       <p className="text-base font-extrabold text-[#38BDF8] font-mono">{stats.calls}</p>
                       <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-0.5">Calls</p>
                     </div>
-                    <div className="rounded-lg bg-[#132E1F] border border-[#2CBB5D]/40 p-2.5 text-center">
-                      <p className="text-base font-extrabold text-[#2CBB5D] font-mono">{stats.rate}%</p>
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-[#2CBB5D] mt-0.5">Conv.</p>
+                    <div className="rounded-lg bg-[#1A1A1A] border border-[#3E3E3E] p-2.5 text-center">
+                      <p className="text-base font-extrabold text-[#FFA116] font-mono">{stats.rate}%</p>
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-0.5">Conv.</p>
                     </div>
                   </div>
 
@@ -316,7 +313,7 @@ export default function Team() {
                     <td className="px-4 py-3.5 text-white font-bold whitespace-nowrap">{stats.applications}</td>
                     <td className="px-4 py-3.5 text-[#2CBB5D] font-extrabold whitespace-nowrap">{stats.enrolled}</td>
                     <td className="px-4 py-3.5 whitespace-nowrap">
-                      <span className={cn('font-bold font-mono', stats.rate >= 20 ? 'text-[#2CBB5D]' : stats.rate >= 10 ? 'text-[#FFB800]' : 'text-slate-400')}>
+                      <span className={cn('font-bold font-mono text-[#FFA116]')}>
                         {stats.rate}%
                       </span>
                     </td>

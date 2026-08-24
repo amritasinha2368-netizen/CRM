@@ -27,10 +27,10 @@ export default function KPICard({
   const ChangeIcon = changeType === 'up' ? TrendingUp : changeType === 'down' ? TrendingDown : Minus
   const changeColor =
     changeType === 'up'
-      ? 'text-[#2CBB5D] bg-[#132E1F] border border-[#2CBB5D]/40'
+      ? 'text-[#2CBB5D]'
       : changeType === 'down'
-      ? 'text-[#FF2D55] bg-[#3B181A] border border-[#FF2D55]/40'
-      : 'text-slate-300 bg-[#303030] border border-[#3E3E3E]'
+      ? 'text-[#FF2D55]'
+      : 'text-slate-400'
 
   return (
     <motion.div
@@ -51,9 +51,11 @@ export default function KPICard({
               className="text-3xl font-extrabold tracking-tight text-white"
             />
           </div>
-          <div className={cn('mt-3 inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-bold', changeColor)}>
-            <ChangeIcon className="h-3.5 w-3.5" />
-            <span>{Math.abs(change)}%</span>
+          <div className="mt-3 flex items-center gap-1.5 text-xs font-bold">
+            <span className={cn('inline-flex items-center gap-1 font-mono font-bold', changeColor)}>
+              <ChangeIcon className="h-3.5 w-3.5" />
+              {Math.abs(change)}%
+            </span>
             <span className="font-normal text-slate-400">vs last month</span>
           </div>
         </div>
