@@ -2,18 +2,16 @@ import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import {
   Users, Phone, CalendarClock, TrendingUp, AlertTriangle, FileText,
-  GraduationCap, BarChart3, CalendarDays, ArrowUpRight, ArrowDownRight,
+  GraduationCap, CalendarDays,
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { cn, formatDate } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 import { useAppStore } from '@/store';
 import { leads, users, calls } from '@/data/mockData';
 import KPICard from '@/components/ui/KPICard';
 import StatusBadge from '@/components/ui/StatusBadge';
 
-const card = 'rounded-2xl border border-surface-200/60 bg-white shadow-sm hover:shadow-lg transition-all duration-300';
-const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.06 } } };
-const item = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
+const cardStyle = 'rounded-xl border border-[#3E3E3E] bg-[#282828] shadow-xl';
 
 export default function TeamLeaderDashboard() {
   const currentUser = useAppStore((s) => s.currentUser);
@@ -43,77 +41,89 @@ export default function TeamLeaderDashboard() {
     calls.forEach((c) => {
       if (perf[c.counsellorId]) perf[c.counsellorId].calls++;
     });
-    return Object.entries(perf).map(([id, data]) => ({
-      name: id, ...data,
-      conversion: data.leads > 0 ? Math.round((data.enrolled / data.leads) * 100) : 0,
-    })).sort((a, b) => b.leads - a.leads).slice(0, 6);
+    return Object.entries(perf).map(([id, data]) => {
+      const counsellorObj = users.find(u => u.id === id);
+      return {
+        name: counsellorObj?.name?.split(' ')[0] || id,
+        ...data,
+        conversion: data.leads > 0 ? Math.round((data.enrolled / data.leads) * 100) : 0,
+      };
+    }).sort((a, b) => b.leads - a.leads).slice(0, 6);
   }, []);
 
-  const overdueLeads = useMemo(() => leads.filter((l) => l.status === 'contacted' || l.status === 'new').slice(0, 5), []);
+  if (!currentUser) return null;
 
   return (
-    <div className="space-y-6 p-6">
-      <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl bg-gradient-to-r from-amber-50 via-white to-orange-50 p-6 border border-surface-200/60">
-        <div className="flex items-center gap-2 mb-1"><Users className="h-4 w-4 text-amber-600" /><span className="text-xs font-bold uppercase tracking-widest text-amber-600/60">Team Leader</span></div>
-        <h1 className="text-2xl font-extrabold text-surface-900">{greeting}, {currentUser.name.split(' ')[0]} 👋</h1>
-        <p className="mt-1 text-sm text-surface-500"><CalendarDays className="mr-1.5 inline h-3.5 w-3.5" />{formatDate(new Date())} &bull; Team performance</p>
+    <div className="space-y-6 pb-12">
+      {/* Top Banner */}
+      <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-[#3E3E3E] bg-[#282828] p-6 shadow-xl">
+        <div className="flex items-center gap-2 mb-1">
+          <Users className="h-4 w-4 text-[#FFA116]" />
+          <span className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Team Leader Dashboard</span>
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-black text-white">{greeting}, {currentUser.name.split(' ')[0]} 👋</h1>
+        <p className="mt-1 text-xs font-bold text-slate-400">
+          <CalendarDays className="mr-1.5 inline h-3.5 w-3.5 text-[#FFA116]" />
+          {formatDate(new Date())} &bull; Team performance & conversion tracking
+        </p>
       </motion.div>
 
-      <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <motion.div variants={item}><KPICard title="Team Leads" value={teamLeads.length} change={12} changeType="up" icon={Users} color="primary" /></motion.div>
-        <motion.div variants={item}><KPICard title="Calls Today" value={totalCalls} change={8} changeType="up" icon={Phone} color="blue" /></motion.div>
-        <motion.div variants={item}><KPICard title="Connected" value={connectedCalls} change={5} changeType="up" icon={Phone} color="success" /></motion.div>
-        <motion.div variants={item}><KPICard title="Overdue" value={overdue} change={0} changeType="neutral" icon={AlertTriangle} color="warning" /></motion.div>
-        <motion.div variants={item}><KPICard title="Applications" value={apps} change={10} changeType="up" icon={FileText} color="blue" /></motion.div>
-        <motion.div variants={item}><KPICard title="Admissions" value={enrolled} change={20} changeType="up" icon={GraduationCap} color="success" /></motion.div>
-        <motion.div variants={item}><KPICard title="Conversion" value={convRate} change={5} changeType="up" icon={TrendingUp} color="primary" suffix="%" /></motion.div>
-        <motion.div variants={item}><KPICard title="Follow-ups" value={overdue} change={0} changeType="neutral" icon={CalendarClock} color="warning" /></motion.div>
-      </motion.div>
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <KPICard title="Team Managed Leads" value={teamLeads.length} change={10} changeType="up" icon={Users} color="primary" />
+        <KPICard title="Team Calls Made" value={totalCalls} change={8} changeType="up" icon={Phone} color="blue" />
+        <KPICard title="Connected Calls" value={connectedCalls} change={12} changeType="up" icon={CalendarClock} color="success" />
+        <KPICard title="Team Conv. Rate" value={convRate} change={5} changeType="up" icon={TrendingUp} color="warning" suffix="%" />
+      </div>
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
-        {/* Leaderboard */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className={cn(card, 'lg:col-span-2')}>
-          <div className="px-6 py-4 border-b border-surface-100"><h3 className="text-sm font-semibold text-surface-700">Counsellor Leaderboard</h3></div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead><tr className="border-b border-surface-100 text-xs font-medium text-surface-500">
-                <th className="px-5 py-3">Counsellor</th><th className="px-5 py-3">Leads</th><th className="px-5 py-3">Calls</th><th className="px-5 py-3">Admissions</th><th className="px-5 py-3">Conv.</th>
-              </tr></thead>
-              <tbody className="divide-y divide-surface-50">
-                {counsellorPerf.map((c, i) => (
-                  <motion.tr key={c.name} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 + i * 0.05 }} className="hover:bg-surface-50">
-                    <td className="px-5 py-3 font-medium text-surface-800">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-surface-400">#{i + 1}</span>
-                        <div className="h-7 w-7 rounded-lg bg-primary-100 flex items-center justify-center text-xs font-bold text-primary-700">{c.name.slice(0, 2).toUpperCase()}</div>
-                        {c.name}
-                      </div>
-                    </td>
-                    <td className="px-5 py-3 text-surface-600">{c.leads}</td>
-                    <td className="px-5 py-3 text-surface-600">{c.calls}</td>
-                    <td className="px-5 py-3 font-bold text-primary-600">{c.enrolled}</td>
-                    <td className="px-5 py-3"><span className={cn('text-xs font-bold px-2 py-0.5 rounded-full', c.conversion > 20 ? 'bg-emerald-50 text-emerald-600' : 'bg-surface-100 text-surface-500')}>{c.conversion}%</span></td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
+      {/* Counsellor Chart & Overview */}
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className={cardStyle}>
+          <div className="px-5 py-4 border-b border-[#3E3E3E]">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Counsellor Conversion Comparison</h3>
+          </div>
+          <div className="p-5">
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={counsellorPerf}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#3E3E3E" />
+                <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#FFFFFF', fontWeight: 'bold' }} stroke="#3E3E3E" />
+                <YAxis tick={{ fontSize: 11, fill: '#A0A0A0' }} stroke="#3E3E3E" />
+                <Tooltip contentStyle={{ backgroundColor: '#1A1A1A', borderColor: '#3E3E3E', borderRadius: '8px', color: '#fff' }} />
+                <Bar dataKey="leads" fill="#FFA116" radius={[4, 4, 0, 0]} name="Leads" />
+                <Bar dataKey="enrolled" fill="#2CBB5D" radius={[4, 4, 0, 0]} name="Enrolled" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </motion.div>
 
-        {/* Overdue Leads */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className={card}>
-          <div className="px-6 py-4 border-b border-surface-100"><h3 className="text-sm font-semibold text-surface-700">Overdue Leads</h3></div>
-          <div className="p-4 space-y-2">
-            {overdueLeads.map((l) => (
-              <div key={l.id} className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-surface-50 transition-colors cursor-pointer">
-                <div className="h-8 w-8 rounded-lg bg-amber-50 flex items-center justify-center text-xs font-bold text-amber-700">{l.name.split(' ').map(n => n[0]).join('')}</div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-surface-800 truncate">{l.name}</p>
-                  <p className="text-xs text-surface-400">{l.phone}</p>
-                </div>
-                <StatusBadge status={l.status} type="lead" />
-              </div>
-            ))}
+        {/* Team Leader Performance Table */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className={cardStyle}>
+          <div className="px-5 py-4 border-b border-[#3E3E3E]">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Top Counsellors Overview</h3>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-[#3E3E3E] bg-[#1A1A1A]">
+                  <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Counsellor</th>
+                  <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Leads</th>
+                  <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Calls</th>
+                  <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Enrolled</th>
+                  <th className="px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Conv.</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#3E3E3E]">
+                {counsellorPerf.map((c, idx) => (
+                  <tr key={idx} className="hover:bg-[#303030] transition-colors">
+                    <td className="px-4 py-3.5 font-bold text-white whitespace-nowrap">{c.name}</td>
+                    <td className="px-4 py-3.5 text-[#FFA116] font-mono font-bold whitespace-nowrap">{c.leads}</td>
+                    <td className="px-4 py-3.5 text-white font-bold whitespace-nowrap">{c.calls}</td>
+                    <td className="px-4 py-3.5 text-[#2CBB5D] font-extrabold whitespace-nowrap">{c.enrolled}</td>
+                    <td className="px-4 py-3.5 text-[#FFA116] font-mono font-bold whitespace-nowrap">{c.conversion}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </motion.div>
       </div>
