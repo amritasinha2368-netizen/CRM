@@ -11,11 +11,19 @@ import Modal from '@/components/ui/Modal';
 import toast from 'react-hot-toast';
 
 const roleBadgeColors: Record<string, string> = {
-  super_admin: 'bg-[#3B181A] border border-[#FF2D55]/40 text-[#FF2D55]',
-  crm_admin: 'bg-[#1E293B] border border-[#007AFF]/40 text-[#007AFF]',
-  team_leader: 'bg-[#3A2E12] border border-[#FFB800]/40 text-[#FFB800]',
-  counsellor: 'bg-[#132E1F] border border-[#2CBB5D]/40 text-[#2CBB5D]',
-  admissions: 'bg-[#1E293B] border border-[#38BDF8]/40 text-[#38BDF8]',
+  super_admin: 'bg-[#3B181A] border border-[#FF2D55]/60 text-[#FF2D55]',
+  crm_admin: 'bg-[#1E293B] border border-[#007AFF]/60 text-[#38BDF8]',
+  team_leader: 'bg-[#3A2E12] border border-[#FFB800]/60 text-[#FFB800]',
+  counsellor: 'bg-[#132E1F] border border-[#2CBB5D]/60 text-[#2CBB5D]',
+  admissions: 'bg-[#1E293B] border border-[#007AFF]/60 text-[#38BDF8]',
+};
+
+const roleAvatarGradients: Record<string, string> = {
+  super_admin: 'bg-gradient-to-br from-[#FF2D55] to-[#DC1C3B] text-white',
+  crm_admin: 'bg-gradient-to-br from-[#007AFF] to-[#0051A8] text-white',
+  team_leader: 'bg-gradient-to-br from-[#FFB800] to-[#D99B00] text-[#1A1A1A]',
+  counsellor: 'bg-gradient-to-br from-[#FFA116] to-[#E08800] text-[#1A1A1A]',
+  admissions: 'bg-gradient-to-br from-[#2CBB5D] to-[#1E8A42] text-white',
 };
 
 export default function Team() {
@@ -25,7 +33,64 @@ export default function Team() {
 
   const teamMembers = useMemo(() => users.filter(u => u.isActive), []);
 
-  const getMemberStats = (userId: string) => {
+  const getMemberStats = (userId: string, role: string) => {
+    if (role === 'super_admin' || role === 'crm_admin') {
+      // System-wide metrics for Leadership & Super Admin
+      const totalLeads = leads.length;
+      const totalCalls = calls.length;
+      const totalConnected = calls.filter(c => c.disposition === 'Connected').length;
+      const totalDuration = calls.reduce((sum, c) => sum + (c.duration || 0), 0);
+      const totalApps = applications.length;
+      const totalEnrolled = applications.filter(a => a.status === 'enrolled').length;
+      const scoredCalls = calls.filter(c => c.aiSummary?.callScore?.overall != null);
+      const avgScore = scoredCalls.length > 0
+        ? scoredCalls.reduce((sum, c) => sum + (c.aiSummary?.callScore?.overall || 0), 0) / scoredCalls.length
+        : 0;
+
+      return {
+        leads: totalLeads,
+        calls: totalCalls,
+        connected: totalConnected,
+        talkTime: totalDuration,
+        applications: totalApps,
+        enrolled: totalEnrolled,
+        rate: totalLeads > 0 ? Math.round((totalEnrolled / totalLeads) * 100) : 0,
+        avgScore: Math.round(avgScore),
+        scopeLabel: 'System Oversight',
+      };
+    }
+
+    if (role === 'team_leader') {
+      // Team-wide metrics for Team Leaders
+      const teamCounsellors = users.filter(u => u.role === 'counsellor' || u.id === userId).map(u => u.id);
+      const teamLeads = leads.filter(l => teamCounsellors.includes(l.assignedTo));
+      const teamCalls = calls.filter(c => teamCounsellors.includes(c.counsellorId));
+      const connectedCalls = teamCalls.filter(c => c.disposition === 'Connected');
+      const totalDuration = teamCalls.reduce((sum, c) => sum + (c.duration || 0), 0);
+      const teamApps = applications.filter(a => {
+        const lead = leads.find(l => l.id === a.leadId);
+        return lead && teamCounsellors.includes(lead.assignedTo);
+      });
+      const enrolled = teamApps.filter(a => a.status === 'enrolled').length;
+      const scoredCalls = teamCalls.filter(c => c.aiSummary?.callScore?.overall != null);
+      const avgScore = scoredCalls.length > 0
+        ? scoredCalls.reduce((sum, c) => sum + (c.aiSummary?.callScore?.overall || 0), 0) / scoredCalls.length
+        : 0;
+
+      return {
+        leads: teamLeads.length,
+        calls: teamCalls.length,
+        connected: connectedCalls.length,
+        talkTime: totalDuration,
+        applications: teamApps.length,
+        enrolled,
+        rate: teamLeads.length > 0 ? Math.round((enrolled / teamLeads.length) * 100) : 0,
+        avgScore: Math.round(avgScore),
+        scopeLabel: 'Team Scope',
+      };
+    }
+
+    // Direct metrics for Counsellors
     const memberLeads = leads.filter(l => l.assignedTo === userId);
     const memberCalls = calls.filter(c => c.counsellorId === userId);
     const connectedCalls = memberCalls.filter(c => c.disposition === 'Connected');
@@ -49,12 +114,13 @@ export default function Team() {
       enrolled,
       rate: memberLeads.length > 0 ? Math.round((enrolled / memberLeads.length) * 100) : 0,
       avgScore: Math.round(avgScore),
+      scopeLabel: 'Direct Performance',
     };
   };
 
-  const totalLeads = teamMembers.reduce((sum, u) => sum + getMemberStats(u.id).leads, 0);
-  const totalCalls = teamMembers.reduce((sum, u) => sum + getMemberStats(u.id).calls, 0);
-  const totalEnrolled = teamMembers.reduce((sum, u) => sum + getMemberStats(u.id).enrolled, 0);
+  const totalLeads = leads.length;
+  const totalCalls = calls.length;
+  const totalEnrolled = applications.filter(a => a.status === 'enrolled').length;
 
   return (
     <div className="p-6 space-y-6 pb-12">
@@ -97,12 +163,13 @@ export default function Team() {
         <KPICard title="Enrollments" value={totalEnrolled} change={12} changeType="up" icon={Star} color="warning" />
       </div>
 
-      {/* Team View */}
+      {/* Team Cards View */}
       {viewMode === 'cards' ? (
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
           {teamMembers.map((member, idx) => {
-            const stats = getMemberStats(member.id);
+            const stats = getMemberStats(member.id, member.role);
             const isExpanded = expandedMember === member.id;
+            const avatarBg = roleAvatarGradients[member.role] || 'bg-[#FFA116] text-[#1A1A1A]';
 
             return (
               <motion.div
@@ -114,14 +181,14 @@ export default function Team() {
               >
                 <div className="p-5">
                   <div className="flex items-start gap-3.5">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#FFA116] text-sm font-black text-[#1A1A1A] shadow-md">
+                    <div className={cn('flex h-12 w-12 shrink-0 items-center justify-center rounded-xl font-black text-sm shadow-md', avatarBg)}>
                       {getInitials(member.name)}
                     </div>
                     <div className="min-w-0 flex-1">
                       <h3 className="text-base font-extrabold text-white truncate">{member.name}</h3>
                       <p className="text-xs text-slate-400 truncate">{member.email}</p>
-                      <div className="mt-2 flex items-center gap-2">
-                        <span className={cn('inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-bold capitalize', roleBadgeColors[member.role] || 'bg-[#303030] text-slate-300')}>
+                      <div className="mt-2 flex flex-wrap items-center gap-2">
+                        <span className={cn('inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-extrabold capitalize', roleBadgeColors[member.role] || 'bg-[#303030] text-slate-300')}>
                           {member.role.replace(/_/g, ' ')}
                         </span>
                         <div className="flex items-center gap-1.5 bg-[#132E1F] border border-[#2CBB5D]/40 px-2 py-0.5 rounded-md">
@@ -132,37 +199,39 @@ export default function Team() {
                     </div>
                   </div>
 
+                  {/* Stat Grid */}
                   <div className="mt-5 grid grid-cols-3 gap-2">
                     <div className="rounded-lg bg-[#1A1A1A] border border-[#3E3E3E] p-2.5 text-center">
-                      <p className="text-base font-extrabold text-white">{stats.leads}</p>
+                      <p className="text-base font-extrabold text-[#FFA116] font-mono">{stats.leads}</p>
                       <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-0.5">Leads</p>
                     </div>
                     <div className="rounded-lg bg-[#1A1A1A] border border-[#3E3E3E] p-2.5 text-center">
-                      <p className="text-base font-extrabold text-white">{stats.calls}</p>
+                      <p className="text-base font-extrabold text-[#38BDF8] font-mono">{stats.calls}</p>
                       <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-0.5">Calls</p>
                     </div>
                     <div className="rounded-lg bg-[#132E1F] border border-[#2CBB5D]/40 p-2.5 text-center">
-                      <p className="text-base font-extrabold text-[#2CBB5D]">{stats.rate}%</p>
+                      <p className="text-base font-extrabold text-[#2CBB5D] font-mono">{stats.rate}%</p>
                       <p className="text-[10px] font-bold uppercase tracking-wider text-[#2CBB5D] mt-0.5">Conv.</p>
                     </div>
                   </div>
 
                   {stats.avgScore > 0 && (
-                    <div className="mt-4 flex items-center gap-2 bg-[#1A1A1A] p-2.5 rounded-lg border border-[#3E3E3E]">
-                      <Star className="h-4 w-4 text-[#FFA116]" />
-                      <span className="text-xs text-slate-300 font-medium">
-                        AI Quality Score: <span className="font-bold text-[#FFA116]">{stats.avgScore}/100</span>
-                      </span>
+                    <div className="mt-4 flex items-center justify-between bg-[#1A1A1A] px-3 py-2 rounded-lg border border-[#3E3E3E]">
+                      <div className="flex items-center gap-2">
+                        <Star className="h-4 w-4 text-[#FFA116]" />
+                        <span className="text-xs text-slate-300 font-medium">AI Quality Score</span>
+                      </div>
+                      <span className="text-xs font-bold text-[#FFA116] font-mono">{stats.avgScore}/100</span>
                     </div>
                   )}
                 </div>
 
                 <button
                   onClick={() => setExpandedMember(isExpanded ? null : member.id)}
-                  className="w-full flex items-center justify-center gap-1.5 border-t border-[#3E3E3E] bg-[#222222] py-2 text-xs font-bold text-slate-300 hover:text-white transition-colors cursor-pointer"
+                  className="w-full flex items-center justify-center gap-1.5 border-t border-[#3E3E3E] bg-[#222222] py-2.5 text-xs font-bold text-slate-300 hover:text-white hover:bg-[#303030] transition-colors cursor-pointer"
                 >
                   {isExpanded ? <ChevronUp className="h-4 w-4 text-[#FFA116]" /> : <ChevronDown className="h-4 w-4 text-[#FFA116]" />}
-                  {isExpanded ? 'Hide Details' : 'View Full Performance'}
+                  {isExpanded ? 'Hide Details' : `View ${stats.scopeLabel} Details`}
                 </button>
 
                 <AnimatePresence>
@@ -174,6 +243,10 @@ export default function Team() {
                       className="overflow-hidden border-t border-[#3E3E3E] bg-[#1A1A1A]"
                     >
                       <div className="p-4 space-y-2.5">
+                        <div className="flex justify-between text-xs font-medium">
+                          <span className="text-slate-400">Scope Type</span>
+                          <span className="font-bold text-[#FFA116]">{stats.scopeLabel}</span>
+                        </div>
                         <div className="flex justify-between text-xs font-medium">
                           <span className="text-slate-400">Connected Calls</span>
                           <span className="font-bold text-white">{stats.connected}</span>
@@ -216,12 +289,14 @@ export default function Team() {
             </thead>
             <tbody className="divide-y divide-[#3E3E3E]">
               {teamMembers.map((member, idx) => {
-                const stats = getMemberStats(member.id);
+                const stats = getMemberStats(member.id, member.role);
+                const avatarBg = roleAvatarGradients[member.role] || 'bg-[#FFA116] text-[#1A1A1A]';
+
                 return (
                   <tr key={member.id} className={cn('transition-colors hover:bg-[#303030]', idx % 2 === 0 ? 'bg-[#282828]' : 'bg-[#222222]')}>
                     <td className="px-4 py-3.5 whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className="h-8 w-8 rounded-md bg-[#FFA116] flex items-center justify-center text-xs font-black text-[#1A1A1A]">
+                        <div className={cn('h-8 w-8 rounded-md flex items-center justify-center text-xs font-black shadow-sm', avatarBg)}>
                           {getInitials(member.name)}
                         </div>
                         <div>
@@ -235,13 +310,13 @@ export default function Team() {
                         {member.role.replace(/_/g, ' ')}
                       </span>
                     </td>
-                    <td className="px-4 py-3.5 text-white font-bold whitespace-nowrap">{stats.leads}</td>
-                    <td className="px-4 py-3.5 text-white font-bold whitespace-nowrap">{stats.calls}</td>
+                    <td className="px-4 py-3.5 text-[#FFA116] font-mono font-bold whitespace-nowrap">{stats.leads}</td>
+                    <td className="px-4 py-3.5 text-[#38BDF8] font-mono font-bold whitespace-nowrap">{stats.calls}</td>
                     <td className="px-4 py-3.5 text-white font-bold whitespace-nowrap">{stats.connected}</td>
                     <td className="px-4 py-3.5 text-white font-bold whitespace-nowrap">{stats.applications}</td>
                     <td className="px-4 py-3.5 text-[#2CBB5D] font-extrabold whitespace-nowrap">{stats.enrolled}</td>
                     <td className="px-4 py-3.5 whitespace-nowrap">
-                      <span className={cn('font-bold', stats.rate >= 20 ? 'text-[#2CBB5D]' : stats.rate >= 10 ? 'text-[#FFB800]' : 'text-slate-400')}>
+                      <span className={cn('font-bold font-mono', stats.rate >= 20 ? 'text-[#2CBB5D]' : stats.rate >= 10 ? 'text-[#FFB800]' : 'text-slate-400')}>
                         {stats.rate}%
                       </span>
                     </td>
