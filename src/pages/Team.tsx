@@ -18,14 +18,6 @@ const roleBadgeColors: Record<string, string> = {
   admissions: 'bg-[#1E293B] border border-[#007AFF]/60 text-[#38BDF8]',
 };
 
-const roleAvatarGradients: Record<string, string> = {
-  super_admin: 'bg-gradient-to-br from-[#FF2D55] to-[#DC1C3B] text-white',
-  crm_admin: 'bg-gradient-to-br from-[#007AFF] to-[#0051A8] text-white',
-  team_leader: 'bg-gradient-to-br from-[#FFB800] to-[#D99B00] text-[#1A1A1A]',
-  counsellor: 'bg-gradient-to-br from-[#FFA116] to-[#E08800] text-[#1A1A1A]',
-  admissions: 'bg-gradient-to-br from-[#2CBB5D] to-[#1E8A42] text-white',
-};
-
 export default function Team() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
@@ -166,8 +158,6 @@ export default function Team() {
           {teamMembers.map((member, idx) => {
             const stats = getMemberStats(member.id, member.role);
             const isExpanded = expandedMember === member.id;
-            const avatarBg = roleAvatarGradients[member.role] || 'bg-[#FFA116] text-[#1A1A1A]';
-
             return (
               <motion.div
                 key={member.id}
@@ -178,7 +168,7 @@ export default function Team() {
               >
                 <div className="p-5">
                   <div className="flex items-start gap-3.5">
-                    <div className={cn('flex h-12 w-12 shrink-0 items-center justify-center rounded-xl font-black text-sm shadow-md', avatarBg)}>
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#FFA116] text-[#1A1A1A] font-black text-sm shadow-md">
                       {getInitials(member.name)}
                     </div>
                     <div className="min-w-0 flex-1">
@@ -287,13 +277,12 @@ export default function Team() {
             <tbody className="divide-y divide-[#3E3E3E]">
               {teamMembers.map((member, idx) => {
                 const stats = getMemberStats(member.id, member.role);
-                const avatarBg = roleAvatarGradients[member.role] || 'bg-[#FFA116] text-[#1A1A1A]';
 
                 return (
                   <tr key={member.id} className={cn('transition-colors hover:bg-[#303030]', idx % 2 === 0 ? 'bg-[#282828]' : 'bg-[#222222]')}>
                     <td className="px-4 py-3.5 whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className={cn('h-8 w-8 rounded-md flex items-center justify-center text-xs font-black shadow-sm', avatarBg)}>
+                        <div className="h-8 w-8 rounded-md bg-[#FFA116] text-[#1A1A1A] flex items-center justify-center text-xs font-black shadow-sm">
                           {getInitials(member.name)}
                         </div>
                         <div>
