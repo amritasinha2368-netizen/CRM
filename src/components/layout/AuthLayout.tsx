@@ -19,14 +19,12 @@ export function AuthLayout() {
       />
 
       <div className="relative z-10 w-full max-w-lg space-y-6 my-auto">
-        {/* Logo Header Container */}
+        {/* Logo Header Container (Pure Obsidian & Gold) */}
         <div className="flex justify-center py-2">
-          <div className="bg-white rounded-2xl p-2.5 border-2 border-[#D4AF37] shadow-2xl shadow-amber-500/20 inline-flex items-center justify-center">
-            <GOGLogo size="lg" />
-          </div>
+          <GOGLogo size="xl" />
         </div>
 
-        {/* Auth Card Container - Render Outlet from React Router */}
+        {/* Auth Card Container */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
