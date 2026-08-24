@@ -18,17 +18,17 @@ interface Stage {
 }
 
 const stages: Stage[] = [
-  { id: 'new', label: 'New', gradient: 'from-[#FFA116] to-[#E08800]' },
-  { id: 'assigned', label: 'Assigned', gradient: 'from-[#007AFF] to-[#0051A8]' },
-  { id: 'contacted', label: 'Contacted', gradient: 'from-[#007AFF] to-[#0051A8]' },
-  { id: 'interested', label: 'Interested', gradient: 'from-[#2CBB5D] to-[#1E8A42]' },
-  { id: 'counselling', label: 'Counselling', gradient: 'from-[#FFB800] to-[#D99B00]' },
-  { id: 'visit', label: 'Visit', gradient: 'from-[#007AFF] to-[#0051A8]' },
-  { id: 'application', label: 'Application', gradient: 'from-[#FFA116] to-[#E08800]' },
-  { id: 'documents', label: 'Documents', gradient: 'from-[#FFB800] to-[#D99B00]' },
-  { id: 'payment', label: 'Payment', gradient: 'from-[#2CBB5D] to-[#1E8A42]' },
-  { id: 'enrolled', label: 'Enrolled', gradient: 'from-[#2CBB5D] to-[#1E8A42]' },
-  { id: 'lost', label: 'Lost', gradient: 'from-[#FF2D55] to-[#DC1C3B]' },
+  { id: 'new', label: 'New Lead', gradient: 'from-[#FFA116] to-[#E08800]' },
+  { id: 'assigned', label: 'Assigned Counsellor', gradient: 'from-[#007AFF] to-[#0051A8]' },
+  { id: 'contacted', label: 'Contacted Lead', gradient: 'from-[#007AFF] to-[#0051A8]' },
+  { id: 'interested', label: 'Interested Student', gradient: 'from-[#2CBB5D] to-[#1E8A42]' },
+  { id: 'counselling', label: 'Counselling Session', gradient: 'from-[#FFB800] to-[#D99B00]' },
+  { id: 'visit', label: 'Visited Campus / Portal', gradient: 'from-[#007AFF] to-[#0051A8]' },
+  { id: 'application', label: 'Application Submitted', gradient: 'from-[#FFA116] to-[#E08800]' },
+  { id: 'documents', label: 'Documents Verified', gradient: 'from-[#FFB800] to-[#D99B00]' },
+  { id: 'payment', label: 'Payment Pending', gradient: 'from-[#2CBB5D] to-[#1E8A42]' },
+  { id: 'enrolled', label: 'Student Enrolled', gradient: 'from-[#2CBB5D] to-[#1E8A42]' },
+  { id: 'lost', label: 'Lead Closed / Lost', gradient: 'from-[#FF2D55] to-[#DC1C3B]' },
 ]
 
 const sourceLabels: Record<LeadSource, string> = {

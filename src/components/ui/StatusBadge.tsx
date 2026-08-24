@@ -10,17 +10,17 @@ interface StatusBadgeProps {
 
 const statusConfig: Record<StatusType, Record<string, { label: string; bg: string; text: string; dot: string }>> = {
   lead: {
-    new: { label: 'New', bg: 'bg-[#3A2E12] border border-[#FFA116]/40', text: 'text-[#FFA116]', dot: 'bg-[#FFA116] animate-pulse' },
-    assigned: { label: 'Assigned', bg: 'bg-[#1E293B] border border-[#007AFF]/40', text: 'text-[#38BDF8]', dot: 'bg-[#38BDF8]' },
-    contacted: { label: 'Contacted', bg: 'bg-[#1E293B] border border-[#007AFF]/40', text: 'text-[#38BDF8]', dot: 'bg-[#38BDF8]' },
-    interested: { label: 'Interested', bg: 'bg-[#132E1F] border border-[#2CBB5D]/40', text: 'text-[#2CBB5D]', dot: 'bg-[#2CBB5D]' },
-    counselling: { label: 'Counselling', bg: 'bg-[#3A2E12] border border-[#FFB800]/40', text: 'text-[#FFB800]', dot: 'bg-[#FFB800]' },
-    visit: { label: 'Visit', bg: 'bg-[#1E293B] border border-[#007AFF]/40', text: 'text-[#38BDF8]', dot: 'bg-[#38BDF8]' },
-    application: { label: 'Application', bg: 'bg-[#3A2E12] border border-[#FFA116]/40', text: 'text-[#FFA116]', dot: 'bg-[#FFA116]' },
-    documents: { label: 'Documents', bg: 'bg-[#3A2E12] border border-[#FFB800]/40', text: 'text-[#FFB800]', dot: 'bg-[#FFB800]' },
-    payment: { label: 'Payment', bg: 'bg-[#132E1F] border border-[#2CBB5D]/40', text: 'text-[#2CBB5D]', dot: 'bg-[#2CBB5D]' },
-    enrolled: { label: 'Enrolled', bg: 'bg-[#132E1F] border border-[#2CBB5D]/60', text: 'text-[#2CBB5D] font-extrabold', dot: 'bg-[#2CBB5D]' },
-    lost: { label: 'Lost', bg: 'bg-[#3B181A] border border-[#FF2D55]/40', text: 'text-[#FF2D55]', dot: 'bg-[#FF2D55]' },
+    new: { label: 'New Lead', bg: 'bg-[#3A2E12] border border-[#FFA116]/40', text: 'text-[#FFA116]', dot: 'bg-[#FFA116] animate-pulse' },
+    assigned: { label: 'Assigned Counsellor', bg: 'bg-[#1E293B] border border-[#007AFF]/40', text: 'text-[#38BDF8]', dot: 'bg-[#38BDF8]' },
+    contacted: { label: 'Contacted Lead', bg: 'bg-[#1E293B] border border-[#007AFF]/40', text: 'text-[#38BDF8]', dot: 'bg-[#38BDF8]' },
+    interested: { label: 'Interested Student', bg: 'bg-[#132E1F] border border-[#2CBB5D]/40', text: 'text-[#2CBB5D]', dot: 'bg-[#2CBB5D]' },
+    counselling: { label: 'Counselling Session', bg: 'bg-[#3A2E12] border border-[#FFB800]/40', text: 'text-[#FFB800]', dot: 'bg-[#FFB800]' },
+    visit: { label: 'Visited Campus / Portal', bg: 'bg-[#1E293B] border border-[#007AFF]/40', text: 'text-[#38BDF8]', dot: 'bg-[#38BDF8]' },
+    application: { label: 'Application Submitted', bg: 'bg-[#3A2E12] border border-[#FFA116]/40', text: 'text-[#FFA116]', dot: 'bg-[#FFA116]' },
+    documents: { label: 'Documents Verified', bg: 'bg-[#3A2E12] border border-[#FFB800]/40', text: 'text-[#FFB800]', dot: 'bg-[#FFB800]' },
+    payment: { label: 'Payment Pending', bg: 'bg-[#132E1F] border border-[#2CBB5D]/40', text: 'text-[#2CBB5D]', dot: 'bg-[#2CBB5D]' },
+    enrolled: { label: 'Student Enrolled', bg: 'bg-[#132E1F] border border-[#2CBB5D]/60', text: 'text-[#2CBB5D] font-extrabold', dot: 'bg-[#2CBB5D]' },
+    lost: { label: 'Lead Closed / Lost', bg: 'bg-[#3B181A] border border-[#FF2D55]/40', text: 'text-[#FF2D55]', dot: 'bg-[#FF2D55]' },
   },
   application: {
     draft: { label: 'Draft', bg: 'bg-[#303030] border border-[#3E3E3E]', text: 'text-slate-400', dot: 'bg-slate-400' },
