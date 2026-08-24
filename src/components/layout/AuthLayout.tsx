@@ -1,47 +1,39 @@
-import { Outlet } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { GOGLogo } from '@/components/ui/GOGLogo';
 
-export function AuthLayout() {
+interface AuthLayoutProps {
+  children: React.ReactNode;
+}
+
+export function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className="flex min-h-screen bg-[#F8FAFC]">
-      {/* Left: Video / Image side */}
-      <div className="relative hidden lg:flex w-[55%] items-center justify-center overflow-hidden bg-[#0F2537]">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-80"
-        >
-          <source src="/login-bg.mp4" type="video/mp4" />
-        </video>
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#0B0F17] flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      {/* Golden glow orbs */}
+      <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-amber-500/10 blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-yellow-600/10 blur-[140px] pointer-events-none" />
 
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-blue-950/40" />
+      {/* Subtle grid */}
+      <div
+        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(212, 175, 55, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(212, 175, 55, 0.3) 1px, transparent 1px)',
+          backgroundSize: '60px 60px',
+        }}
+      />
 
-        {/* Right edge fade into form */}
-        <div className="absolute top-0 right-0 bottom-0 w-40 z-10 pointer-events-none bg-gradient-to-l from-[#F8FAFC] via-[#F8FAFC]/60 to-transparent" />
+      <div className="relative z-10 w-full max-w-md space-y-6">
+        {/* Logo Header */}
+        <div className="flex justify-center py-2">
+          <GOGLogo size="lg" />
+        </div>
 
-        {/* Top fade */}
-        <div className="absolute top-0 left-0 right-0 h-20 z-10 pointer-events-none bg-gradient-to-b from-[#0F2537]/60 to-transparent" />
-
-        {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 z-10 pointer-events-none bg-gradient-to-t from-[#0F2537]/60 to-transparent" />
-      </div>
-
-      {/* Right: Form Container */}
-      <div className="relative flex flex-1 items-center justify-center px-6 py-12 bg-[#F8FAFC]">
-        {/* CampusDirect Azure Orbs */}
-        <div className="absolute top-[15%] right-[10%] w-64 h-64 rounded-full blur-[100px] bg-blue-600/10" />
-        <div className="absolute bottom-[20%] left-[5%] w-48 h-48 rounded-full blur-[80px] bg-sky-400/15" />
-
+        {/* Auth Card Container */}
         <motion.div
-          initial={{ opacity: 0, x: 30, scale: 0.98 }}
-          animate={{ opacity: 1, x: 0, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 w-full max-w-lg"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
-          <Outlet />
+          {children}
         </motion.div>
       </div>
     </div>

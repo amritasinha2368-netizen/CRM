@@ -1,46 +1,45 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
+  /* Luxury Golden Palette */
+  --color-primary-50: #fefce8;
+  --color-primary-100: #fef9c3;
+  --color-primary-200: #fef08a;
+  --color-primary-300: #fde047;
+  --color-primary-400: #facc15;
+  --color-primary-500: #eab308;
+  --color-primary-600: #d4af37;
+  --color-primary-700: #ca8a04;
+  --color-primary-800: #a16207;
+  --color-primary-900: #854d0e;
 
-  --color-accent-50: #e0f2fe;
-  --color-accent-100: #bae6fd;
-  --color-accent-200: #7dd3fc;
-  --color-accent-300: #38bdf8;
-  --color-accent-400: #0284c7;
-  --color-accent-500: #ff6b00;
-  --color-accent-600: #ea580c;
-  --color-accent-700: #c2410c;
-
-  --color-surface-50: #f8fafc;
-  --color-surface-100: #f1f5f9;
-  --color-surface-200: #e2e8f0;
-  --color-surface-300: #cbd5e1;
-  --color-surface-400: #94a3b8;
+  /* Luxury Obsidian / Slate Surfaces */
+  --color-surface-50: #0b0f17;
+  --color-surface-100: #0f172a;
+  --color-surface-200: #161e2e;
+  --color-surface-300: #1e293b;
+  --color-surface-400: #334155;
   --color-surface-500: #64748b;
-  --color-surface-600: #475569;
-  --color-surface-700: #334155;
-  --color-surface-800: #1e293b;
-  --color-surface-900: #0f172a;
+  --color-surface-600: #94a3b8;
+  --color-surface-700: #cbd5e1;
+  --color-surface-800: #f1f5f9;
+  --color-surface-900: #ffffff;
 
-  --color-success-50: #ecfdf5;
+  --color-accent-50: #fef3c7;
+  --color-accent-100: #fde68a;
+  --color-accent-500: #f59e0b;
+  --color-accent-600: #d97706;
+  --color-accent-700: #b45309;
+
+  --color-success-50: #064e3b;
   --color-success-500: #10b981;
   --color-success-600: #059669;
 
-  --color-warning-50: #fffbe6;
+  --color-warning-50: #451a03;
   --color-warning-500: #f59e0b;
   --color-warning-600: #d97706;
 
-  --color-danger-50: #fef2f2;
+  --color-danger-50: #450a0a;
   --color-danger-500: #ef4444;
   --color-danger-600: #dc2626;
 
@@ -86,8 +85,8 @@
 }
 
 @keyframes glow {
-  from { box-shadow: 0 0 20px rgba(37, 99, 235, 0.15); }
-  to { box-shadow: 0 0 35px rgba(37, 99, 235, 0.25); }
+  from { box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+  to { box-shadow: 0 0 35px rgba(212, 175, 55, 0.4); }
 }
 
 @keyframes pulse-ring {
@@ -102,7 +101,7 @@
 
 @layer base {
   * {
-    border-color: var(--color-surface-200);
+    border-color: rgba(212, 175, 55, 0.2);
   }
 
   html {
@@ -111,93 +110,94 @@
 
   body {
     font-family: var(--font-sans);
-    background: #f8fafc;
-    color: var(--color-surface-900);
+    background: #0b0f17;
+    color: #f1f5f9;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1.2;
     letter-spacing: -0.01em;
-    color: #0f172a;
+    color: #ffffff;
   }
 
   ::selection {
-    background: rgba(37, 99, 235, 0.2);
-    color: #1e40af;
+    background: rgba(212, 175, 55, 0.3);
+    color: #ffffff;
   }
 }
 
-/* Glass morphism */
+/* Glass morphism - Golden Luxury */
 .glass {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(22, 30, 46, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid #bfdbfe;
+  border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(15, 23, 42, 0.95);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid #93c5fd;
+  border: 1px solid rgba(212, 175, 55, 0.4);
 }
 
-/* Gradient text matching Academic Lead Portal */
+/* Metallic Golden Gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%);
+  background: linear-gradient(135deg, #fef08a 0%, #d4af37 50%, #f59e0b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-blue {
-  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #60a5fa 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #fde047 50%, #d4af37 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Gradient backgrounds matching Academic Lead Portal */
+/* Metallic Golden Gradient backgrounds */
 .gradient-primary {
-  background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%);
+  background: linear-gradient(135deg, #d4af37 0%, #eab308 50%, #ca8a04 100%);
+  color: #0b0f17;
 }
 
 .gradient-primary-hover {
-  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%);
+  background: linear-gradient(135deg, #f59e0b 0%, #d4af37 50%, #b8860b 100%);
 }
 
 .gradient-hero {
-  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 30%, #bfdbfe 60%, #93c5fd 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #161e2e 50%, #0f172a 100%);
 }
 
 .gradient-blue {
-  background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 50%, #bfdbfe 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #1e3a8a 50%, #0f172a 100%);
 }
 
 .gradient-mesh {
   background:
-    radial-gradient(at 20% 20%, rgba(37, 99, 235, 0.12) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, rgba(14, 165, 233, 0.08) 0px, transparent 50%),
+    radial-gradient(at 20% 20%, rgba(212, 175, 55, 0.15) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgba(245, 158, 11, 0.1) 0px, transparent 50%),
     radial-gradient(at 0% 80%, rgba(16, 185, 129, 0.06) 0px, transparent 50%),
-    radial-gradient(at 80% 80%, rgba(29, 78, 216, 0.05) 0px, transparent 50%);
+    radial-gradient(at 80% 80%, rgba(212, 175, 55, 0.08) 0px, transparent 50%);
 }
 
-/* Premium cards */
+/* Premium cards - Dark Obsidian with Gold Trim */
 .card-premium {
-  background: white;
+  background: #161e2e;
   border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card-premium:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 10px 30px rgba(0, 0, 0, 0.06);
-  border-color: #93c5fd;
+  box-shadow: 0 8px 30px rgba(212, 175, 55, 0.2);
+  border-color: rgba(212, 175, 55, 0.6);
   transform: translateY(-2px);
 }
 
@@ -208,25 +208,25 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #0b0f17;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #93c5fd, #2563eb);
+  background: linear-gradient(180deg, #d4af37, #ca8a04);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #2563eb, #1e40af);
+  background: linear-gradient(180deg, #f59e0b, #d4af37);
 }
 
-/* Input styles */
+/* Input styles - Dark Matte with Golden Focus */
 textarea, select {
-  background: white;
-  border: 1px solid #cbd5e1;
+  background: #0f172a;
+  border: 1px solid rgba(212, 175, 55, 0.3);
   border-radius: 12px;
   padding: 12px 16px;
-  color: #0f172a;
+  color: #ffffff;
   font-size: 14px;
   transition: all 0.3s;
   outline: none;
@@ -234,13 +234,13 @@ textarea, select {
 }
 
 textarea:focus, select:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-  background: white;
+  border-color: #d4af37;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+  background: #161e2e;
 }
 
 /* Focus ring */
 .focus-ring:focus {
   outline: none;
-  box-shadow: 0 0 0 2px white, 0 0 0 4px #2563eb;
+  box-shadow: 0 0 0 2px #0b0f17, 0 0 0 4px #d4af37;
 }

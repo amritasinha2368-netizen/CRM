@@ -404,32 +404,32 @@ export default function LeadsList() {
           }
         />
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-surface-200 bg-white">
+        <div className="overflow-x-auto rounded-xl border border-[#D4AF37]/30 bg-[#161E2E] shadow-2xl">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="border-b border-surface-200 bg-surface-50">
-                <th className="w-10 px-4 py-3 whitespace-nowrap">
+              <tr className="border-b border-[#D4AF37]/30 bg-[#0F172A]">
+                <th className="w-10 px-4 py-3.5 whitespace-nowrap">
                   <button onClick={toggleSelectAll} className="flex items-center">
                     {selectedIds.size === paginatedLeads.length && paginatedLeads.length > 0 ? (
-                      <CheckSquare className="h-4 w-4 text-primary-600" />
+                      <CheckSquare className="h-4 w-4 text-[#FBBF24]" />
                     ) : (
-                      <Square className="h-4 w-4 text-surface-300" />
+                      <Square className="h-4 w-4 text-slate-500" />
                     )}
                   </button>
                 </th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-surface-500 whitespace-nowrap">Lead</th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-surface-500 whitespace-nowrap">Phone</th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-surface-500 whitespace-nowrap">Email</th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-surface-500 whitespace-nowrap">Course</th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-surface-500 whitespace-nowrap">Status</th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-surface-500 whitespace-nowrap">Source</th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-surface-500 whitespace-nowrap">Score</th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-surface-500 whitespace-nowrap">Assigned</th>
-                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-surface-500 whitespace-nowrap">Enquiry</th>
-                <th className="w-10 px-4 py-3 whitespace-nowrap"></th>
+                <th className="px-4 py-3.5 text-xs font-black uppercase tracking-wider text-[#FBBF24] whitespace-nowrap">Lead</th>
+                <th className="px-4 py-3.5 text-xs font-black uppercase tracking-wider text-[#FBBF24] whitespace-nowrap">Phone</th>
+                <th className="px-4 py-3.5 text-xs font-black uppercase tracking-wider text-[#FBBF24] whitespace-nowrap">Email</th>
+                <th className="px-4 py-3.5 text-xs font-black uppercase tracking-wider text-[#FBBF24] whitespace-nowrap">Course</th>
+                <th className="px-4 py-3.5 text-xs font-black uppercase tracking-wider text-[#FBBF24] whitespace-nowrap">Status</th>
+                <th className="px-4 py-3.5 text-xs font-black uppercase tracking-wider text-[#FBBF24] whitespace-nowrap">Source</th>
+                <th className="px-4 py-3.5 text-xs font-black uppercase tracking-wider text-[#FBBF24] whitespace-nowrap">Score</th>
+                <th className="px-4 py-3.5 text-xs font-black uppercase tracking-wider text-[#FBBF24] whitespace-nowrap">Assigned</th>
+                <th className="px-4 py-3.5 text-xs font-black uppercase tracking-wider text-[#FBBF24] whitespace-nowrap">Enquiry</th>
+                <th className="w-10 px-4 py-3.5 whitespace-nowrap"></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-slate-800">
               {paginatedLeads.map((lead, i) => {
                 const course = courses.find((c) => c.id === lead.courseId)
                 const assignedUser = users.find((u) => u.id === lead.assignedTo)
@@ -440,84 +440,83 @@ export default function LeadsList() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.25, delay: Math.min(i * 0.03, 0.3) }}
                     className={cn(
-                      'border-b border-surface-100 transition-colors last:border-b-0',
-                      selectedIds.has(lead.id) ? 'bg-primary-50/50' : i % 2 === 0 ? 'bg-white' : 'bg-surface-50/50',
-                      'hover:bg-primary-50/30 cursor-pointer',
+                      'transition-colors hover:bg-[#1E293B] cursor-pointer',
+                      selectedIds.has(lead.id) ? 'bg-[#1E293B]/80' : i % 2 === 0 ? 'bg-[#161E2E]' : 'bg-[#0F172A]/50',
                     )}
                     onClick={() => navigate(`/leads/${lead.id}`)}
                   >
-                    <td className="px-4 py-3 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                    <td className="px-4 py-3.5 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                       <button onClick={() => toggleSelect(lead.id)}>
                         {selectedIds.has(lead.id) ? (
-                          <CheckSquare className="h-4 w-4 text-primary-600" />
+                          <CheckSquare className="h-4 w-4 text-[#FBBF24]" />
                         ) : (
-                          <Square className="h-4 w-4 text-surface-300" />
+                          <Square className="h-4 w-4 text-slate-600" />
                         )}
                       </button>
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap">
+                    <td className="px-4 py-3.5 whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 text-xs font-semibold text-primary-700">
+                        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-[#D4AF37] to-[#FBBF24] text-xs font-black text-slate-950 shadow-xs">
                           {getInitials(lead.name)}
                         </div>
                         <div className="min-w-0">
-                          <p className="font-bold text-surface-900 whitespace-nowrap">{lead.name}</p>
-                          <p className="text-xs text-surface-400 font-mono whitespace-nowrap">{lead.id}</p>
+                          <p className="font-black text-white whitespace-nowrap">{lead.name}</p>
+                          <p className="text-xs text-[#FBBF24] font-mono whitespace-nowrap">{lead.id}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap">
-                      <div className="flex items-center gap-1.5 whitespace-nowrap font-mono font-bold text-slate-800">
+                    <td className="px-4 py-3.5 whitespace-nowrap">
+                      <div className="flex items-center gap-1.5 whitespace-nowrap font-mono font-bold text-amber-200">
                         <span>{lead.phone}</span>
                         <button
                           onClick={(e) => {
                             e.stopPropagation()
                             window.open(`tel:${lead.phone}`)
                           }}
-                          className="rounded p-0.5 text-surface-400 transition-colors hover:bg-success-50 hover:text-success-600"
+                          className="rounded p-0.5 text-amber-400/70 transition-colors hover:bg-emerald-950/60 hover:text-emerald-400"
                           title="Click to call"
                         >
                           <Phone className="h-3.5 w-3.5" />
                         </button>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-surface-600 whitespace-nowrap font-medium">{lead.email}</td>
-                    <td className="px-4 py-3 whitespace-nowrap">
-                      <span className="text-surface-700 font-bold whitespace-nowrap">{course?.name || '-'}</span>
+                    <td className="px-4 py-3.5 text-slate-300 whitespace-nowrap font-medium">{lead.email}</td>
+                    <td className="px-4 py-3.5 whitespace-nowrap">
+                      <span className="text-white font-bold whitespace-nowrap">{course?.name || '-'}</span>
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap">
+                    <td className="px-4 py-3.5 whitespace-nowrap">
                       <StatusBadge status={lead.status} type="lead" />
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap">
+                    <td className="px-4 py-3.5 whitespace-nowrap">
                       <Badge variant={sourceBadgeVariant[lead.source]}>
                         {sourceLabels[lead.source]}
                       </Badge>
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap">
+                    <td className="px-4 py-3.5 whitespace-nowrap">
                       <div className="flex items-center gap-2 whitespace-nowrap">
-                        <div className="h-1.5 w-16 overflow-hidden rounded-full bg-surface-100">
+                        <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-800">
                           <div
                             className={cn('h-full rounded-full transition-all', getScoreColor(lead.leadScore))}
                             style={{ width: `${lead.leadScore}%` }}
                           />
                         </div>
-                        <span className="text-xs font-bold text-surface-600 font-mono">{lead.leadScore}</span>
+                        <span className="text-xs font-bold text-amber-300 font-mono">{lead.leadScore}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap">
+                    <td className="px-4 py-3.5 whitespace-nowrap">
                       {assignedUser ? (
                         <div className="flex items-center gap-2 whitespace-nowrap">
-                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-100 text-[10px] font-semibold text-primary-700">
+                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 text-[10px] font-black text-[#FBBF24]">
                             {getInitials(assignedUser.name)}
                           </div>
-                          <span className="text-xs text-surface-700 font-bold whitespace-nowrap">{assignedUser.name}</span>
+                          <span className="text-xs text-slate-200 font-bold whitespace-nowrap">{assignedUser.name}</span>
                         </div>
                       ) : (
-                        <span className="text-xs text-surface-400 whitespace-nowrap">Unassigned</span>
+                        <span className="text-xs text-slate-500 whitespace-nowrap">Unassigned</span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-xs text-surface-500 font-medium whitespace-nowrap">{formatDate(lead.enquiryDate)}</td>
-                    <td className="px-4 py-3 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                    <td className="px-4 py-3.5 text-xs text-slate-400 font-medium whitespace-nowrap">{formatDate(lead.enquiryDate)}</td>
+                    <td className="px-4 py-3.5 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                       <div className="relative">
                         <button
                           onClick={() => setActiveDropdown(activeDropdown === lead.id ? null : lead.id)}

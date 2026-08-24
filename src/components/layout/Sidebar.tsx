@@ -80,14 +80,14 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
       animate={{ width: collapsed ? 76 : 272 }}
       transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
       className={cn(
-        'relative flex h-screen flex-col bg-white border-r border-slate-200',
-        'shadow-sm z-30',
+        'relative flex h-screen flex-col bg-[#0F172A] border-r border-[#D4AF37]/30',
+        'shadow-2xl z-30 text-white',
         isMobile && 'fixed inset-y-0 left-0 z-50 shadow-2xl',
       )}
     >
       {/* Logo Area */}
       <div className={cn(
-        'flex items-center border-b border-slate-100 px-4 py-5',
+        'flex items-center border-b border-[#D4AF37]/20 px-4 py-5 bg-[#0B0F17]',
         collapsed ? 'justify-center' : 'justify-between',
       )}>
         <AnimatePresence mode="wait">
@@ -107,7 +107,7 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={onToggle}
-            className={cn('flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-slate-400 transition-all duration-200 hover:bg-slate-100 hover:text-slate-600', collapsed && 'hidden')}
+            className={cn('flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-amber-400 transition-all duration-200 hover:bg-[#161E2E] hover:text-white', collapsed && 'hidden')}
           >
             <ChevronLeft className="h-4 w-4" />
           </motion.button>
@@ -119,7 +119,7 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={onToggle}
-          className="mx-auto mt-3 flex h-8 w-8 items-center justify-center rounded-xl text-slate-400 transition-all duration-200 hover:bg-slate-100 hover:text-slate-600"
+          className="mx-auto mt-3 flex h-8 w-8 items-center justify-center rounded-xl text-amber-400 transition-all duration-200 hover:bg-[#161E2E] hover:text-white"
         >
           <ChevronRight className="h-4 w-4" />
         </motion.button>
@@ -133,8 +133,8 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
           transition={{ delay: 0.1 }}
           className="px-4 pt-4 pb-2"
         >
-          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-[#E0F2FE] py-2 px-3 text-xs font-black text-[#1E40AF] ring-1 ring-[#93C5FD]">
-            <Shield className="h-3.5 w-3.5" />
+          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-[#161E2E] py-2 px-3 text-xs font-black text-[#FBBF24] ring-1 ring-[#D4AF37]/40 shadow-xs">
+            <Shield className="h-3.5 w-3.5 text-[#FBBF24]" />
             {ROLE_LABELS[currentUser.role]}
           </div>
         </motion.div>
@@ -150,23 +150,23 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
               to={item.path}
               onClick={handleNavClick}
               className={({ isActive }) => cn(
-                'group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-extrabold transition-all duration-200',
+                'group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-black transition-all duration-200',
                 collapsed && 'justify-center px-0',
                 isActive
-                  ? 'bg-[#2563EB] text-white shadow-md shadow-blue-600/30'
-                  : 'text-slate-700 hover:bg-sky-50 hover:text-blue-900',
+                  ? 'bg-gradient-to-r from-[#D4AF37] via-[#FBBF24] to-[#D4AF37] text-slate-950 shadow-lg shadow-amber-500/20 font-black'
+                  : 'text-slate-300 hover:bg-[#161E2E] hover:text-white',
               )}
             >
               {({ isActive }) => (
                 <>
                   <motion.div whileHover={{ scale: 1.15, rotate: isActive ? 0 : 5 }} transition={{ type: 'spring', stiffness: 400 }}>
-                    <Icon className={cn('h-4.5 w-4.5 shrink-0 transition-colors', isActive ? 'text-white' : 'text-slate-500')} />
+                    <Icon className={cn('h-4.5 w-4.5 shrink-0 transition-colors', isActive ? 'text-slate-950' : 'text-amber-400/80 group-hover:text-[#FBBF24]')} />
                   </motion.div>
                   {!collapsed && <span className="truncate">{item.label}</span>}
                   {collapsed && (
-                    <div className="pointer-events-none absolute left-full z-50 ml-3 hidden rounded-xl bg-slate-900 px-3.5 py-2 text-xs font-bold text-white opacity-0 shadow-xl transition-all duration-200 group-hover:block group-hover:opacity-100">
+                    <div className="pointer-events-none absolute left-full z-50 ml-3 hidden rounded-xl bg-[#0B0F17] border border-[#D4AF37]/40 px-3.5 py-2 text-xs font-bold text-[#FBBF24] opacity-0 shadow-xl transition-all duration-200 group-hover:block group-hover:opacity-100">
                       {item.label}
-                      <div className="absolute -left-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 bg-slate-900" />
+                      <div className="absolute -left-1.5 top-1/2 h-3 w-3 -translate-y-1/2 rotate-45 bg-[#0B0F17] border-l border-b border-[#D4AF37]/40" />
                     </div>
                   )}
                 </>
@@ -177,38 +177,38 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
       </nav>
 
       {/* Bottom Section */}
-      <div className="border-t border-slate-100 px-3 py-3 space-y-0.5">
+      <div className="border-t border-[#D4AF37]/20 px-3 py-3 space-y-0.5 bg-[#0B0F17]">
         <motion.button
           whileHover={{ x: 2 }}
           onClick={() => { navigate('/dashboard'); handleNavClick(); }}
-          className={cn('group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-700 transition-all duration-200 hover:bg-slate-100 hover:text-slate-900', collapsed && 'justify-center px-0')}
+          className={cn('group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-300 transition-all duration-200 hover:bg-[#161E2E] hover:text-white', collapsed && 'justify-center px-0')}
         >
-          <Bell className="h-4.5 w-4.5 shrink-0" />
+          <Bell className="h-4.5 w-4.5 shrink-0 text-amber-400" />
           {!collapsed && <span>Notifications</span>}
           {unreadCount > 0 && (
-            <span className={cn('flex h-5 min-w-[20px] items-center justify-center rounded-full bg-rose-600 px-1.5 text-[10px] font-black text-white shadow-xs', collapsed ? 'absolute -right-0.5 -top-0.5 ring-2 ring-white' : 'ml-auto')}>
+            <span className={cn('flex h-5 min-w-[20px] items-center justify-center rounded-full bg-amber-500 px-1.5 text-[10px] font-black text-slate-950 shadow-xs', collapsed ? 'absolute -right-0.5 -top-0.5 ring-2 ring-slate-900' : 'ml-auto')}>
               {unreadCount > 99 ? '99+' : unreadCount}
             </span>
           )}
         </motion.button>
 
-        <motion.button whileHover={{ x: 2 }} className={cn('group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-700 transition-all duration-200 hover:bg-slate-100 hover:text-slate-900', collapsed && 'justify-center px-0')}>
-          <HelpCircle className="h-4.5 w-4.5 shrink-0" />
+        <motion.button whileHover={{ x: 2 }} className={cn('group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-300 transition-all duration-200 hover:bg-[#161E2E] hover:text-white', collapsed && 'justify-center px-0')}>
+          <HelpCircle className="h-4.5 w-4.5 shrink-0 text-amber-400" />
           {!collapsed && <span>Help & Support</span>}
         </motion.button>
 
         {/* Profile */}
         <motion.div whileHover={{ x: 2 }} className={cn('flex items-center gap-3 rounded-xl px-3 py-2.5 cursor-default', collapsed && 'justify-center px-0')}>
           <div className="relative shrink-0">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#2563EB] text-xs font-black text-white shadow-md">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#FBBF24] text-xs font-black text-slate-950 shadow-md">
               {currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
             </div>
-            <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white bg-emerald-500 shadow-xs" />
+            <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-[#0B0F17] bg-emerald-500 shadow-xs" />
           </div>
           {!collapsed && (
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-black text-slate-900">{currentUser.name}</p>
-              <p className="truncate text-[11px] text-slate-500 font-bold">{currentUser.email}</p>
+              <p className="truncate text-xs font-black text-white">{currentUser.name}</p>
+              <p className="truncate text-[11px] text-slate-400 font-bold">{currentUser.email}</p>
             </div>
           )}
         </motion.div>
@@ -217,9 +217,9 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
         <motion.button
           whileHover={{ x: 2 }}
           onClick={handleLogout}
-          className={cn('group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-bold text-rose-600 transition-all duration-200 hover:bg-rose-50 hover:text-rose-700 cursor-pointer', collapsed && 'justify-center px-0')}
+          className={cn('group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-bold text-rose-400 transition-all duration-200 hover:bg-rose-950/40 hover:text-rose-300 cursor-pointer', collapsed && 'justify-center px-0')}
         >
-          <LogOut className="h-4.5 w-4.5 shrink-0 group-hover:-rotate-12 transition-transform text-rose-600" />
+          <LogOut className="h-4.5 w-4.5 shrink-0 group-hover:-rotate-12 transition-transform text-rose-400" />
           {!collapsed && <span>Log Out</span>}
         </motion.button>
       </div>

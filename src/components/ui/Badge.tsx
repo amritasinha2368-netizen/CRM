@@ -11,21 +11,21 @@ interface BadgeProps {
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default: 'bg-surface-100 text-surface-600',
-  primary: 'bg-primary-100 text-primary-700',
-  success: 'bg-success-100 text-success-700',
-  warning: 'bg-warning-100 text-warning-600',
-  danger: 'bg-danger-100 text-danger-600',
-  info: 'bg-blue-100 text-blue-700',
+  default: 'bg-slate-800 text-slate-300 border border-slate-700 font-extrabold',
+  primary: 'bg-amber-950/80 text-[#FBBF24] border border-amber-500/50 font-black',
+  success: 'bg-emerald-950/80 text-emerald-300 border border-emerald-500/50 font-extrabold',
+  warning: 'bg-amber-950/60 text-amber-300 border border-amber-500/40 font-extrabold',
+  danger: 'bg-rose-950/80 text-rose-300 border border-rose-500/50 font-extrabold',
+  info: 'bg-blue-950/80 text-blue-300 border border-blue-500/50 font-extrabold',
 }
 
 const dotStyles: Record<BadgeVariant, string> = {
-  default: 'bg-surface-400',
-  primary: 'bg-primary-500',
-  success: 'bg-success-500',
-  warning: 'bg-warning-500',
-  danger: 'bg-danger-500',
-  info: 'bg-blue-500',
+  default: 'bg-slate-400',
+  primary: 'bg-[#FBBF24]',
+  success: 'bg-emerald-400',
+  warning: 'bg-amber-400',
+  danger: 'bg-rose-400',
+  info: 'bg-blue-400',
 }
 
 export default function Badge({
@@ -37,13 +37,13 @@ export default function Badge({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium',
+        'inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-bold backdrop-blur-xs shadow-xs',
         variantStyles[variant],
         className,
       )}
     >
       {dot && (
-        <span className={cn('h-1.5 w-1.5 rounded-full', dotStyles[variant])} />
+        <span className={cn('h-1.5 w-1.5 rounded-full shrink-0', dotStyles[variant])} />
       )}
       {children}
     </span>

@@ -58,15 +58,14 @@ export function SearchInput({
     <div
       className={cn(
         'relative flex items-center transition-all duration-200',
-        isFocused ? 'ring-2 ring-primary-500/20' : '',
         className
       )}
     >
       <div className="pointer-events-none absolute left-3 flex items-center">
         {loading ? (
-          <Loader2 className="h-4 w-4 animate-spin text-surface-400" />
+          <Loader2 className="h-4 w-4 animate-spin text-[#FBBF24]" />
         ) : (
-          <Search className="h-4 w-4 text-surface-400" />
+          <Search className="h-4 w-4 text-[#FBBF24]" />
         )}
       </div>
       <input
@@ -79,10 +78,10 @@ export function SearchInput({
         placeholder={placeholder}
         autoFocus={autoFocus}
         className={cn(
-          'w-full rounded-lg border border-surface-200 bg-surface-50 py-2 pl-10 pr-9 text-sm text-surface-900 placeholder:text-surface-400',
-          'transition-all duration-200',
-          'focus:border-primary-300 focus:bg-white focus:outline-none',
-          isFocused && 'border-primary-300 bg-white'
+          'w-full rounded-xl border border-[#D4AF37]/30 bg-[#161E2E] py-2.5 pl-10 pr-9 text-xs font-bold text-white placeholder:text-slate-400',
+          'transition-all duration-200 shadow-sm',
+          'focus:border-[#FBBF24] focus:bg-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20',
+          isFocused && 'border-[#FBBF24] bg-[#1E293B]'
         )}
       />
       <AnimatePresence>
@@ -92,7 +91,7 @@ export function SearchInput({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={handleClear}
-            className="absolute right-2.5 flex h-5 w-5 items-center justify-center rounded-full text-surface-400 transition-colors hover:bg-surface-200 hover:text-surface-600"
+            className="absolute right-2.5 flex h-5 w-5 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-700 hover:text-white"
           >
             <X className="h-3.5 w-3.5" />
           </motion.button>
