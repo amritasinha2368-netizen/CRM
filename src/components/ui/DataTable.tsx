@@ -79,18 +79,18 @@ export default function DataTable<T extends Record<string, unknown>>({
 
   if (loading) {
     return (
-      <div className="overflow-hidden rounded-xl border border-surface-200">
-        <div className="border-b border-surface-200 bg-surface-50 px-4 py-3">
+      <div className="overflow-hidden rounded-xl border border-[#3E3E3E] bg-[#282828]">
+        <div className="border-b border-[#3E3E3E] bg-[#1A1A1A] px-4 py-3">
           <div className="flex gap-4">
             {columns.map((col) => (
-              <div key={col.key} className="h-4 animate-pulse rounded bg-surface-200" style={{ width: col.width || '100px' }} />
+              <div key={col.key} className="h-4 animate-pulse rounded bg-[#383838]" style={{ width: col.width || '100px' }} />
             ))}
           </div>
         </div>
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className={cn('flex gap-4 px-4 py-3.5', i < 4 && 'border-b border-surface-100')}>
+          <div key={i} className={cn('flex gap-4 px-4 py-3.5', i < 4 && 'border-b border-[#3E3E3E]')}>
             {columns.map((col) => (
-              <div key={col.key} className="h-4 animate-pulse rounded bg-surface-100" style={{ width: col.width || '100px' }} />
+              <div key={col.key} className="h-4 animate-pulse rounded bg-[#383838]" style={{ width: col.width || '100px' }} />
             ))}
           </div>
         ))}
@@ -99,17 +99,17 @@ export default function DataTable<T extends Record<string, unknown>>({
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-surface-200 bg-white">
+    <div className="overflow-x-auto rounded-xl border border-[#3E3E3E] bg-[#282828] shadow-xl">
       <table className="w-full min-w-[600px] text-left text-sm">
         <thead>
-          <tr className="border-b border-surface-200 bg-surface-50">
+          <tr className="border-b border-[#3E3E3E] bg-[#1A1A1A]">
             {selectable && (
               <th className="w-10 px-4 py-3">
                 <input
                   type="checkbox"
                   checked={selected.size === data.length && data.length > 0}
                   onChange={toggleSelectAll}
-                  className="h-4 w-4 rounded border-surface-300 text-primary-600 focus:ring-primary-500/20"
+                  className="h-4 w-4 rounded border-[#3E3E3E] text-[#FFA116] focus:ring-[#FFA116]"
                 />
               </th>
             )}
@@ -117,8 +117,8 @@ export default function DataTable<T extends Record<string, unknown>>({
               <th
                 key={col.key}
                 className={cn(
-                  'px-4 py-3 text-xs font-semibold uppercase tracking-wider text-surface-500',
-                  col.sortable && 'cursor-pointer select-none hover:text-surface-700',
+                  'px-4 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0] whitespace-nowrap',
+                  col.sortable && 'cursor-pointer select-none hover:text-[#FFA116]',
                 )}
                 style={{ width: col.width }}
                 onClick={() => col.sortable && handleSort(col.key)}
@@ -126,7 +126,7 @@ export default function DataTable<T extends Record<string, unknown>>({
                 <div className="flex items-center gap-1.5">
                   {col.label}
                   {col.sortable && (
-                    <span className="text-surface-400">
+                    <span className="text-[#FFA116]">
                       {sortKey === col.key ? (
                         sortDir === 'asc' ? <ArrowUp className="h-3.5 w-3.5" /> : <ArrowDown className="h-3.5 w-3.5" />
                       ) : (
@@ -139,7 +139,7 @@ export default function DataTable<T extends Record<string, unknown>>({
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="divide-y divide-[#3E3E3E]">
           <AnimatePresence>
             {sorted.length === 0 ? (
               <tr>
@@ -148,8 +148,8 @@ export default function DataTable<T extends Record<string, unknown>>({
                   className="px-4 py-12 text-center"
                 >
                   <div className="flex flex-col items-center gap-2">
-                    <Inbox className="h-10 w-10 text-surface-300" />
-                    <p className="text-sm text-surface-500">{emptyMessage}</p>
+                    <Inbox className="h-10 w-10 text-[#FFA116]" />
+                    <p className="text-xs font-bold text-slate-400">{emptyMessage}</p>
                   </div>
                 </td>
               </tr>
@@ -161,9 +161,9 @@ export default function DataTable<T extends Record<string, unknown>>({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.2, delay: Math.min(i * 0.03, 0.3) }}
                   className={cn(
-                    'border-b border-surface-100 transition-colors duration-150 last:border-b-0',
-                    i % 2 === 0 ? 'bg-white' : 'bg-surface-50/50',
-                    onRowClick && 'cursor-pointer hover:bg-primary-50/50',
+                    'border-b border-[#3E3E3E] transition-colors duration-150 last:border-b-0',
+                    i % 2 === 0 ? 'bg-[#282828]' : 'bg-[#222222]',
+                    onRowClick && 'cursor-pointer hover:bg-[#303030]',
                   )}
                   onClick={() => onRowClick?.(item)}
                 >
@@ -173,12 +173,12 @@ export default function DataTable<T extends Record<string, unknown>>({
                         type="checkbox"
                         checked={selected.has(i)}
                         onChange={() => toggleSelect(i)}
-                        className="h-4 w-4 rounded border-surface-300 text-primary-600 focus:ring-primary-500/20"
+                        className="h-4 w-4 rounded border-[#3E3E3E] text-[#FFA116] focus:ring-[#FFA116]"
                       />
                     </td>
                   )}
                   {columns.map((col) => (
-                    <td key={col.key} className="px-4 py-3 text-surface-700">
+                    <td key={col.key} className="px-4 py-3.5 text-white font-medium whitespace-nowrap">
                       {col.render ? col.render(item) : String(item[col.key] ?? '')}
                     </td>
                   ))}

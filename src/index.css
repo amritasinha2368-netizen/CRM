@@ -158,11 +158,11 @@
 
 /* LeetCode Dark Inputs */
 textarea, select {
-  background: #282828;
-  border: 1px solid #3e3e3e;
+  background: #1a1a1a !important;
+  border: 1px solid #3e3e3e !important;
   border-radius: 8px;
   padding: 10px 14px;
-  color: #ffffff;
+  color: #ffffff !important;
   font-size: 13px;
   transition: all 0.2s;
   outline: none;
@@ -170,13 +170,64 @@ textarea, select {
 }
 
 textarea:focus, select:focus {
-  border-color: #ffa116;
+  border-color: #ffa116 !important;
   box-shadow: 0 0 0 2px rgba(255, 161, 22, 0.2);
-  background: #303030;
+  background: #282828 !important;
 }
 
 /* Focus ring */
 .focus-ring:focus {
   outline: none;
   box-shadow: 0 0 0 2px #1a1a1a, 0 0 0 4px #ffa116;
+}
+
+/* ─── SITE-WIDE LEETCODE DARK MODE OVERRIDES (ZERO WHITE LEAKS) ─── */
+.bg-white {
+  background-color: #282828 !important;
+  color: #ffffff !important;
+  border-color: #3e3e3e !important;
+}
+
+.bg-surface-50, .bg-slate-50, .bg-gray-50, .bg-slate-100, .bg-gray-100 {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+.bg-surface-100, .bg-slate-200, .bg-gray-200 {
+  background-color: #303030 !important;
+  color: #ffffff !important;
+}
+
+.text-surface-900, .text-surface-800, .text-surface-700, .text-slate-900, .text-slate-800, .text-slate-700, .text-gray-900, .text-gray-800, .text-gray-700 {
+  color: #ffffff !important;
+}
+
+.text-surface-600, .text-surface-500, .text-surface-400, .text-slate-600, .text-slate-500, .text-slate-400, .text-gray-600, .text-gray-500, .text-gray-400 {
+  color: #a0a0a0 !important;
+}
+
+.border-surface-100, .border-surface-200, .border-surface-300, .border-slate-100, .border-slate-200, .border-slate-300, .border-gray-100, .border-gray-200, .border-gray-300 {
+  border-color: #3e3e3e !important;
+}
+
+input:not([type="checkbox"]):not([type="radio"]) {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border-color: #3e3e3e !important;
+}
+
+input:focus {
+  border-color: #ffa116 !important;
+  background-color: #282828 !important;
+}
+
+/* Table header & row styling */
+th {
+  background-color: #1a1a1a !important;
+  color: #a0a0a0 !important;
+  border-color: #3e3e3e !important;
+}
+
+td {
+  border-color: #3e3e3e !important;
 }
