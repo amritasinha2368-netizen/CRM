@@ -77,7 +77,7 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
   return (
     <motion.aside
       initial={false}
-      animate={{ width: collapsed ? 72 : 270 }}
+      animate={{ width: collapsed ? 76 : 288 }}
       transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
       className={cn(
         'relative flex h-screen flex-col bg-[#282828] border-r border-[#3E3E3E]',
@@ -87,27 +87,27 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
     >
       {/* Logo Area */}
       <div className={cn(
-        'flex items-center border-b border-[#3E3E3E] px-4 py-3 bg-[#282828]',
+        'flex items-center border-b border-[#3E3E3E] px-4 py-3.5 bg-[#282828]',
         collapsed ? 'justify-center' : 'justify-between',
       )}>
         <AnimatePresence mode="wait">
           {!collapsed ? (
-            <motion.div key="full" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="flex-1 cursor-pointer py-1" onClick={() => navigate('/')}>
-              <div className="bg-[#1A1A1A] border border-[#3E3E3E] rounded-xl px-3 py-2 flex items-center justify-center shadow-inner hover:border-[#FFA116] transition-colors">
+            <motion.div key="full" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="flex-1 cursor-pointer py-0.5" onClick={() => navigate('/')}>
+              <div className="bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 flex items-center justify-center shadow-lg hover:shadow-xl transition-all">
                 <img
-                  src="/logo.png"
+                  src="/logo-original.png"
                   alt="QuantNexa ai Solutions Pvt. Ltd."
-                  className="h-12 sm:h-14 w-auto max-w-[210px] object-contain filter drop-shadow-[0_0_2px_rgba(255,255,255,0.7)]"
+                  className="h-14 sm:h-16 w-auto max-w-[240px] object-contain"
                 />
               </div>
             </motion.div>
           ) : (
-            <motion.div key="mini" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} className="cursor-pointer flex justify-center py-1" onClick={() => navigate('/')}>
-              <div className="bg-[#1A1A1A] border border-[#3E3E3E] rounded-xl p-1.5 flex items-center justify-center shadow-inner">
+            <motion.div key="mini" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} className="cursor-pointer flex justify-center py-0.5" onClick={() => navigate('/')}>
+              <div className="bg-white border border-slate-200 rounded-xl p-2 flex items-center justify-center shadow-md">
                 <img
                   src="/logo-mark.png"
                   alt="QuantNexa ai"
-                  className="h-10 w-auto object-contain filter drop-shadow-[0_0_2px_rgba(255,255,255,0.7)]"
+                  className="h-11 w-auto object-contain"
                 />
               </div>
             </motion.div>
