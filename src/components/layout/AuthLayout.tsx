@@ -1,13 +1,10 @@
+import { Outlet } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { GOGLogo } from '@/components/ui/GOGLogo';
 
-interface AuthLayoutProps {
-  children: React.ReactNode;
-}
-
-export function AuthLayout({ children }: AuthLayoutProps) {
+export function AuthLayout() {
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#0B0F17] flex items-center justify-center p-4 sm:p-6 lg:p-8">
+    <div className="relative min-h-screen w-full overflow-y-auto bg-[#0B0F17] flex items-center justify-center p-4 sm:p-6 lg:p-8">
       {/* Golden glow orbs */}
       <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-amber-500/10 blur-[140px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-yellow-600/10 blur-[140px] pointer-events-none" />
@@ -21,19 +18,21 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         }}
       />
 
-      <div className="relative z-10 w-full max-w-md space-y-6">
-        {/* Logo Header */}
+      <div className="relative z-10 w-full max-w-lg space-y-6 my-auto">
+        {/* Logo Header Container */}
         <div className="flex justify-center py-2">
-          <GOGLogo size="lg" />
+          <div className="bg-white rounded-2xl p-2.5 border-2 border-[#D4AF37] shadow-2xl shadow-amber-500/20 inline-flex items-center justify-center">
+            <GOGLogo size="lg" />
+          </div>
         </div>
 
-        {/* Auth Card Container */}
+        {/* Auth Card Container - Render Outlet from React Router */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
-          {children}
+          <Outlet />
         </motion.div>
       </div>
     </div>
