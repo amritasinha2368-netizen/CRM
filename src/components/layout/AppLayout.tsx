@@ -29,9 +29,9 @@ export function AppLayout() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-surface-50">
+    <div className="flex h-screen overflow-hidden bg-[#F8FAFC]">
       {/* Global mouse glow effect */}
-      <SmoothMouseGlow color="rgba(156, 39, 176, 0.04)" size={600} />
+      <SmoothMouseGlow color="rgba(37, 99, 235, 0.04)" size={600} />
 
       {/* Desktop Sidebar */}
       <div className="hidden lg:flex">
@@ -47,7 +47,7 @@ export function AppLayout() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-40 bg-surface-900/50 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm lg:hidden"
               onClick={() => setMobileMenuOpen(false)}
             />
             <Sidebar collapsed={false} isMobile onClose={() => setMobileMenuOpen(false)} />
@@ -55,10 +55,10 @@ export function AppLayout() {
         )}
       </AnimatePresence>
 
-      {/* Main Content */}
+      {/* Main Content Area with Generous Padding */}
       <div className="flex flex-1 flex-col overflow-hidden">
         <TopNav onMenuToggle={handleMenuToggle} />
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto p-6 lg:p-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
@@ -66,7 +66,7 @@ export function AppLayout() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="h-full"
+              className="h-full w-full"
             >
               <Outlet />
             </motion.div>
