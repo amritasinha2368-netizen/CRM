@@ -77,8 +77,8 @@ export default function Login() {
         <h2 className="text-2xl font-bold text-white tracking-tight">
           Welcome Back
         </h2>
-        <p className="mt-1.5 text-xs font-medium text-slate-400">
-          Enter your credentials to access the 12th Pass Admissions Suite.
+        <p className="mt-1.5 text-xs font-bold text-[#FFA116]">
+          QuantNexa AI CRM &bull; Lead & Admissions Intelligence Portal
         </p>
       </motion.div>
 

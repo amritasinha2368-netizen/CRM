@@ -99,7 +99,7 @@ export default function Dashboard() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Sparkles className="h-4 w-4 text-[#FFA116]" />
-              <span className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Super Admin Intelligence Center</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">QuantNexa AI CRM &bull; Super Admin Intelligence Center</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white">
               {greeting}, {currentUser.name.split(' ')[0]} 👋
