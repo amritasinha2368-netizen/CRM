@@ -1,52 +1,43 @@
-import { useState, useMemo, useCallback } from 'react'
-import {
-  UserPlus, Upload, Download, Users, MessageSquare, Search, Filter, X, ChevronLeft, ChevronRight,
-  Phone, MoreVertical, Eye, Pencil, Trash2, PhoneCall, MessageCircle, Inbox, ArrowUpDown,
-  CheckSquare, Square, FileSpreadsheet, Send, UserCheck,
-} from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
-import { cn, formatDate, getInitials, generateId } from '@/lib/utils'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  Upload, Download, UserPlus, Filter, X, Eye, Phone, PhoneCall,
+  MessageCircle, MoreVertical, Trash2, CheckSquare, Square,
+  ChevronLeft, ChevronRight, Inbox, UserCheck, FileSpreadsheet, Send, Pencil,
+} from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store'
-import { leads as mockLeads, courses, batches, users } from '@/data/mockData'
-import { SearchInput } from '@/components/ui/SearchInput'
+import { courses, users } from '@/data/mockData'
 import StatusBadge from '@/components/ui/StatusBadge'
 import Badge from '@/components/ui/Badge'
 import EmptyState from '@/components/ui/EmptyState'
+import { SearchInput } from '@/components/ui/SearchInput'
 import AddLeadModal from './AddLeadModal'
-import type { Lead, LeadStatus, LeadSource } from '@/types'
+import toast from 'react-hot-toast'
+import type { LeadSource, LeadStatus } from '@/types'
 
-const ITEMS_PER_PAGE = 12
+const ITEMS_PER_PAGE = 10
 
-const sourceBadgeVariant: Record<LeadSource, 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info'> = {
-  website: 'info',
-  google_ads: 'primary',
-  meta_ads: 'primary',
-  instagram: 'warning',
-  whatsapp: 'success',
-  walk_in: 'default',
-  referral: 'success',
-  event: 'primary',
-  csv_import: 'default',
-  api: 'info',
-  landing_page: 'info',
-  other: 'default',
+const sourceLabels: Record<string, string> = {
+  website: 'Website', google_ads: 'Google Ads', meta_ads: 'Meta Ads', instagram: 'Instagram',
+  whatsapp: 'WhatsApp', walk_in: 'Walk-in', referral: 'Referral', event: 'Event',
+  csv_import: 'CSV', api: 'API', landing_page: 'Landing Page', other: 'Other',
+  cold_call: 'Cold Call', direct: 'Direct',
 }
 
-const sourceLabels: Record<LeadSource, string> = {
-  website: 'Website',
-  google_ads: 'Google Ads',
-  meta_ads: 'Meta Ads',
-  instagram: 'Instagram',
-  whatsapp: 'WhatsApp',
-  walk_in: 'Walk-in',
-  referral: 'Referral',
-  event: 'Event',
-  csv_import: 'CSV Import',
-  api: 'API',
-  landing_page: 'Landing Page',
-  other: 'Other',
+const sourceBadgeVariant: Record<LeadSource, 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info'> = {
+  google_ads: 'info',
+  meta_ads: 'primary',
+  website: 'info',
+  referral: 'success',
+  instagram: 'warning',
+  landing_page: 'info',
+  whatsapp: 'success',
+  event: 'warning',
+  cold_call: 'default',
+  walk_in: 'success',
+  direct: 'default',
 }
 
 const statusOptions: LeadStatus[] = [
@@ -54,9 +45,19 @@ const statusOptions: LeadStatus[] = [
   'visit', 'application', 'documents', 'payment', 'enrolled', 'lost',
 ]
 
+function getInitials(name: string) {
+  return name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()
+}
+
+function formatDate(dateStr: string) {
+  const d = new Date(dateStr)
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+}
+
 export default function LeadsList() {
   const navigate = useNavigate()
-  const { leads: storeLeads, deleteLead } = useAppStore()
+  const { leads, counsellors, deleteLead } = useAppStore()
+
   const [search, setSearch] = useState('')
   const [courseFilter, setCourseFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
@@ -64,89 +65,93 @@ export default function LeadsList() {
   const [cityFilter, setCityFilter] = useState('')
   const [assignedFilter, setAssignedFilter] = useState('')
   const [showFilters, setShowFilters] = useState(false)
+
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [page, setPage] = useState(1)
-  const [addModalOpen, setAddModalOpen] = useState(false)
-  const [importModalOpen, setImportModalOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
 
+  const [addModalOpen, setAddModalOpen] = useState(false)
+  const [importModalOpen, setImportModalOpen] = useState(false)
+
+  const cities = useMemo(() => Array.from(new Set(leads.map((l) => l.city))), [leads])
+
   const filteredLeads = useMemo(() => {
-    let result = storeLeads.length > 0 ? storeLeads : mockLeads
-    if (search) {
-      const q = search.toLowerCase()
-      result = result.filter(
-        (l) =>
-          l.name.toLowerCase().includes(q) ||
-          l.phone.includes(q) ||
-          l.email.toLowerCase().includes(q) ||
-          l.id.toLowerCase().includes(q)
-      )
-    }
-    if (courseFilter) result = result.filter((l) => l.courseId === courseFilter)
-    if (statusFilter) result = result.filter((l) => l.status === statusFilter)
-    if (sourceFilter) result = result.filter((l) => l.source === sourceFilter)
-    if (cityFilter) result = result.filter((l) => l.city.toLowerCase().includes(cityFilter.toLowerCase()))
-    if (assignedFilter) result = result.filter((l) => l.assignedTo === assignedFilter)
-    return result
-  }, [storeLeads, search, courseFilter, statusFilter, sourceFilter, cityFilter, assignedFilter])
+    return leads.filter((lead) => {
+      if (search) {
+        const q = search.toLowerCase()
+        const matchName = lead.name.toLowerCase().includes(q)
+        const matchPhone = lead.phone.includes(q)
+        const matchEmail = lead.email.toLowerCase().includes(q)
+        const matchId = lead.id.toLowerCase().includes(q)
+        if (!matchName && !matchPhone && !matchEmail && !matchId) return false
+      }
+      if (courseFilter && lead.courseId !== courseFilter) return false
+      if (statusFilter && lead.status !== statusFilter) return false
+      if (sourceFilter && lead.source !== sourceFilter) return false
+      if (cityFilter && lead.city !== cityFilter) return false
+      if (assignedFilter && lead.assignedTo !== assignedFilter) return false
+      return true
+    })
+  }, [leads, search, courseFilter, statusFilter, sourceFilter, cityFilter, assignedFilter])
 
   const totalPages = Math.ceil(filteredLeads.length / ITEMS_PER_PAGE)
-  const paginatedLeads = filteredLeads.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
-
-  const cities = useMemo(() => [...new Set(mockLeads.map((l) => l.city))].sort(), [])
-  const counsellors = useMemo(() => users.filter((u) => u.role === 'counsellor'), [])
+  const paginatedLeads = useMemo(() => {
+    const start = (page - 1) * ITEMS_PER_PAGE
+    return filteredLeads.slice(start, start + ITEMS_PER_PAGE)
+  }, [filteredLeads, page])
 
   const activeFilters = useMemo(() => {
-    const filters: { key: string; label: string; clear: () => void }[] = []
+    const list: { key: string; label: string; clear: () => void }[] = []
     if (courseFilter) {
-      const course = courses.find((c) => c.id === courseFilter)
-      filters.push({ key: 'course', label: course?.name || courseFilter, clear: () => setCourseFilter('') })
+      const c = courses.find((x) => x.id === courseFilter)
+      list.push({ key: 'course', label: `Course: ${c?.name || courseFilter}`, clear: () => setCourseFilter('') })
     }
-    if (statusFilter) filters.push({ key: 'status', label: statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1), clear: () => setStatusFilter('') })
-    if (sourceFilter) filters.push({ key: 'source', label: sourceLabels[sourceFilter as LeadSource] || sourceFilter, clear: () => setSourceFilter('') })
-    if (cityFilter) filters.push({ key: 'city', label: cityFilter, clear: () => setCityFilter('') })
+    if (statusFilter) {
+      list.push({ key: 'status', label: `Status: ${statusFilter}`, clear: () => setStatusFilter('') })
+    }
+    if (sourceFilter) {
+      list.push({ key: 'source', label: `Source: ${sourceLabels[sourceFilter as LeadSource] || sourceFilter}`, clear: () => setSourceFilter('') })
+    }
+    if (cityFilter) {
+      list.push({ key: 'city', label: `City: ${cityFilter}`, clear: () => setCityFilter('') })
+    }
     if (assignedFilter) {
-      const user = users.find((u) => u.id === assignedFilter)
-      filters.push({ key: 'assigned', label: user?.name || assignedFilter, clear: () => setAssignedFilter('') })
+      const u = users.find((x) => x.id === assignedFilter)
+      list.push({ key: 'assigned', label: `Counsellor: ${u?.name || assignedFilter}`, clear: () => setAssignedFilter('') })
     }
-    return filters
+    return list
   }, [courseFilter, statusFilter, sourceFilter, cityFilter, assignedFilter])
 
-  const toggleSelect = useCallback((id: string) => {
-    setSelectedIds((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return next
-    })
-  }, [])
-
-  const toggleSelectAll = useCallback(() => {
+  const toggleSelectAll = () => {
     if (selectedIds.size === paginatedLeads.length) {
       setSelectedIds(new Set())
     } else {
       setSelectedIds(new Set(paginatedLeads.map((l) => l.id)))
     }
-  }, [paginatedLeads, selectedIds.size])
-
-  const handleBulkDelete = () => {
-    selectedIds.forEach((id) => deleteLead(id))
-    toast.success(`${selectedIds.size} leads deleted`)
-    setSelectedIds(new Set())
   }
 
-  const handleBulkExport = () => {
-    toast.success(`Exporting ${selectedIds.size} leads`)
-    setSelectedIds(new Set())
+  const toggleSelect = (id: string) => {
+    const next = new Set(selectedIds)
+    if (next.has(id)) next.delete(id)
+    else next.add(id)
+    setSelectedIds(next)
   }
 
   const handleBulkAssign = () => {
-    toast.success(`Assigning ${selectedIds.size} leads`)
+    toast.success(`Assigned ${selectedIds.size} leads`)
     setSelectedIds(new Set())
   }
-
+  const handleBulkExport = () => {
+    toast.success(`Exported ${selectedIds.size} leads`)
+    setSelectedIds(new Set())
+  }
   const handleBulkMessage = () => {
     toast.success(`Messaging ${selectedIds.size} leads`)
+    setSelectedIds(new Set())
+  }
+  const handleBulkDelete = () => {
+    selectedIds.forEach((id) => deleteLead(id))
+    toast.success(`Deleted ${selectedIds.size} leads`)
     setSelectedIds(new Set())
   }
 
@@ -160,10 +165,10 @@ export default function LeadsList() {
   }
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'bg-success-500'
-    if (score >= 60) return 'bg-primary-500'
-    if (score >= 40) return 'bg-warning-500'
-    return 'bg-danger-500'
+    if (score >= 80) return 'bg-[#2CBB5D]'
+    if (score >= 60) return 'bg-[#FFA116]'
+    if (score >= 40) return 'bg-[#FFB800]'
+    return 'bg-[#FF2D55]'
   }
 
   return (
@@ -171,29 +176,29 @@ export default function LeadsList() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-surface-900">Leads</h1>
-          <p className="mt-1 text-sm text-surface-500">
+          <h1 className="text-2xl font-bold tracking-tight text-white">Leads</h1>
+          <p className="mt-1 text-xs font-bold text-[#FFA116]">
             {filteredLeads.length} lead{filteredLeads.length !== 1 ? 's' : ''} found
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setImportModalOpen(true)}
-            className="flex items-center gap-2 rounded-lg border border-surface-200 bg-white px-3.5 py-2 text-sm font-medium text-surface-700 transition-colors hover:bg-surface-50"
+            className="flex items-center gap-2 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#383838] hover:text-[#FFA116]"
           >
-            <Upload className="h-4 w-4" />
+            <Upload className="h-4 w-4 text-[#FFA116]" />
             Import
           </button>
           <button
             onClick={() => toast.success('Exporting leads...')}
-            className="flex items-center gap-2 rounded-lg border border-surface-200 bg-white px-3.5 py-2 text-sm font-medium text-surface-700 transition-colors hover:bg-surface-50"
+            className="flex items-center gap-2 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#383838] hover:text-[#FFA116]"
           >
-            <Download className="h-4 w-4" />
+            <Download className="h-4 w-4 text-[#FFA116]" />
             Export
           </button>
           <button
             onClick={() => setAddModalOpen(true)}
-            className="flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+            className="flex items-center gap-2 rounded-lg bg-[#FFA116] hover:bg-[#E08800] px-4 py-2 text-xs font-black text-[#1A1A1A] transition-colors shadow-md"
           >
             <UserPlus className="h-4 w-4" />
             Add Lead
@@ -214,16 +219,16 @@ export default function LeadsList() {
           <button
             onClick={() => setShowFilters(!showFilters)}
             className={cn(
-              'flex items-center gap-2 rounded-lg border px-3.5 py-2 text-sm font-medium transition-colors',
+              'flex items-center gap-2 rounded-lg border px-3.5 py-2 text-xs font-bold transition-colors cursor-pointer',
               showFilters || activeFilters.length > 0
-                ? 'border-primary-200 bg-primary-50 text-primary-700'
-                : 'border-surface-200 bg-white text-surface-700 hover:bg-surface-50',
+                ? 'border-[#FFA116] bg-[#383838] text-[#FFA116]'
+                : 'border-[#3E3E3E] bg-[#282828] text-white hover:bg-[#303030]',
             )}
           >
-            <Filter className="h-4 w-4" />
+            <Filter className="h-4 w-4 text-[#FFA116]" />
             Filters
             {activeFilters.length > 0 && (
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary-600 text-[10px] font-semibold text-white">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#FFA116] text-[10px] font-black text-[#1A1A1A]">
                 {activeFilters.length}
               </span>
             )}
@@ -239,13 +244,13 @@ export default function LeadsList() {
               transition={{ duration: 0.2 }}
               className="overflow-hidden"
             >
-              <div className="grid grid-cols-2 gap-3 rounded-xl border border-surface-200 bg-surface-50 p-4 sm:grid-cols-3 lg:grid-cols-5">
+              <div className="grid grid-cols-2 gap-3 rounded-xl border border-[#3E3E3E] bg-[#282828] p-4 sm:grid-cols-3 lg:grid-cols-5">
                 <div>
-                  <label className="mb-1 block text-[11px] font-medium text-surface-500">Course</label>
+                  <label className="mb-1 block text-[11px] font-bold text-[#FFA116]">Course</label>
                   <select
                     value={courseFilter}
                     onChange={(e) => { setCourseFilter(e.target.value); setPage(1) }}
-                    className="w-full rounded-lg border border-surface-200 bg-white px-3 py-1.5 text-sm focus:border-primary-300 focus:outline-none"
+                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-[#FFA116] focus:outline-none"
                   >
                     <option value="">All Courses</option>
                     {courses.map((c) => (
@@ -254,11 +259,11 @@ export default function LeadsList() {
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-[11px] font-medium text-surface-500">Status</label>
+                  <label className="mb-1 block text-[11px] font-bold text-[#FFA116]">Status</label>
                   <select
                     value={statusFilter}
                     onChange={(e) => { setStatusFilter(e.target.value); setPage(1) }}
-                    className="w-full rounded-lg border border-surface-200 bg-white px-3 py-1.5 text-sm focus:border-primary-300 focus:outline-none"
+                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-[#FFA116] focus:outline-none"
                   >
                     <option value="">All Statuses</option>
                     {statusOptions.map((s) => (
@@ -267,11 +272,11 @@ export default function LeadsList() {
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-[11px] font-medium text-surface-500">Source</label>
+                  <label className="mb-1 block text-[11px] font-bold text-[#FFA116]">Source</label>
                   <select
                     value={sourceFilter}
                     onChange={(e) => { setSourceFilter(e.target.value); setPage(1) }}
-                    className="w-full rounded-lg border border-surface-200 bg-white px-3 py-1.5 text-sm focus:border-primary-300 focus:outline-none"
+                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-[#FFA116] focus:outline-none"
                   >
                     <option value="">All Sources</option>
                     {(Object.keys(sourceLabels) as LeadSource[]).map((s) => (
@@ -280,11 +285,11 @@ export default function LeadsList() {
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-[11px] font-medium text-surface-500">City</label>
+                  <label className="mb-1 block text-[11px] font-bold text-[#FFA116]">City</label>
                   <select
                     value={cityFilter}
                     onChange={(e) => { setCityFilter(e.target.value); setPage(1) }}
-                    className="w-full rounded-lg border border-surface-200 bg-white px-3 py-1.5 text-sm focus:border-primary-300 focus:outline-none"
+                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-[#FFA116] focus:outline-none"
                   >
                     <option value="">All Cities</option>
                     {cities.map((c) => (
@@ -293,11 +298,11 @@ export default function LeadsList() {
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-[11px] font-medium text-surface-500">Counsellor</label>
+                  <label className="mb-1 block text-[11px] font-bold text-[#FFA116]">Counsellor</label>
                   <select
                     value={assignedFilter}
                     onChange={(e) => { setAssignedFilter(e.target.value); setPage(1) }}
-                    className="w-full rounded-lg border border-surface-200 bg-white px-3 py-1.5 text-sm focus:border-primary-300 focus:outline-none"
+                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-[#FFA116] focus:outline-none"
                   >
                     <option value="">All Counsellors</option>
                     {counsellors.map((u) => (
@@ -318,17 +323,17 @@ export default function LeadsList() {
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
-                className="inline-flex items-center gap-1.5 rounded-full bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700"
+                className="inline-flex items-center gap-1.5 rounded-md bg-[#383838] border border-[#FFA116] px-2.5 py-1 text-xs font-bold text-[#FFA116]"
               >
                 {f.label}
-                <button onClick={f.clear} className="rounded-full p-0.5 hover:bg-primary-100">
+                <button onClick={f.clear} className="rounded-full p-0.5 hover:bg-[#555555] text-white">
                   <X className="h-3 w-3" />
                 </button>
               </motion.span>
             ))}
             <button
               onClick={clearAllFilters}
-              className="text-xs font-medium text-surface-500 hover:text-surface-700"
+              className="text-xs font-bold text-[#FF2D55] hover:underline"
             >
               Clear all
             </button>
@@ -343,36 +348,36 @@ export default function LeadsList() {
             initial={{ y: -10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -10, opacity: 0 }}
-            className="flex items-center gap-3 rounded-xl border border-primary-200 bg-primary-50 p-3"
+            className="flex items-center gap-3 rounded-xl border border-[#FFA116] bg-[#303030] p-3 shadow-lg"
           >
-            <span className="text-sm font-medium text-primary-700">
+            <span className="text-xs font-black text-[#FFA116]">
               {selectedIds.size} selected
             </span>
             <div className="flex items-center gap-2">
               <button
                 onClick={handleBulkAssign}
-                className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-xs font-medium text-surface-700 shadow-sm transition-colors hover:bg-surface-50"
+                className="flex items-center gap-1.5 rounded-lg bg-[#282828] border border-[#3E3E3E] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#383838]"
               >
-                <UserCheck className="h-3.5 w-3.5" />
+                <UserCheck className="h-3.5 w-3.5 text-[#FFA116]" />
                 Assign
               </button>
               <button
                 onClick={handleBulkExport}
-                className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-xs font-medium text-surface-700 shadow-sm transition-colors hover:bg-surface-50"
+                className="flex items-center gap-1.5 rounded-lg bg-[#282828] border border-[#3E3E3E] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#383838]"
               >
-                <FileSpreadsheet className="h-3.5 w-3.5" />
+                <FileSpreadsheet className="h-3.5 w-3.5 text-[#FFA116]" />
                 Export
               </button>
               <button
                 onClick={handleBulkMessage}
-                className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-xs font-medium text-surface-700 shadow-sm transition-colors hover:bg-surface-50"
+                className="flex items-center gap-1.5 rounded-lg bg-[#282828] border border-[#3E3E3E] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#383838]"
               >
-                <Send className="h-3.5 w-3.5" />
+                <Send className="h-3.5 w-3.5 text-[#FFA116]" />
                 Message
               </button>
               <button
                 onClick={handleBulkDelete}
-                className="flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-xs font-medium text-danger-600 shadow-sm transition-colors hover:bg-danger-50"
+                className="flex items-center gap-1.5 rounded-lg bg-[#3B181A] border border-[#FF2D55] px-3 py-1.5 text-xs font-bold text-[#FF2D55] transition-colors hover:bg-[#FF2D55] hover:text-white"
               >
                 <Trash2 className="h-3.5 w-3.5" />
                 Delete
@@ -380,7 +385,7 @@ export default function LeadsList() {
             </div>
             <button
               onClick={() => setSelectedIds(new Set())}
-              className="ml-auto rounded-lg p-1.5 text-surface-400 hover:bg-surface-100 hover:text-surface-600"
+              className="ml-auto rounded-lg p-1.5 text-slate-400 hover:bg-[#383838] hover:text-white"
             >
               <X className="h-4 w-4" />
             </button>
@@ -397,7 +402,7 @@ export default function LeadsList() {
           action={
             <button
               onClick={clearAllFilters}
-              className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
+              className="rounded-lg bg-[#FFA116] px-4 py-2 text-xs font-black text-[#1A1A1A] hover:bg-[#E08800]"
             >
               Clear Filters
             </button>
@@ -520,7 +525,7 @@ export default function LeadsList() {
                       <div className="relative">
                         <button
                           onClick={() => setActiveDropdown(activeDropdown === lead.id ? null : lead.id)}
-                          className="rounded-lg p-1.5 text-surface-400 transition-colors hover:bg-surface-100 hover:text-surface-600"
+                          className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-[#383838] hover:text-white"
                         >
                           <MoreVertical className="h-4 w-4" />
                         </button>
@@ -530,36 +535,36 @@ export default function LeadsList() {
                               initial={{ opacity: 0, scale: 0.95, y: -4 }}
                               animate={{ opacity: 1, scale: 1, y: 0 }}
                               exit={{ opacity: 0, scale: 0.95, y: -4 }}
-                              className="absolute right-0 top-full z-10 mt-1 w-40 rounded-lg border border-surface-200 bg-white py-1 shadow-lg"
+                              className="absolute right-0 top-full z-10 mt-1 w-40 rounded-lg border border-[#3E3E3E] bg-[#282828] py-1 shadow-2xl"
                             >
                               <button
                                 onClick={() => { navigate(`/leads/${lead.id}`); setActiveDropdown(null) }}
-                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-surface-700 hover:bg-surface-50"
+                                className="flex w-full items-center gap-2 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#383838] hover:text-[#FFA116]"
                               >
                                 <Eye className="h-4 w-4" /> View
                               </button>
                               <button
                                 onClick={() => { toast.success('Edit mode'); setActiveDropdown(null) }}
-                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-surface-700 hover:bg-surface-50"
+                                className="flex w-full items-center gap-2 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#383838] hover:text-[#FFA116]"
                               >
                                 <Pencil className="h-4 w-4" /> Edit
                               </button>
                               <button
                                 onClick={() => { window.open(`tel:${lead.phone}`); setActiveDropdown(null) }}
-                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-surface-700 hover:bg-surface-50"
+                                className="flex w-full items-center gap-2 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#383838] hover:text-[#FFA116]"
                               >
                                 <PhoneCall className="h-4 w-4" /> Call
                               </button>
                               <button
                                 onClick={() => { window.open(`https://wa.me/${lead.phone.replace(/\s+/g, '').replace('+', '')}`); setActiveDropdown(null) }}
-                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-surface-700 hover:bg-surface-50"
+                                className="flex w-full items-center gap-2 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#383838] hover:text-[#2CBB5D]"
                               >
                                 <MessageCircle className="h-4 w-4" /> WhatsApp
                               </button>
-                              <div className="my-1 border-t border-surface-100" />
+                              <div className="my-1 border-t border-[#3E3E3E]" />
                               <button
                                 onClick={() => { deleteLead(lead.id); toast.success('Lead deleted'); setActiveDropdown(null) }}
-                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-danger-600 hover:bg-danger-50"
+                                className="flex w-full items-center gap-2 px-3 py-2 text-xs font-bold text-[#FF2D55] hover:bg-[#3B181A]"
                               >
                                 <Trash2 className="h-4 w-4" /> Delete
                               </button>
@@ -578,8 +583,8 @@ export default function LeadsList() {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-surface-500">
+        <div className="flex items-center justify-between pt-2">
+          <p className="text-xs font-bold text-slate-400">
             Showing {(page - 1) * ITEMS_PER_PAGE + 1} to {Math.min(page * ITEMS_PER_PAGE, filteredLeads.length)} of {filteredLeads.length}
           </p>
           <div className="flex items-center gap-1">
@@ -587,8 +592,8 @@ export default function LeadsList() {
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
               className={cn(
-                'flex h-8 w-8 items-center justify-center rounded-lg transition-colors',
-                page === 1 ? 'cursor-not-allowed text-surface-300' : 'text-surface-600 hover:bg-surface-100',
+                'flex h-8 w-8 items-center justify-center rounded-lg transition-colors border border-[#3E3E3E]',
+                page === 1 ? 'cursor-not-allowed text-slate-600 bg-[#1A1A1A]' : 'text-white bg-[#282828] hover:bg-[#383838] hover:text-[#FFA116]',
               )}
             >
               <ChevronLeft className="h-4 w-4" />
@@ -609,10 +614,10 @@ export default function LeadsList() {
                   key={pageNum}
                   onClick={() => setPage(pageNum)}
                   className={cn(
-                    'flex h-8 w-8 items-center justify-center rounded-lg text-sm font-medium transition-colors',
+                    'flex h-8 w-8 items-center justify-center rounded-lg text-xs font-black transition-colors border border-[#3E3E3E]',
                     pageNum === page
-                      ? 'bg-primary-600 text-white'
-                      : 'text-surface-600 hover:bg-surface-100',
+                      ? 'bg-[#FFA116] text-[#1A1A1A] border-[#FFA116]'
+                      : 'bg-[#282828] text-white hover:bg-[#383838]',
                   )}
                 >
                   {pageNum}
@@ -623,8 +628,8 @@ export default function LeadsList() {
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
               className={cn(
-                'flex h-8 w-8 items-center justify-center rounded-lg transition-colors',
-                page === totalPages ? 'cursor-not-allowed text-surface-300' : 'text-surface-600 hover:bg-surface-100',
+                'flex h-8 w-8 items-center justify-center rounded-lg transition-colors border border-[#3E3E3E]',
+                page === totalPages ? 'cursor-not-allowed text-slate-600 bg-[#1A1A1A]' : 'text-white bg-[#282828] hover:bg-[#383838] hover:text-[#FFA116]',
               )}
             >
               <ChevronRight className="h-4 w-4" />
@@ -652,7 +657,7 @@ function ImportModal({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-surface-900/50 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
           onClick={() => onOpenChange(false)}
         >
           <motion.div
@@ -660,13 +665,13 @@ function ImportModal({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-lg rounded-xl border border-surface-200 bg-white p-6 shadow-xl"
+            className="w-full max-w-lg rounded-xl border border-[#3E3E3E] bg-[#282828] p-6 shadow-2xl text-white"
           >
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-surface-900">Import Leads</h3>
+              <h3 className="text-lg font-bold text-white">Import Leads</h3>
               <button
                 onClick={() => onOpenChange(false)}
-                className="rounded-lg p-1.5 text-surface-400 hover:bg-surface-100 hover:text-surface-600"
+                className="rounded-lg p-1.5 text-slate-400 hover:bg-[#383838] hover:text-white"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -677,16 +682,16 @@ function ImportModal({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
               onDrop={(e) => { e.preventDefault(); setDragOver(false) }}
               className={cn(
                 'flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-10 transition-colors',
-                dragOver ? 'border-primary-400 bg-primary-50' : 'border-surface-200 bg-surface-50',
+                dragOver ? 'border-[#FFA116] bg-[#303030]' : 'border-[#3E3E3E] bg-[#1A1A1A]',
               )}
             >
-              <Upload className={cn('mb-3 h-10 w-10', dragOver ? 'text-primary-500' : 'text-surface-300')} />
-              <p className="text-sm font-medium text-surface-700">Drop your CSV file here</p>
-              <p className="mt-1 text-xs text-surface-400">or click to browse</p>
+              <Upload className={cn('mb-3 h-10 w-10', dragOver ? 'text-[#FFA116]' : 'text-slate-500')} />
+              <p className="text-sm font-bold text-white">Drop your CSV file here</p>
+              <p className="mt-1 text-xs text-slate-400">or click to browse</p>
               <input type="file" accept=".csv" className="hidden" id="csv-upload" />
               <label
                 htmlFor="csv-upload"
-                className="mt-4 cursor-pointer rounded-lg bg-white px-4 py-2 text-sm font-medium text-primary-600 shadow-sm border border-surface-200 hover:bg-surface-50"
+                className="mt-4 cursor-pointer rounded-lg bg-[#FFA116] hover:bg-[#E08800] px-4 py-2 text-xs font-black text-[#1A1A1A] shadow-md"
               >
                 Select File
               </label>
@@ -694,13 +699,13 @@ function ImportModal({ open, onOpenChange }: { open: boolean; onOpenChange: (v: 
             <div className="mt-4 flex justify-end gap-2">
               <button
                 onClick={() => onOpenChange(false)}
-                className="rounded-lg px-4 py-2 text-sm font-medium text-surface-600 hover:bg-surface-100"
+                className="rounded-lg px-4 py-2 text-xs font-bold text-slate-300 hover:bg-[#383838]"
               >
                 Cancel
               </button>
               <button
                 onClick={() => { toast.success('Import started'); onOpenChange(false) }}
-                className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
+                className="rounded-lg bg-[#FFA116] hover:bg-[#E08800] px-4 py-2 text-xs font-black text-[#1A1A1A]"
               >
                 Import
               </button>
