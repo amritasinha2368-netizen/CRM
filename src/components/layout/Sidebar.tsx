@@ -92,12 +92,20 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
       )}>
         <AnimatePresence mode="wait">
           {!collapsed ? (
-            <motion.div key="full" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="flex-1 cursor-pointer py-1 pr-2" onClick={() => navigate('/')}>
-              <GOGLogo size="md" />
+            <motion.div key="full" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="flex-1 cursor-pointer py-0.5" onClick={() => navigate('/')}>
+              <img
+                src="/logo.png"
+                alt="QuantNexa ai Solutions Pvt. Ltd."
+                className="h-12 w-auto max-w-[190px] object-contain filter drop-shadow-md"
+              />
             </motion.div>
           ) : (
-            <motion.div key="mini" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} className="cursor-pointer flex justify-center py-1" onClick={() => navigate('/')}>
-              <GOGLogoMark size={36} />
+            <motion.div key="mini" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} className="cursor-pointer flex justify-center py-0.5" onClick={() => navigate('/')}>
+              <img
+                src="/logo-mark.png"
+                alt="QuantNexa ai"
+                className="h-10 w-auto object-contain filter drop-shadow-md"
+              />
             </motion.div>
           )}
         </AnimatePresence>
