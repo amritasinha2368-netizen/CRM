@@ -1,57 +1,51 @@
 @import "tailwindcss";
 
 @theme {
-  /* Luxury Golden Palette */
-  --color-primary-50: #fefce8;
-  --color-primary-100: #fef9c3;
-  --color-primary-200: #fef08a;
-  --color-primary-300: #fde047;
-  --color-primary-400: #facc15;
-  --color-primary-500: #eab308;
-  --color-primary-600: #d4af37;
-  --color-primary-700: #ca8a04;
-  --color-primary-800: #a16207;
-  --color-primary-900: #854d0e;
+  /* LeetCode Signature Palette */
+  --color-primary-50: #fff8e6;
+  --color-primary-100: #feecb8;
+  --color-primary-200: #fdd985;
+  --color-primary-300: #fcc252;
+  --color-primary-400: #fba928;
+  --color-primary-500: #ffa116; /* LeetCode Signature Orange/Yellow */
+  --color-primary-600: #e08800;
+  --color-primary-700: #b86a00;
+  --color-primary-800: #915000;
+  --color-primary-900: #6b3900;
 
-  /* Luxury Obsidian / Slate Surfaces */
-  --color-surface-50: #0b0f17;
-  --color-surface-100: #0f172a;
-  --color-surface-200: #161e2e;
-  --color-surface-300: #1e293b;
-  --color-surface-400: #334155;
-  --color-surface-500: #64748b;
-  --color-surface-600: #94a3b8;
-  --color-surface-700: #cbd5e1;
-  --color-surface-800: #f1f5f9;
+  /* LeetCode Dark Surfaces */
+  --color-surface-50: #1a1a1a;  /* LeetCode Main Dark Background */
+  --color-surface-100: #282828; /* LeetCode Container / Card Background */
+  --color-surface-200: #303030; /* LeetCode Hover / Active Card */
+  --color-surface-300: #3e3e3e; /* LeetCode Border / Divider */
+  --color-surface-400: #555555;
+  --color-surface-500: #8a8a8a; /* LeetCode Secondary Text */
+  --color-surface-600: #a0a0a0;
+  --color-surface-700: #cccccc;
+  --color-surface-800: #eff2f6; /* LeetCode Primary Text */
   --color-surface-900: #ffffff;
 
-  --color-accent-50: #fef3c7;
-  --color-accent-100: #fde68a;
-  --color-accent-500: #f59e0b;
-  --color-accent-600: #d97706;
-  --color-accent-700: #b45309;
+  --color-accent-50: #fff8e6;
+  --color-accent-500: #ffa116;
+  --color-accent-600: #e08800;
 
-  --color-success-50: #064e3b;
-  --color-success-500: #10b981;
-  --color-success-600: #059669;
+  /* LeetCode Status Colors */
+  --color-success-50: #132e1f;
+  --color-success-500: #2cbb5d; /* LeetCode Easy Green */
+  --color-success-600: #00b8a3;
 
-  --color-warning-50: #451a03;
-  --color-warning-500: #f59e0b;
-  --color-warning-600: #d97706;
+  --color-warning-50: #3a2e12;
+  --color-warning-500: #ffb800; /* LeetCode Medium Yellow */
+  --color-warning-600: #d99b00;
 
-  --color-danger-50: #450a0a;
-  --color-danger-500: #ef4444;
-  --color-danger-600: #dc2626;
+  --color-danger-50: #3b181a;
+  --color-danger-500: #ff2d55; /* LeetCode Hard Red */
+  --color-danger-600: #dc1c3b;
 
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-  --animate-fade-in: fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  --animate-slide-up: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  --animate-slide-down: slide-down 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  --animate-scale-in: scale-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  --animate-shimmer: shimmer 2.5s infinite;
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-glow: glow 3s ease-in-out infinite alternate;
+  --animate-fade-in: fade-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-up: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes fade-in {
@@ -60,48 +54,13 @@
 }
 
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slide-down {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes scale-in {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes glow {
-  from { box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
-  to { box-shadow: 0 0 35px rgba(212, 175, 55, 0.4); }
-}
-
-@keyframes pulse-ring {
-  0% { transform: scale(0.9); opacity: 1; }
-  100% { transform: scale(1.5); opacity: 0; }
-}
-
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
 }
 
 @layer base {
   * {
-    border-color: rgba(212, 175, 55, 0.2);
+    border-color: #3e3e3e;
   }
 
   html {
@@ -110,137 +69,114 @@
 
   body {
     font-family: var(--font-sans);
-    background: #0b0f17;
-    color: #f1f5f9;
+    background: #1a1a1a;
+    color: #eff2f6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-weight: 800;
+    font-weight: 700;
     line-height: 1.2;
-    letter-spacing: -0.01em;
     color: #ffffff;
   }
 
   ::selection {
-    background: rgba(212, 175, 55, 0.3);
+    background: rgba(255, 161, 22, 0.3);
     color: #ffffff;
   }
 }
 
-/* Glass morphism - Golden Luxury */
+/* LeetCode Glass / Panel */
 .glass {
-  background: rgba(22, 30, 46, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(40, 40, 40, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid #3e3e3e;
 }
 
 .glass-strong {
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  background: rgba(40, 40, 40, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid #3e3e3e;
 }
 
-/* Metallic Golden Gradient text */
+/* LeetCode Text */
 .gradient-text {
-  background: linear-gradient(135deg, #fef08a 0%, #d4af37 50%, #f59e0b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ffa116;
 }
 
 .gradient-text-blue {
-  background: linear-gradient(135deg, #ffffff 0%, #fde047 50%, #d4af37 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ffffff;
 }
 
-/* Metallic Golden Gradient backgrounds */
+/* LeetCode Primary Button Gradient */
 .gradient-primary {
-  background: linear-gradient(135deg, #d4af37 0%, #eab308 50%, #ca8a04 100%);
-  color: #0b0f17;
+  background: #ffa116;
+  color: #1a1a1a;
+  font-weight: 700;
 }
 
 .gradient-primary-hover {
-  background: linear-gradient(135deg, #f59e0b 0%, #d4af37 50%, #b8860b 100%);
+  background: #e08800;
 }
 
-.gradient-hero {
-  background: linear-gradient(135deg, #1e293b 0%, #161e2e 50%, #0f172a 100%);
-}
-
-.gradient-blue {
-  background: linear-gradient(135deg, #1e293b 0%, #1e3a8a 50%, #0f172a 100%);
-}
-
-.gradient-mesh {
-  background:
-    radial-gradient(at 20% 20%, rgba(212, 175, 55, 0.15) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, rgba(245, 158, 11, 0.1) 0px, transparent 50%),
-    radial-gradient(at 0% 80%, rgba(16, 185, 129, 0.06) 0px, transparent 50%),
-    radial-gradient(at 80% 80%, rgba(212, 175, 55, 0.08) 0px, transparent 50%);
-}
-
-/* Premium cards - Dark Obsidian with Gold Trim */
+/* LeetCode Card */
 .card-premium {
-  background: #161e2e;
-  border-radius: 16px;
-  border: 1px solid rgba(212, 175, 55, 0.25);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: #282828;
+  border-radius: 12px;
+  border: 1px solid #3e3e3e;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease;
 }
 
 .card-premium:hover {
-  box-shadow: 0 8px 30px rgba(212, 175, 55, 0.2);
-  border-color: rgba(212, 175, 55, 0.6);
-  transform: translateY(-2px);
+  border-color: #555555;
+  background: #2e2e2e;
 }
 
-/* Premium scrollbar */
+/* LeetCode Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0b0f17;
+  background: #1a1a1a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #d4af37, #ca8a04);
+  background: #3e3e3e;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #f59e0b, #d4af37);
+  background: #ffa116;
 }
 
-/* Input styles - Dark Matte with Golden Focus */
+/* LeetCode Dark Inputs */
 textarea, select {
-  background: #0f172a;
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  border-radius: 12px;
-  padding: 12px 16px;
+  background: #282828;
+  border: 1px solid #3e3e3e;
+  border-radius: 8px;
+  padding: 10px 14px;
   color: #ffffff;
-  font-size: 14px;
-  transition: all 0.3s;
+  font-size: 13px;
+  transition: all 0.2s;
   outline: none;
   width: 100%;
 }
 
 textarea:focus, select:focus {
-  border-color: #d4af37;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
-  background: #161e2e;
+  border-color: #ffa116;
+  box-shadow: 0 0 0 2px rgba(255, 161, 22, 0.2);
+  background: #303030;
 }
 
 /* Focus ring */
 .focus-ring:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #0b0f17, 0 0 0 4px #d4af37;
+  box-shadow: 0 0 0 2px #1a1a1a, 0 0 0 4px #ffa116;
 }

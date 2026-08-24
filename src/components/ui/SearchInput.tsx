@@ -63,9 +63,9 @@ export function SearchInput({
     >
       <div className="pointer-events-none absolute left-3 flex items-center">
         {loading ? (
-          <Loader2 className="h-4 w-4 animate-spin text-[#FBBF24]" />
+          <Loader2 className="h-4 w-4 animate-spin text-[#FFA116]" />
         ) : (
-          <Search className="h-4 w-4 text-[#FBBF24]" />
+          <Search className="h-4 w-4 text-[#FFA116]" />
         )}
       </div>
       <input
@@ -78,10 +78,10 @@ export function SearchInput({
         placeholder={placeholder}
         autoFocus={autoFocus}
         className={cn(
-          'w-full rounded-xl border border-[#D4AF37]/30 bg-[#161E2E] py-2.5 pl-10 pr-9 text-xs font-bold text-white placeholder:text-slate-400',
-          'transition-all duration-200 shadow-sm',
-          'focus:border-[#FBBF24] focus:bg-[#1E293B] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20',
-          isFocused && 'border-[#FBBF24] bg-[#1E293B]'
+          'w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] py-2 pl-9 pr-8 text-xs font-medium text-white placeholder:text-[#8A8A8A]',
+          'transition-all duration-150',
+          'focus:border-[#FFA116] focus:bg-[#282828] focus:outline-none focus:ring-1 focus:ring-[#FFA116]',
+          isFocused && 'border-[#FFA116] bg-[#282828]'
         )}
       />
       <AnimatePresence>
@@ -91,9 +91,9 @@ export function SearchInput({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={handleClear}
-            className="absolute right-2.5 flex h-5 w-5 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-700 hover:text-white"
+            className="absolute right-2.5 flex h-4 w-4 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-700 hover:text-white"
           >
-            <X className="h-3.5 w-3.5" />
+            <X className="h-3 w-3" />
           </motion.button>
         )}
       </AnimatePresence>

@@ -9,26 +9,26 @@ import {
 function FlowingWaves() {
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {/* Base gradient - Golden & Black Luxury Obsidian */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F17] via-[#0F172A] to-[#020617]" />
+      {/* Base gradient - LeetCode Dark #1A1A1A */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A1A] via-[#282828] to-[#121212]" />
 
       {/* Animated wave layers */}
       <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1440 900" preserveAspectRatio="none">
         <defs>
           <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#d4af37" stopOpacity="0.25" />
-            <stop offset="50%" stopColor="#f59e0b" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="#d4af37" stopOpacity="0.25" />
+            <stop offset="0%" stopColor="#ffa116" stopOpacity="0.2" />
+            <stop offset="50%" stopColor="#e08800" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#ffa116" stopOpacity="0.2" />
           </linearGradient>
           <linearGradient id="wave2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#ca8a04" stopOpacity="0.2" />
-            <stop offset="50%" stopColor="#fbbf24" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#ca8a04" stopOpacity="0.2" />
+            <stop offset="0%" stopColor="#ffb800" stopOpacity="0.15" />
+            <stop offset="50%" stopColor="#ffa116" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#ffb800" stopOpacity="0.15" />
           </linearGradient>
           <linearGradient id="wave3" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#854d0e" stopOpacity="0.15" />
-            <stop offset="50%" stopColor="#fef08a" stopOpacity="0.25" />
-            <stop offset="100%" stopColor="#854d0e" stopOpacity="0.15" />
+            <stop offset="0%" stopColor="#b86a00" stopOpacity="0.1" />
+            <stop offset="50%" stopColor="#fcc252" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#b86a00" stopOpacity="0.1" />
           </linearGradient>
         </defs>
 
@@ -75,25 +75,13 @@ function FlowingWaves() {
         />
       </svg>
 
-      {/* Floating light orbs — Golden tones */}
+      {/* Floating ambient glow orbs */}
       <motion.div
-        animate={{ x: [0, 40, 0], y: [0, -20, 0], opacity: [0.2, 0.4, 0.2] }}
+        animate={{ x: [0, 30, 0], y: [0, -15, 0], opacity: [0.15, 0.3, 0.15] }}
         transition={{ duration: 15, repeat: Infinity }}
         className="absolute top-[20%] right-[15%] w-64 h-64 rounded-full blur-[80px]"
-        style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.3) 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(255,161,22,0.25) 0%, transparent 70%)' }}
       />
-      <motion.div
-        animate={{ x: [0, -30, 0], y: [0, 25, 0], opacity: [0.15, 0.3, 0.15] }}
-        transition={{ duration: 18, repeat: Infinity }}
-        className="absolute top-[40%] left-[10%] w-48 h-48 rounded-full blur-[60px]"
-        style={{ background: 'radial-gradient(circle, rgba(251,191,36,0.25) 0%, transparent 70%)' }}
-      />
-
-      {/* Subtle grid */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: 'linear-gradient(rgba(212,175,55,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,55,0.3) 1px, transparent 1px)',
-        backgroundSize: '80px 80px',
-      }} />
     </div>
   );
 }
@@ -112,10 +100,10 @@ function CRMVideo() {
         <source src="/gog-video.mp4" type="video/mp4" />
       </video>
 
-      {/* Left edge — fade into golden content */}
-      <div className="absolute top-0 left-0 bottom-0 w-64 z-20 pointer-events-none bg-gradient-to-r from-[#0B0F17] via-[#0B0F17]/80 to-transparent" />
-      <div className="absolute top-0 left-0 right-0 h-24 z-20 pointer-events-none bg-gradient-to-b from-[#0B0F17] to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-24 z-20 pointer-events-none bg-gradient-to-t from-[#0B0F17] to-transparent" />
+      {/* Fade edges */}
+      <div className="absolute top-0 left-0 bottom-0 w-64 z-20 pointer-events-none bg-gradient-to-r from-[#1A1A1A] via-[#1A1A1A]/80 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-24 z-20 pointer-events-none bg-gradient-to-b from-[#1A1A1A] to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 z-20 pointer-events-none bg-gradient-to-t from-[#1A1A1A] to-transparent" />
     </div>
   );
 }
@@ -127,9 +115,9 @@ function Section({ children, className = '' }: { children: React.ReactNode; clas
   return (
     <motion.section
       ref={ref}
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className={className}
     >
       {children}
@@ -153,15 +141,15 @@ function Navbar() {
     <motion.nav
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      transition={{ duration: 0.5 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#0B0F17]/90 backdrop-blur-xl border-b-2 border-[#D4AF37]/40 shadow-xl'
+          ? 'bg-[#282828]/95 backdrop-blur-md border-b border-[#3E3E3E] shadow-lg'
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        {/* Discover GoG Button (High Visibility Pill) */}
+      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        {/* Discover GoG Button */}
         <div className="hidden md:flex items-center gap-1">
           <motion.a
             href="https://www.geeksofgurukul.com/"
@@ -169,15 +157,15 @@ function Navbar() {
             rel="noopener noreferrer"
             onMouseEnter={() => setHoveredItem('discover')}
             onMouseLeave={() => setHoveredItem(null)}
-            whileHover={{ y: -2 }}
-            className="relative px-5 py-2.5 text-xs font-black text-[#FBBF24] bg-[#161E2E]/90 backdrop-blur-md rounded-full border-2 border-[#D4AF37]/50 shadow-lg hover:bg-[#D4AF37] hover:text-slate-950 transition-all duration-300 cursor-pointer"
+            whileHover={{ y: -1 }}
+            className="relative px-4 py-2 text-xs font-bold text-[#FFA116] bg-[#282828] border border-[#3E3E3E] rounded-lg shadow-sm hover:bg-[#383838] hover:text-white transition-all duration-200 cursor-pointer"
           >
-            <span className="flex items-center gap-1.5 font-black drop-shadow-sm">
+            <span className="flex items-center gap-1.5 font-bold">
               Discover GoG
               <motion.span
                 className="inline-block"
                 animate={hoveredItem === 'discover' ? { x: [0, 3, 0] } : {}}
-                transition={{ duration: 0.6, ease: 'easeInOut' }}
+                transition={{ duration: 0.5, ease: 'easeInOut' }}
               >
                 ↗
               </motion.span>
@@ -186,20 +174,20 @@ function Navbar() {
         </div>
 
         {/* Auth buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => navigate('/login')}
-            className="rounded-full border-2 border-[#D4AF37]/50 bg-[#161E2E]/90 backdrop-blur-md px-6 py-2.5 text-[13px] font-black text-white transition-all hover:bg-[#D4AF37] hover:text-slate-950 shadow-sm cursor-pointer"
+            className="rounded-lg border border-[#3E3E3E] bg-[#282828] px-4 py-2 text-xs font-bold text-white transition-all hover:bg-[#383838] shadow-xs cursor-pointer"
           >
             Login
           </motion.button>
           <motion.button
-            whileHover={{ scale: 1.03, boxShadow: '0 4px 20px rgba(212, 175, 55, 0.4)' }}
-            whileTap={{ scale: 0.97 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => navigate('/login')}
-            className="rounded-full bg-gradient-to-r from-[#D4AF37] via-[#FBBF24] to-[#D4AF37] hover:brightness-110 px-6 py-2.5 text-[13px] font-black text-slate-950 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
+            className="rounded-lg bg-[#FFA116] hover:bg-[#E08800] px-4 py-2 text-xs font-black text-[#1A1A1A] shadow-md transition-all cursor-pointer"
           >
             Sign Up
           </motion.button>
@@ -222,48 +210,48 @@ function Hero() {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.2 }}
             className="flex items-center gap-3"
           >
-            <div className="h-px w-8 bg-[#D4AF37]" />
+            <div className="h-px w-8 bg-[#FFA116]" />
             <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-[#FBBF24] animate-pulse" />
-              <span className="text-xs font-black uppercase tracking-widest text-[#FBBF24]">
+              <div className="h-2 w-2 rounded-full bg-[#FFA116] animate-pulse" />
+              <span className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">
                 Geeksofgurukul Applications
               </span>
             </div>
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-6xl sm:text-7xl lg:text-8xl font-black text-white leading-[0.95] tracking-tight mt-3"
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-[1.05] tracking-tight mt-4"
           >
             Academy
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FEF08A] via-[#D4AF37] to-[#F59E0B]">
+            <span className="text-[#FFA116]">
               Lead CRM
             </span>
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="mt-6 text-base text-amber-100/90 font-medium leading-relaxed max-w-md"
+            transition={{ delay: 0.4 }}
+            className="mt-6 text-sm text-slate-300 font-medium leading-relaxed max-w-md"
           >
             An intelligent platform for tracking every student<br />enquiry, automating counsellor follow-ups, managing admissions pipeline and converting leads into enrollments — all from a single dashboard.
           </motion.p>
 
           <motion.button
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            whileHover={{ scale: 1.03, boxShadow: '0 8px 30px rgba(212, 175, 55, 0.4)' }}
-            whileTap={{ scale: 0.97 }}
+            transition={{ delay: 0.5 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => navigate('/login')}
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#D4AF37] via-[#FBBF24] to-[#D4AF37] hover:brightness-110 px-8 py-3.5 text-sm font-black text-slate-950 shadow-xl shadow-amber-500/30 transition-all cursor-pointer"
+            className="mt-8 inline-flex items-center gap-2 rounded-lg bg-[#FFA116] hover:bg-[#E08800] px-7 py-3 text-sm font-black text-[#1A1A1A] shadow-lg transition-all cursor-pointer"
           >
             Get started
             <ArrowRight className="h-4 w-4" />
@@ -272,27 +260,21 @@ function Hero() {
       </div>
 
       {/* Bottom bar */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-[#D4AF37]/30 bg-[#0B0F17]/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
+      <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-[#3E3E3E] bg-[#1A1A1A]/90 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-8 py-3.5 flex items-center justify-between">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-[#FBBF24]/70">
-              Design, develop and run any
-            </p>
-            <p className="text-[10px] font-black uppercase tracking-widest text-[#FBBF24]/70">
-              business software you need.
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              Design, develop and run any business software you need.
             </p>
           </div>
           <div className="flex items-center gap-6">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="text-[10px] font-black uppercase tracking-widest text-amber-300 hover:text-white transition-colors"
-            >
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
               Scroll to explore
-            </motion.button>
+            </span>
             <div className="flex items-center gap-1.5">
-              <div className="h-1.5 w-1.5 rounded-full bg-[#FBBF24]" />
-              <div className="h-1.5 w-1.5 rounded-full bg-[#FBBF24]/40" />
-              <div className="h-1.5 w-1.5 rounded-full bg-[#FBBF24]/20" />
+              <div className="h-1.5 w-1.5 rounded-full bg-[#FFA116]" />
+              <div className="h-1.5 w-1.5 rounded-full bg-slate-600" />
+              <div className="h-1.5 w-1.5 rounded-full bg-slate-700" />
             </div>
           </div>
         </div>
@@ -305,11 +287,11 @@ function Hero() {
 function CapabilitiesStrip() {
   const items = ['Lead Capture', 'AI Calling', 'Follow-ups', 'Pipeline', 'Applications', 'Payments', 'Analytics', 'Automations'];
   return (
-    <Section className="py-8 border-y-2 border-[#D4AF37]/40 bg-[#0F172A] backdrop-blur-sm overflow-hidden">
+    <Section className="py-6 border-y border-[#3E3E3E] bg-[#282828] overflow-hidden">
       <div className="flex items-center gap-12 animate-[scroll_30s_linear_infinite] whitespace-nowrap">
         {[...items, ...items].map((item, i) => (
-          <span key={i} className="flex items-center gap-3 text-xs font-black text-[#FBBF24] uppercase tracking-wider">
-            <div className="h-2 w-2 rounded-full bg-[#D4AF37]" />
+          <span key={i} className="flex items-center gap-3 text-xs font-bold text-[#FFA116] uppercase tracking-wider">
+            <div className="h-2 w-2 rounded-full bg-[#FFA116]" />
             {item}
           </span>
         ))}
@@ -330,34 +312,34 @@ function ProblemSection() {
   ];
 
   return (
-    <Section className="py-24 px-8 bg-[#0B0F17]">
+    <Section className="py-20 px-8 bg-[#1A1A1A]">
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto">
-          <span className="text-xs font-black uppercase tracking-widest text-[#FBBF24] px-4 py-1.5 bg-[#161E2E] rounded-full border border-[#D4AF37]/50 shadow-md">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#FFA116] px-3.5 py-1 bg-[#282828] rounded-md border border-[#3E3E3E]">
             The Admission Challenge
           </span>
-          <h2 className="mt-6 text-3xl sm:text-4xl font-black text-white">
+          <h2 className="mt-5 text-3xl font-extrabold text-white">
             Why Traditional Spreadsheets Fail Your Academy
           </h2>
-          <p className="mt-3 text-sm font-bold text-slate-400">
+          <p className="mt-2 text-xs font-medium text-slate-400">
             Education admissions are fast-paced. Relying on manual tracking leads to lost revenue and missed student enrollments.
           </p>
         </div>
 
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {problems.map((p, i) => {
             const Icon = p.icon;
             return (
               <motion.div
                 key={i}
-                whileHover={{ y: -4 }}
-                className="p-6 rounded-2xl bg-[#161E2E] border border-[#D4AF37]/30 hover:border-[#FBBF24] shadow-xl transition-all"
+                whileHover={{ y: -3 }}
+                className="p-6 rounded-xl bg-[#282828] border border-[#3E3E3E] hover:border-[#FFA116] shadow-lg transition-all"
               >
-                <div className="h-12 w-12 rounded-xl bg-[#0F172A] border border-[#D4AF37]/40 text-[#FBBF24] flex items-center justify-center font-bold">
-                  <Icon className="h-6 w-6" />
+                <div className="h-10 w-10 rounded-lg bg-[#303030] border border-[#3E3E3E] text-[#FFA116] flex items-center justify-center font-bold">
+                  <Icon className="h-5 w-5" />
                 </div>
-                <h3 className="mt-4 text-lg font-black text-white">{p.title}</h3>
-                <p className="mt-2 text-xs font-bold text-slate-400 leading-relaxed">{p.desc}</p>
+                <h3 className="mt-4 text-base font-bold text-white">{p.title}</h3>
+                <p className="mt-1.5 text-xs text-slate-400 leading-relaxed">{p.desc}</p>
               </motion.div>
             );
           })}
@@ -370,7 +352,7 @@ function ProblemSection() {
 // ─── MAIN LANDING COMPONENT ──────────────────────────────
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-[#0B0F17] text-white font-sans">
+    <div className="min-h-screen bg-[#1A1A1A] text-white font-sans">
       <Navbar />
       <Hero />
       <CapabilitiesStrip />
