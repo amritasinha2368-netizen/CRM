@@ -37,6 +37,7 @@ const roles = [
 
 export default function Settings() {
   const { currentUser } = useAppStore();
+  const activeUser = currentUser || users[0];
   const [activeTab, setActiveTab] = useState('profile');
   const [integrationStates, setIntegrationStates] = useState<Record<string, boolean>>(
     Object.fromEntries(integrations.map(i => [i.id, i.connected]))
@@ -55,34 +56,34 @@ export default function Settings() {
             <div className="flex items-center gap-6">
               <div className="relative">
                 <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary-100 text-2xl font-bold text-primary-600">
-                  {currentUser.name.split(' ').map(n => n[0]).join('')}
+                  {activeUser.name.split(' ').map(n => n[0]).join('')}
                 </div>
                 <button className="absolute bottom-0 right-0 rounded-full bg-primary-600 p-1.5 text-white shadow-sm hover:bg-primary-700 transition-colors">
                   <Camera className="h-3.5 w-3.5" />
                 </button>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-surface-900">{currentUser.name}</h3>
-                <p className="text-sm text-surface-500">{currentUser.email}</p>
-                <Badge variant="primary" className="mt-1">{currentUser.role.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</Badge>
+                <h3 className="text-lg font-semibold text-surface-900">{activeUser.name}</h3>
+                <p className="text-sm text-surface-500">{activeUser.email}</p>
+                <Badge variant="primary" className="mt-1">{activeUser.role.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</Badge>
               </div>
             </div>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium text-surface-700 mb-1">Full Name</label>
-                <input defaultValue={currentUser.name} className="w-full rounded-lg border border-surface-200 bg-surface-50 px-3 py-2.5 text-sm focus:border-primary-300 focus:outline-none" />
+                <input defaultValue={activeUser.name} className="w-full rounded-lg border border-surface-200 bg-surface-50 px-3 py-2.5 text-sm focus:border-primary-300 focus:outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-surface-700 mb-1">Email</label>
-                <input defaultValue={currentUser.email} className="w-full rounded-lg border border-surface-200 bg-surface-50 px-3 py-2.5 text-sm focus:border-primary-300 focus:outline-none" />
+                <input defaultValue={activeUser.email} className="w-full rounded-lg border border-surface-200 bg-surface-50 px-3 py-2.5 text-sm focus:border-primary-300 focus:outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-surface-700 mb-1">Phone</label>
-                <input defaultValue={currentUser.phone} className="w-full rounded-lg border border-surface-200 bg-surface-50 px-3 py-2.5 text-sm focus:border-primary-300 focus:outline-none" />
+                <input defaultValue={activeUser.phone} className="w-full rounded-lg border border-surface-200 bg-surface-50 px-3 py-2.5 text-sm focus:border-primary-300 focus:outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-surface-700 mb-1">Center</label>
-                <select defaultValue={currentUser.center} className="w-full rounded-lg border border-surface-200 bg-surface-50 px-3 py-2.5 text-sm focus:border-primary-300 focus:outline-none">
+                <select defaultValue={activeUser.center} className="w-full rounded-lg border border-surface-200 bg-surface-50 px-3 py-2.5 text-sm focus:border-primary-300 focus:outline-none">
                   {centers.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </div>

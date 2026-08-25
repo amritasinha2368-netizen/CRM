@@ -27,13 +27,13 @@ export default function CounsellorDashboard() {
     return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
   }, []);
 
-  if (!currentUser) return null;
+  const activeUser = currentUser || users[0];
 
   return (
     <div className="space-y-6 pb-12">
       {/* Top Banner */}
       <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-[#3E3E3E] bg-[#282828] p-6 shadow-xl">
-        <h1 className="text-2xl sm:text-3xl font-black text-white">{greeting}, {currentUser.name.split(' ')[0]} 👋</h1>
+        <h1 className="text-2xl sm:text-3xl font-black text-white">{greeting}, {activeUser.name.split(' ')[0]} 👋</h1>
         <p className="mt-1 text-xs font-medium text-slate-400">
           <CalendarDays className="mr-1.5 inline h-3.5 w-3.5 text-slate-400" />
           {formatDate(new Date())} &bull; You have {overdue.length} leads to follow up today

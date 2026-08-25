@@ -31,6 +31,7 @@ const item = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 export default function Dashboard() {
   const navigate = useNavigate();
   const currentUser = useAppStore((s) => s.currentUser);
+  const activeUser = currentUser || users[0];
 
   const totalLeads = leads.length;
   const newLeads = leads.filter((l) => l.status === 'new').length;
@@ -92,7 +93,7 @@ export default function Dashboard() {
               <span className="text-xs font-bold uppercase tracking-wider text-slate-400">QuantNexa AI CRM &bull; Super Admin Intelligence Center</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white">
-              {greeting}, {currentUser.name.split(' ')[0]} 👋
+              {greeting}, {activeUser.name.split(' ')[0]} 👋
             </h1>
             <p className="mt-1 text-xs font-medium text-slate-400">
               <CalendarDays className="mr-1.5 inline h-3.5 w-3.5 text-slate-400" />

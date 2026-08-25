@@ -43,7 +43,7 @@ export default function SuperAdminDashboard() {
     return Object.entries(counts).map(([name, value]) => ({ name: name.charAt(0).toUpperCase() + name.slice(1), value }));
   }, []);
 
-  if (!currentUser) return null;
+  const activeUser = currentUser || users[0];
 
   return (
     <div className="space-y-6 pb-12">
@@ -52,11 +52,11 @@ export default function SuperAdminDashboard() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Shield className="h-4 w-4 text-[#FFA116]" />
-              <span className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Super Admin Overview</span>
+              <Shield className="h-4 w-4 text-sky-400" />
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Super Admin Overview</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-white">{greeting}, {currentUser.name.split(' ')[0]} 👋</h1>
-            <p className="mt-1 text-xs font-medium text-slate-400"><CalendarDays className="mr-1.5 inline h-3.5 w-3.5 text-[#FFA116]" />{formatDate(new Date())} &bull; Realtime admissions metrics</p>
+            <h1 className="text-2xl sm:text-3xl font-black text-white">{greeting}, {activeUser.name.split(' ')[0]} 👋</h1>
+            <p className="mt-1 text-xs font-medium text-slate-400"><CalendarDays className="mr-1.5 inline h-3.5 w-3.5 text-slate-400" />{formatDate(new Date())} &bull; Realtime admissions metrics</p>
           </div>
         </div>
       </motion.div>
