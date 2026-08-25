@@ -88,7 +88,7 @@ export default function Dashboard() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <Sparkles className="h-4 w-4 text-[#FFA116]" />
+              <Sparkles className="h-4 w-4 text-sky-400" />
               <span className="text-xs font-bold uppercase tracking-wider text-slate-400">QuantNexa AI CRM &bull; Super Admin Intelligence Center</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white">
@@ -109,7 +109,7 @@ export default function Dashboard() {
             </button>
             <button
               onClick={() => navigate('/leads')}
-              className="flex items-center gap-2 rounded-lg bg-[#FFA116] hover:bg-[#E08800] px-4 py-2.5 text-xs font-black text-[#1A1A1A] shadow-md transition-all cursor-pointer"
+              className="flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 px-4 py-2.5 text-xs font-bold text-white shadow-md transition-all cursor-pointer"
             >
               <Plus className="h-4 w-4" />
               Add Lead
@@ -172,7 +172,7 @@ export default function Dashboard() {
                     dataKey="value"
                     paddingAngle={3}
                     label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
-                    labelLine={{ stroke: '#FFA116', strokeWidth: 1.5 }}
+                    labelLine={{ stroke: '#38BDF8', strokeWidth: 1.5 }}
                   >
                     {sourceData.map((_, i) => (
                       <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} stroke="#282828" strokeWidth={2} />

@@ -38,7 +38,7 @@ export default function KPICard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       whileHover={{ y: -2 }}
-      className="group relative overflow-hidden rounded-xl border border-[#3E3E3E] bg-[#282828] p-5 shadow-lg hover:border-[#FFA116] transition-all duration-200"
+      className="group relative overflow-hidden rounded-xl border border-[#3E3E3E] bg-[#282828] p-5 shadow-lg hover:border-blue-500/50 transition-all duration-200"
     >
       <div className="relative flex items-start justify-between">
         <div className="min-w-0 flex-1">
@@ -59,7 +59,7 @@ export default function KPICard({
             <span className="font-normal text-slate-400">vs last month</span>
           </div>
         </div>
-        <div className="rounded-lg bg-[#303030] border border-[#3E3E3E] p-3 text-slate-300 group-hover:bg-[#FFA116] group-hover:text-[#1A1A1A] transition-colors">
+        <div className="rounded-lg bg-[#303030] border border-[#3E3E3E] p-3 text-slate-300 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 transition-colors">
           <Icon className="h-5 w-5" />
         </div>
       </div>
