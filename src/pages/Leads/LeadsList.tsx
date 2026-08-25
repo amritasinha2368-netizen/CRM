@@ -184,21 +184,21 @@ export default function LeadsList() {
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setImportModalOpen(true)}
-            className="flex items-center gap-2 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#383838] hover:text-[#FFA116]"
+            className="flex items-center gap-2 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#383838] hover:text-sky-400"
           >
-            <Upload className="h-4 w-4 text-[#FFA116]" />
+            <Upload className="h-4 w-4 text-sky-400" />
             Import
           </button>
           <button
             onClick={() => toast.success('Exporting leads...')}
-            className="flex items-center gap-2 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#383838] hover:text-[#FFA116]"
+            className="flex items-center gap-2 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#383838] hover:text-emerald-400"
           >
-            <Download className="h-4 w-4 text-[#FFA116]" />
+            <Download className="h-4 w-4 text-emerald-400" />
             Export
           </button>
           <button
             onClick={() => setAddModalOpen(true)}
-            className="flex items-center gap-2 rounded-lg bg-[#FFA116] hover:bg-[#E08800] px-4 py-2 text-xs font-black text-[#1A1A1A] transition-colors shadow-md"
+            className="flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 px-4 py-2 text-xs font-bold text-white transition-colors shadow-md cursor-pointer"
           >
             <UserPlus className="h-4 w-4" />
             Add Lead
@@ -221,14 +221,14 @@ export default function LeadsList() {
             className={cn(
               'flex items-center gap-2 rounded-lg border px-3.5 py-2 text-xs font-bold transition-colors cursor-pointer',
               showFilters || activeFilters.length > 0
-                ? 'border-[#FFA116] bg-[#383838] text-[#FFA116]'
+                ? 'border-sky-500/30 bg-sky-500/15 text-sky-400'
                 : 'border-[#3E3E3E] bg-[#282828] text-white hover:bg-[#303030]',
             )}
           >
-            <Filter className="h-4 w-4 text-[#FFA116]" />
+            <Filter className="h-4 w-4 text-sky-400" />
             Filters
             {activeFilters.length > 0 && (
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#FFA116] text-[10px] font-black text-[#1A1A1A]">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-sky-500 text-[10px] font-bold text-white">
                 {activeFilters.length}
               </span>
             )}
@@ -246,7 +246,7 @@ export default function LeadsList() {
             >
               <div className="grid grid-cols-2 gap-3 rounded-xl border border-[#3E3E3E] bg-[#282828] p-4 sm:grid-cols-3 lg:grid-cols-5">
                 <div>
-                  <label className="mb-1 block text-[11px] font-bold text-[#FFA116]">Course</label>
+                  <label className="mb-1 block text-[11px] font-bold text-slate-300">Course</label>
                   <select
                     value={courseFilter}
                     onChange={(e) => { setCourseFilter(e.target.value); setPage(1) }}

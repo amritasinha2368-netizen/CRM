@@ -18,17 +18,17 @@ interface Stage {
 }
 
 const stages: Stage[] = [
-  { id: 'new', label: 'New Lead', gradient: 'from-[#FFA116] to-[#E08800]' },
-  { id: 'assigned', label: 'Assigned Counsellor', gradient: 'from-[#007AFF] to-[#0051A8]' },
-  { id: 'contacted', label: 'Contacted Lead', gradient: 'from-[#007AFF] to-[#0051A8]' },
-  { id: 'interested', label: 'Interested Student', gradient: 'from-[#2CBB5D] to-[#1E8A42]' },
-  { id: 'counselling', label: 'Counselling Session', gradient: 'from-[#FFB800] to-[#D99B00]' },
-  { id: 'visit', label: 'Visited Campus / Portal', gradient: 'from-[#007AFF] to-[#0051A8]' },
-  { id: 'application', label: 'Application Submitted', gradient: 'from-[#FFA116] to-[#E08800]' },
-  { id: 'documents', label: 'Documents Verified', gradient: 'from-[#FFB800] to-[#D99B00]' },
-  { id: 'payment', label: 'Payment Pending', gradient: 'from-[#2CBB5D] to-[#1E8A42]' },
-  { id: 'enrolled', label: 'Student Enrolled', gradient: 'from-[#2CBB5D] to-[#1E8A42]' },
-  { id: 'lost', label: 'Lead Closed / Lost', gradient: 'from-[#FF2D55] to-[#DC1C3B]' },
+  { id: 'new', label: 'New Lead', gradient: 'from-sky-500 to-blue-600' },
+  { id: 'assigned', label: 'Assigned Counsellor', gradient: 'from-blue-500 to-indigo-600' },
+  { id: 'contacted', label: 'Contacted Lead', gradient: 'from-cyan-500 to-teal-600' },
+  { id: 'interested', label: 'Interested Student', gradient: 'from-emerald-500 to-green-600' },
+  { id: 'counselling', label: 'Counselling Session', gradient: 'from-purple-500 to-violet-600' },
+  { id: 'visit', label: 'Visited Campus / Portal', gradient: 'from-indigo-500 to-blue-600' },
+  { id: 'application', label: 'Application Submitted', gradient: 'from-teal-500 to-emerald-600' },
+  { id: 'documents', label: 'Documents Verified', gradient: 'from-violet-500 to-purple-600' },
+  { id: 'payment', label: 'Payment Pending', gradient: 'from-amber-500 to-orange-600' },
+  { id: 'enrolled', label: 'Student Enrolled', gradient: 'from-emerald-600 to-teal-700' },
+  { id: 'lost', label: 'Lead Closed / Lost', gradient: 'from-rose-500 to-red-600' },
 ]
 
 const sourceLabels: Record<LeadSource, string> = {
@@ -97,7 +97,7 @@ export default function Pipeline() {
         </div>
         <button
           onClick={() => navigate('/leads')}
-          className="flex items-center gap-2 rounded-lg bg-[#FFA116] hover:bg-[#E08800] px-4 py-2 text-xs font-black text-[#1A1A1A] transition-colors shadow-md cursor-pointer"
+          className="flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 px-4 py-2 text-xs font-bold text-white transition-colors shadow-md cursor-pointer"
         >
           <Plus className="h-4 w-4" />
           Add Lead
@@ -176,12 +176,12 @@ export default function Pipeline() {
                           >
                             <div className="mb-2 flex items-start justify-between">
                               <div className="flex items-center gap-2.5">
-                                <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-[#FFA116] text-[10px] font-black text-[#1A1A1A]">
+                                <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-blue-600 text-[10px] font-bold text-white shadow-xs">
                                   {getInitials(lead.name)}
                                 </div>
                                 <div className="min-w-0">
                                   <p className="text-xs font-bold text-white truncate">{lead.name}</p>
-                                  <p className="text-[10px] text-[#FFA116] font-mono">{lead.id}</p>
+                                  <p className="text-[10px] text-sky-400 font-mono">{lead.id}</p>
                                 </div>
                               </div>
                             </div>
