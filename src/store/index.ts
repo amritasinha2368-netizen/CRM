@@ -22,13 +22,13 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
-  currentUser: null as User | null,
+  currentUser: mockUsers[0],
   leads: mockLeads,
   notifications: mockNotifications,
   sidebarCollapsed: false,
-  theme: 'light',
+  theme: 'dark',
   setCurrentUser: (user) => set({ currentUser: user }),
-  logout: () => set({ currentUser: null }),
+  logout: () => set({ currentUser: mockUsers[0] }),
   switchRole: (role) => {
     const user = mockUsers.find(u => u.role === role);
     if (user) set({ currentUser: user });

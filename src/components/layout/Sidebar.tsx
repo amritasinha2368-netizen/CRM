@@ -78,11 +78,13 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
   const { currentUser, notifications, logout } = useAppStore();
   const navigate = useNavigate();
 
+  const activeUser = currentUser || users[0];
+
   const unreadCount = useMemo(() => notifications.filter((n) => !n.read).length, [notifications]);
 
   const filteredItems = useMemo(
-    () => (currentUser ? NAV_ITEMS.filter((item) => item.roles.includes(currentUser.role)) : []),
-    [currentUser?.role]
+    () => NAV_ITEMS.filter((item) => item.roles.includes(activeUser.role)),
+    [activeUser.role]
   );
 
   const handleNavClick = () => { if (isMobile) onClose?.(); };
@@ -92,8 +94,6 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
     if (isMobile) onClose?.();
     navigate('/login');
   };
-
-  if (!currentUser) return null;
 
   return (
     <motion.aside

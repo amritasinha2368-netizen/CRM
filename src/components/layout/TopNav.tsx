@@ -61,7 +61,7 @@ export function TopNav({ onMenuToggle }: TopNavProps) {
     navigate('/login');
   };
 
-  if (!currentUser) return null;
+  const activeUser = currentUser || users[0];
 
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center border-b border-[#3E3E3E] bg-[#282828] text-white">
