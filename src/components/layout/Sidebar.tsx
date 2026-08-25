@@ -46,6 +46,27 @@ const ROLE_LABELS: Record<UserRole, string> = {
   counsellor: 'Counsellor', admissions: 'Admissions',
 };
 
+const NAV_ICON_COLORS: Record<string, string> = {
+  '/dashboard': 'text-sky-400',
+  '/leads': 'text-emerald-400',
+  '/my-leads': 'text-teal-400',
+  '/pipeline': 'text-indigo-400',
+  '/follow-ups': 'text-amber-400',
+  '/calls': 'text-cyan-400',
+  '/students': 'text-purple-400',
+  '/applications': 'text-blue-400',
+  '/admissions': 'text-teal-400',
+  '/payments': 'text-emerald-400',
+  '/courses': 'text-violet-400',
+  '/campaigns': 'text-rose-400',
+  '/reports': 'text-sky-400',
+  '/team': 'text-indigo-400',
+  '/automations': 'text-amber-400',
+  '/templates': 'text-pink-400',
+  '/documents': 'text-cyan-400',
+  '/settings': 'text-slate-400',
+};
+
 interface SidebarProps {
   collapsed?: boolean;
   onToggle?: () => void;
@@ -147,6 +168,7 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
       <nav className="flex-1 overflow-y-auto px-2 py-2 space-y-0.5">
         {filteredItems.map((item) => {
           const Icon = item.icon;
+          const iconColor = NAV_ICON_COLORS[item.path] || 'text-slate-400';
           return (
             <NavLink
               key={item.path}
@@ -162,7 +184,7 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
             >
               {({ isActive }) => (
                 <>
-                  <Icon className={cn('h-4 w-4 shrink-0 transition-colors', isActive ? 'text-white font-bold' : 'text-slate-400 group-hover:text-white')} />
+                  <Icon className={cn('h-4 w-4 shrink-0 transition-colors', isActive ? 'text-white font-bold' : iconColor)} />
                   {!collapsed && <span className="truncate">{item.label}</span>}
                   {collapsed && (
                     <div className="pointer-events-none absolute left-full z-50 ml-2 hidden rounded-md bg-[#1A1A1A] border border-[#3E3E3E] px-3 py-1.5 text-xs font-bold text-sky-400 shadow-lg group-hover:block">

@@ -120,14 +120,14 @@ export default function Dashboard() {
 
       {/* KPI Cards */}
       <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <motion.div variants={item}><KPICard title="Total Leads" value={totalLeads} change={12} changeType="up" icon={Users} color="primary" /></motion.div>
+        <motion.div variants={item}><KPICard title="Total Leads" value={totalLeads} change={12} changeType="up" icon={Users} color="cyan" /></motion.div>
         <motion.div variants={item}><KPICard title="New Leads" value={newLeads} change={8} changeType="up" icon={UserPlus} color="blue" /></motion.div>
-        <motion.div variants={item}><KPICard title="Hot Leads" value={hotLeads} change={15} changeType="up" icon={Flame} color="warning" /></motion.div>
-        <motion.div variants={item}><KPICard title="Applications" value={totalApps} change={10} changeType="up" icon={FileText} color="primary" /></motion.div>
-        <motion.div variants={item}><KPICard title="Admissions" value={enrolled} change={20} changeType="up" icon={GraduationCap} color="success" /></motion.div>
-        <motion.div variants={item}><KPICard title="Revenue" value={totalRevenue} change={18} changeType="up" icon={IndianRupee} color="success" prefix="₹" /></motion.div>
-        <motion.div variants={item}><KPICard title="Conversion Rate" value={convRate} change={5} changeType="up" icon={TrendingUp} color="primary" suffix="%" /></motion.div>
-        <motion.div variants={item}><KPICard title="Calls Today" value={todayCalls} change={0} changeType="neutral" icon={Phone} color="blue" /></motion.div>
+        <motion.div variants={item}><KPICard title="Hot Leads" value={hotLeads} change={15} changeType="up" icon={Flame} color="amber" /></motion.div>
+        <motion.div variants={item}><KPICard title="Applications" value={totalApps} change={10} changeType="up" icon={FileText} color="indigo" /></motion.div>
+        <motion.div variants={item}><KPICard title="Admissions" value={enrolled} change={20} changeType="up" icon={GraduationCap} color="teal" /></motion.div>
+        <motion.div variants={item}><KPICard title="Revenue" value={totalRevenue} change={18} changeType="up" icon={IndianRupee} color="emerald" prefix="₹" /></motion.div>
+        <motion.div variants={item}><KPICard title="Conversion Rate" value={convRate} change={5} changeType="up" icon={TrendingUp} color="purple" suffix="%" /></motion.div>
+        <motion.div variants={item}><KPICard title="Calls Today" value={todayCalls} change={0} changeType="neutral" icon={Phone} color="rose" /></motion.div>
       </motion.div>
 
       {/* Charts */}
