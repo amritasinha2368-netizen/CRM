@@ -153,23 +153,26 @@ export default function Dashboard() {
           </div>
         </motion.div>
 
+        {/* Lead Source Distribution with Direct Slice Text Labels */}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className={cardStyle}>
           <div className="px-5 py-4 border-b border-[#3E3E3E] flex items-center justify-between">
             <h3 className="text-xs font-bold uppercase tracking-wider text-white">Lead Source Distribution</h3>
             <span className="text-xs font-mono font-bold text-slate-400">Total: {totalLeads}</span>
           </div>
-          <div className="p-5 flex flex-col sm:flex-row items-center gap-4">
-            <div className="h-60 w-full sm:w-1/2 flex items-center justify-center">
+          <div className="p-4 flex flex-col sm:flex-row items-center gap-4">
+            <div className="h-72 w-full sm:w-3/5 flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={sourceData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={50}
-                    outerRadius={80}
+                    innerRadius={42}
+                    outerRadius={68}
                     dataKey="value"
                     paddingAngle={3}
+                    label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
+                    labelLine={{ stroke: '#FFA116', strokeWidth: 1.5 }}
                   >
                     {sourceData.map((_, i) => (
                       <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} stroke="#282828" strokeWidth={2} />
@@ -182,7 +185,7 @@ export default function Dashboard() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="w-full sm:w-1/2 space-y-2 max-h-60 overflow-y-auto pr-1">
+            <div className="w-full sm:w-2/5 space-y-2 max-h-64 overflow-y-auto pr-1">
               {sourceData.map((item, i) => {
                 const pct = totalLeads > 0 ? Math.round((item.value / totalLeads) * 100) : 0;
                 return (
