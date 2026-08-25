@@ -31,6 +31,27 @@ const stages: Stage[] = [
   { id: 'lost', label: 'Lead Closed / Lost', gradient: 'from-rose-500 to-red-600' },
 ]
 
+const AVATAR_COLOR_PALETTES = [
+  'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
+  'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30',
+  'bg-sky-500/20 text-sky-300 border border-sky-500/30',
+  'bg-purple-500/20 text-purple-300 border border-purple-500/30',
+  'bg-amber-500/20 text-amber-300 border border-amber-500/30',
+  'bg-teal-500/20 text-teal-300 border border-teal-500/30',
+  'bg-rose-500/20 text-rose-300 border border-rose-500/30',
+  'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30',
+  'bg-violet-500/20 text-violet-300 border border-violet-500/30',
+];
+
+const getAvatarStyle = (str: string) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % AVATAR_COLOR_PALETTES.length;
+  return AVATAR_COLOR_PALETTES[index];
+};
+
 const sourceLabels: Record<LeadSource, string> = {
   website: 'Website', google_ads: 'Google Ads', meta_ads: 'Meta Ads', instagram: 'Instagram',
   whatsapp: 'WhatsApp', walk_in: 'Walk-in', referral: 'Referral', event: 'Event',
@@ -176,7 +197,7 @@ export default function Pipeline() {
                           >
                             <div className="mb-2 flex items-start justify-between">
                               <div className="flex items-center gap-2.5">
-                                <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-blue-600 text-[10px] font-bold text-white shadow-xs">
+                                <div className={cn('flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg text-[10px] font-black shadow-xs', getAvatarStyle(lead.name))}>
                                   {getInitials(lead.name)}
                                 </div>
                                 <div className="min-w-0">
