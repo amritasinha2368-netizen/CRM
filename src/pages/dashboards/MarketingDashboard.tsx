@@ -63,7 +63,7 @@ export default function MarketingDashboard() {
         {/* Source Breakdown */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className={cardStyle}>
           <div className="px-5 py-4 border-b border-[#3E3E3E]">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Lead Source Breakdown</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white">Lead Source Breakdown</h3>
           </div>
           <div className="p-6 flex items-center justify-around gap-6">
             <ResponsiveContainer width={160} height={160}>
@@ -82,7 +82,7 @@ export default function MarketingDashboard() {
                     <div className="h-3 w-3 rounded-full" style={{ background: COLORS[i % COLORS.length] }} />
                     <span className="text-xs font-bold text-white">{s.name}</span>
                   </div>
-                  <span className="text-xs font-black text-[#FFA116] font-mono">{s.value}</span>
+                  <span className="text-xs font-black text-slate-300 font-mono">{s.value}</span>
                 </div>
               ))}
             </div>
@@ -92,7 +92,7 @@ export default function MarketingDashboard() {
         {/* Campaign List */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className={cardStyle}>
           <div className="px-5 py-4 border-b border-[#3E3E3E]">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Campaign Performance</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white">Campaign Performance</h3>
           </div>
           <div className="p-4 space-y-3">
             {campaigns.slice(0, 4).map((c) => (

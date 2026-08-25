@@ -154,17 +154,51 @@ export default function Dashboard() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className={cardStyle}>
-          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-white">Lead Source Distribution</h3></div>
-          <div className="p-5">
-            <ResponsiveContainer width="100%" height={260}>
-              <PieChart>
-                <Pie data={sourceData} cx="50%" cy="50%" innerRadius={60} outerRadius={95} dataKey="value" paddingAngle={3}>
-                  {sourceData.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
-                </Pie>
-                <Tooltip contentStyle={{ backgroundColor: '#1A1A1A', borderColor: '#3E3E3E', borderRadius: '8px', color: '#fff' }} />
-                <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 11, color: '#fff' }} />
-              </PieChart>
-            </ResponsiveContainer>
+          <div className="px-5 py-4 border-b border-[#3E3E3E] flex items-center justify-between">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white">Lead Source Distribution</h3>
+            <span className="text-xs font-mono font-bold text-slate-400">Total: {totalLeads}</span>
+          </div>
+          <div className="p-5 flex flex-col sm:flex-row items-center gap-4">
+            <div className="h-60 w-full sm:w-1/2 flex items-center justify-center">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={sourceData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={80}
+                    dataKey="value"
+                    paddingAngle={3}
+                  >
+                    {sourceData.map((_, i) => (
+                      <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} stroke="#282828" strokeWidth={2} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#1A1A1A', borderColor: '#3E3E3E', borderRadius: '8px', color: '#fff' }}
+                    formatter={(val: number) => [`${val} leads`, 'Count']}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="w-full sm:w-1/2 space-y-2 max-h-60 overflow-y-auto pr-1">
+              {sourceData.map((item, i) => {
+                const pct = totalLeads > 0 ? Math.round((item.value / totalLeads) * 100) : 0;
+                return (
+                  <div key={item.name} className="flex items-center justify-between p-2 rounded-lg bg-[#1A1A1A] border border-[#3E3E3E]">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="h-3 w-3 rounded-full shrink-0" style={{ backgroundColor: CHART_COLORS[i % CHART_COLORS.length] }} />
+                      <span className="text-xs font-bold text-white truncate">{item.name}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-xs font-mono font-bold">
+                      <span className="text-white">{item.value}</span>
+                      <span className="text-slate-400 font-normal">({pct}%)</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </motion.div>
 
