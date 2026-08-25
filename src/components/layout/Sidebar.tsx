@@ -136,7 +136,7 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
       {/* Role Badge */}
       {!collapsed && (
         <div className="px-3 pt-3 pb-1">
-          <div className="flex items-center justify-center gap-1.5 rounded-lg bg-blue-500/10 py-1.5 px-3 text-xs font-bold text-sky-400 border border-sky-500/20">
+          <div className="flex items-center justify-center gap-1.5 rounded-lg bg-blue-500/15 py-1.5 px-3 text-xs font-bold text-sky-400 border border-sky-500/30 shadow-xs">
             <Shield className="h-3.5 w-3.5 text-sky-400" />
             {ROLE_LABELS[currentUser.role]}
           </div>
@@ -157,12 +157,12 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
                 collapsed && 'justify-center px-0',
                 isActive
                   ? 'bg-[#383838] text-white font-extrabold border-l-4 border-sky-400'
-                  : 'text-[#A0A0A0] hover:bg-[#303030] hover:text-white',
+                  : 'text-slate-300 hover:bg-[#303030] hover:text-white',
               )}
             >
               {({ isActive }) => (
                 <>
-                  <Icon className={cn('h-4 w-4 shrink-0 transition-colors', isActive ? 'text-sky-400' : 'text-slate-400 group-hover:text-white')} />
+                  <Icon className={cn('h-4 w-4 shrink-0 transition-colors', isActive ? 'text-sky-400 font-bold' : 'text-sky-400/75 group-hover:text-sky-400')} />
                   {!collapsed && <span className="truncate">{item.label}</span>}
                   {collapsed && (
                     <div className="pointer-events-none absolute left-full z-50 ml-2 hidden rounded-md bg-[#1A1A1A] border border-[#3E3E3E] px-3 py-1.5 text-xs font-bold text-sky-400 shadow-lg group-hover:block">
