@@ -136,8 +136,8 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
       {/* Role Badge */}
       {!collapsed && (
         <div className="px-3 pt-3 pb-1">
-          <div className="flex items-center justify-center gap-1.5 rounded-lg bg-blue-500/15 py-1.5 px-3 text-xs font-bold text-sky-400 border border-sky-500/30 shadow-xs">
-            <Shield className="h-3.5 w-3.5 text-sky-400" />
+          <div className="flex items-center justify-center gap-1.5 rounded-lg bg-[#303030] py-1.5 px-3 text-xs font-bold text-slate-300 border border-[#3E3E3E]">
+            <Shield className="h-3.5 w-3.5 text-slate-400" />
             {ROLE_LABELS[currentUser.role]}
           </div>
         </div>
@@ -156,13 +156,13 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
                 'group relative flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-bold transition-all duration-150',
                 collapsed && 'justify-center px-0',
                 isActive
-                  ? 'bg-[#383838] text-white font-extrabold border-l-4 border-sky-400'
-                  : 'text-slate-300 hover:bg-[#303030] hover:text-white',
+                  ? 'bg-[#383838] text-white font-extrabold border-l-4 border-slate-300'
+                  : 'text-[#A0A0A0] hover:bg-[#303030] hover:text-white',
               )}
             >
               {({ isActive }) => (
                 <>
-                  <Icon className={cn('h-4 w-4 shrink-0 transition-colors', isActive ? 'text-sky-400 font-bold' : 'text-sky-400/75 group-hover:text-sky-400')} />
+                  <Icon className={cn('h-4 w-4 shrink-0 transition-colors', isActive ? 'text-white font-bold' : 'text-slate-400 group-hover:text-white')} />
                   {!collapsed && <span className="truncate">{item.label}</span>}
                   {collapsed && (
                     <div className="pointer-events-none absolute left-full z-50 ml-2 hidden rounded-md bg-[#1A1A1A] border border-[#3E3E3E] px-3 py-1.5 text-xs font-bold text-sky-400 shadow-lg group-hover:block">

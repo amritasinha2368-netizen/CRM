@@ -68,7 +68,7 @@ export function TopNav({ onMenuToggle }: TopNavProps) {
       <div className="flex w-full items-center gap-4 px-4 lg:px-6">
         {/* Left */}
         <div className="flex items-center gap-3">
-          <button onClick={onMenuToggle} className="flex h-9 w-9 items-center justify-center rounded-lg text-sky-400 hover:bg-[#383838] lg:hidden">
+          <button onClick={onMenuToggle} className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-300 hover:bg-[#383838] lg:hidden">
             <Menu className="h-5 w-5" />
           </button>
           <nav className="hidden items-center gap-1 text-xs md:flex">
@@ -80,7 +80,7 @@ export function TopNav({ onMenuToggle }: TopNavProps) {
               <span key={crumb.path} className="flex items-center gap-1">
                 <ChevronRight className="h-3.5 w-3.5 text-slate-500" />
                 {crumb.isLast ? (
-                  <span className="rounded-lg bg-blue-500/10 border border-sky-500/20 px-2.5 py-1 font-bold text-sky-400">{crumb.label}</span>
+                  <span className="rounded-lg bg-[#383838] border border-[#555555] px-2.5 py-1 font-bold text-white">{crumb.label}</span>
                 ) : (
                   <Link to={crumb.path} className="rounded-lg px-2 py-1 text-slate-400 font-medium hover:bg-[#383838] hover:text-white">{crumb.label}</Link>
                 )}
@@ -96,7 +96,7 @@ export function TopNav({ onMenuToggle }: TopNavProps) {
 
         {/* Right */}
         <div className="flex items-center gap-3">
-          <button className="flex h-9 w-9 items-center justify-center rounded-lg text-sky-400 hover:bg-[#383838] md:hidden">
+          <button className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-300 hover:bg-[#383838] md:hidden">
             <Search className="h-5 w-5" />
           </button>
 
