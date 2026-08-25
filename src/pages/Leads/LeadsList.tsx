@@ -453,7 +453,7 @@ export default function LeadsList() {
                     <td className="px-4 py-3.5 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                       <button onClick={() => toggleSelect(lead.id)}>
                         {selectedIds.has(lead.id) ? (
-                          <CheckSquare className="h-4 w-4 text-[#FFA116]" />
+                          <CheckSquare className="h-4 w-4 text-blue-500" />
                         ) : (
                           <Square className="h-4 w-4 text-[#555555]" />
                         )}
@@ -461,12 +461,12 @@ export default function LeadsList() {
                     </td>
                     <td className="px-4 py-3.5 whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md bg-[#FFA116] text-xs font-black text-[#1A1A1A]">
+                        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md bg-blue-600 text-xs font-bold text-white shadow-xs">
                           {getInitials(lead.name)}
                         </div>
                         <div className="min-w-0">
                           <p className="font-bold text-white whitespace-nowrap">{lead.name}</p>
-                          <p className="text-xs text-[#FFA116] font-mono whitespace-nowrap">{lead.id}</p>
+                          <p className="text-xs text-sky-400 font-mono whitespace-nowrap">{lead.id}</p>
                         </div>
                       </div>
                     </td>
@@ -505,13 +505,13 @@ export default function LeadsList() {
                             style={{ width: `${lead.leadScore}%` }}
                           />
                         </div>
-                        <span className="text-xs font-bold text-[#FFA116] font-mono">{lead.leadScore}</span>
+                        <span className="text-xs font-bold text-sky-400 font-mono">{lead.leadScore}</span>
                       </div>
                     </td>
                     <td className="px-4 py-3.5 whitespace-nowrap">
                       {assignedUser ? (
                         <div className="flex items-center gap-2 whitespace-nowrap">
-                          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#383838] border border-[#555555] text-[10px] font-bold text-[#FFA116]">
+                          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[#383838] border border-[#555555] text-[10px] font-bold text-sky-400">
                             {getInitials(assignedUser.name)}
                           </div>
                           <span className="text-xs text-slate-200 font-bold whitespace-nowrap">{assignedUser.name}</span>
