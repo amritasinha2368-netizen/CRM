@@ -43,10 +43,11 @@ const AVATAR_COLOR_PALETTES = [
   'bg-violet-500/20 text-violet-300 border border-violet-500/30',
 ];
 
-const getAvatarStyle = (str: string) => {
+const getAvatarStyle = (str?: string) => {
+  const safeStr = str || 'Lead';
   let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  for (let i = 0; i < safeStr.length; i++) {
+    hash = safeStr.charCodeAt(i) + ((hash << 5) - hash);
   }
   const index = Math.abs(hash) % AVATAR_COLOR_PALETTES.length;
   return AVATAR_COLOR_PALETTES[index];

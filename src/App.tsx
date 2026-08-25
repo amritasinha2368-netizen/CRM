@@ -1,9 +1,10 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAppStore } from './store';
 import { AppLayout } from './components/layout/AppLayout';
-import { AuthLayout } from './components/layout/AuthLayout';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
+import SignUp from './pages/SignUp';
+import Dashboard from './pages/Dashboard';
 import SuperAdminDashboard from './pages/dashboards/SuperAdminDashboard';
 import MarketingDashboard from './pages/dashboards/MarketingDashboard';
 import TeamLeaderDashboard from './pages/dashboards/TeamLeaderDashboard';
@@ -29,36 +30,31 @@ import Settings from './pages/Settings';
 
 function DashboardRouter() {
   const { currentUser } = useAppStore();
-  if (!currentUser) return <Navigate to="/" />;
-  switch (currentUser.role) {
-    case 'super_admin': return <SuperAdminDashboard />;
+  const userRole = currentUser?.role || 'super_admin';
+  switch (userRole) {
+    case 'super_admin': return <Dashboard />;
     case 'crm_admin': return <MarketingDashboard />;
     case 'team_leader': return <TeamLeaderDashboard />;
     case 'counsellor': return <CounsellorDashboard />;
     case 'admissions': return <AdmissionsDashboard />;
-    default: return <SuperAdminDashboard />;
+    default: return <Dashboard />;
   }
 }
 
 export default function App() {
-  const { currentUser } = useAppStore();
-  const isAuthenticated = !!currentUser;
-
   return (
     <Routes>
-      {/* Public Landing */}
+      {/* Public Pages */}
       <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
 
-      {/* Auth */}
-      <Route element={isAuthenticated ? <Navigate to="/dashboard" /> : <AuthLayout />}>
-        <Route path="/login" element={<Login />} />
-      </Route>
-
-      {/* Protected App */}
-      <Route element={isAuthenticated ? <AppLayout /> : <Navigate to="/" />}>
+      {/* Protected App Pages */}
+      <Route element={<AppLayout />}>
         <Route path="/dashboard" element={<DashboardRouter />} />
         <Route path="/leads" element={<LeadsList />} />
         <Route path="/my-leads" element={<LeadsList />} />
+        <Route path="/leads/my" element={<LeadsList />} />
         <Route path="/pipeline" element={<Pipeline />} />
         <Route path="/leads/:leadId" element={<LeadProfile />} />
         <Route path="/follow-ups" element={<FollowUps />} />
@@ -77,7 +73,8 @@ export default function App() {
         <Route path="/settings" element={<Settings />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/" />} />
+      {/* Catch-all fallback */}
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }
