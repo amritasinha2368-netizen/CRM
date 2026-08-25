@@ -76,7 +76,8 @@ function formatDate(dateStr: string) {
 
 export default function LeadsList() {
   const navigate = useNavigate()
-  const { leads, counsellors, deleteLead } = useAppStore()
+  const { leads, deleteLead } = useAppStore()
+  const counsellorsList = useMemo(() => users.filter((u) => u.role === 'counsellor' || u.role === 'team_leader' || u.role === 'super_admin' || u.role === 'crm_admin'), [])
 
   const [search, setSearch] = useState('')
   const [courseFilter, setCourseFilter] = useState('')
@@ -325,7 +326,7 @@ export default function LeadsList() {
                     className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-[#FFA116] focus:outline-none"
                   >
                     <option value="">All Counsellors</option>
-                    {counsellors.map((u) => (
+                    {counsellorsList.map((u) => (
                       <option key={u.id} value={u.id}>{u.name}</option>
                     ))}
                   </select>
