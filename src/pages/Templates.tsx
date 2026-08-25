@@ -46,7 +46,7 @@ export default function Templates() {
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Templates</h1>
-          <p className="text-xs font-bold text-[#FFA116] mt-1">Manage WhatsApp, SMS and Email templates for automated communications</p>
+          <p className="text-xs font-medium text-slate-400 mt-1">Manage WhatsApp, SMS and Email templates for automated communications</p>
         </div>
         <button
           onClick={() => { setEditingTemplate(null); setShowModal(true); }}

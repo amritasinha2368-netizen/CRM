@@ -369,7 +369,7 @@ export default function Reports() {
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Reports & Analytics</h1>
-          <p className="text-xs font-bold text-[#FFA116] mt-1">Comprehensive Business Intelligence & Conversion Metrics</p>
+          <p className="text-xs font-medium text-slate-400 mt-1">Comprehensive Business Intelligence & Conversion Metrics</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <select

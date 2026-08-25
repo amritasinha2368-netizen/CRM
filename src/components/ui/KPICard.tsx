@@ -42,7 +42,7 @@ export default function KPICard({
     >
       <div className="relative flex items-start justify-between">
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">{title}</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-400">{title}</p>
           <div className="mt-2 flex items-baseline gap-1">
             <AnimatedCounter
               value={value}
@@ -59,7 +59,7 @@ export default function KPICard({
             <span className="font-normal text-slate-400">vs last month</span>
           </div>
         </div>
-        <div className="rounded-lg bg-[#303030] border border-[#3E3E3E] p-3 text-[#FFA116] group-hover:bg-[#FFA116] group-hover:text-[#1A1A1A] transition-colors">
+        <div className="rounded-lg bg-[#303030] border border-[#3E3E3E] p-3 text-slate-300 group-hover:bg-[#FFA116] group-hover:text-[#1A1A1A] transition-colors">
           <Icon className="h-5 w-5" />
         </div>
       </div>

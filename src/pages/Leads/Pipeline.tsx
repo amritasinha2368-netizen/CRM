@@ -91,7 +91,7 @@ export default function Pipeline() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Pipeline</h1>
-          <p className="mt-1 text-xs font-bold text-[#FFA116]">
+          <p className="mt-1 text-xs font-medium text-slate-400">
             {filteredLeads.length} lead{filteredLeads.length !== 1 ? 's' : ''} across {stages.length} stages
           </p>
         </div>

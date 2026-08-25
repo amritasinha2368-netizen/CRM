@@ -44,11 +44,11 @@ export default function AdmissionsDashboard() {
       <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-[#3E3E3E] bg-[#282828] p-6 shadow-xl">
         <div className="flex items-center gap-2 mb-1">
           <GraduationCap className="h-4 w-4 text-[#FFA116]" />
-          <span className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Admissions & Finance Dashboard</span>
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Admissions & Finance Dashboard</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-black text-white">{greeting}, {currentUser.name.split(' ')[0]} 👋</h1>
-        <p className="mt-1 text-xs font-bold text-slate-400">
-          <CalendarDays className="mr-1.5 inline h-3.5 w-3.5 text-[#FFA116]" />
+        <p className="mt-1 text-xs font-medium text-slate-400">
+          <CalendarDays className="mr-1.5 inline h-3.5 w-3.5 text-slate-400" />
           {formatDate(new Date())} &bull; {pending} applications pending review
         </p>
       </motion.div>

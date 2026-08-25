@@ -116,8 +116,8 @@ export default function Team() {
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Team Performance</h1>
-          <p className="text-xs font-bold text-[#FFA116] mt-1">Manage active counsellors, team leaders and track key conversion metrics</p>
+          <h1 className="text-2xl font-black text-white tracking-tight">Team Performance & Management</h1>
+          <p className="text-xs font-medium text-slate-400 mt-1">Manage active counsellors, team leaders and track key conversion metrics</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] p-0.5">

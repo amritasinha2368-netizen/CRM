@@ -34,8 +34,8 @@ export default function CounsellorDashboard() {
       {/* Top Banner */}
       <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-[#3E3E3E] bg-[#282828] p-6 shadow-xl">
         <h1 className="text-2xl sm:text-3xl font-black text-white">{greeting}, {currentUser.name.split(' ')[0]} 👋</h1>
-        <p className="mt-1 text-xs font-bold text-slate-400">
-          <CalendarDays className="mr-1.5 inline h-3.5 w-3.5 text-[#FFA116]" />
+        <p className="mt-1 text-xs font-medium text-slate-400">
+          <CalendarDays className="mr-1.5 inline h-3.5 w-3.5 text-slate-400" />
           {formatDate(new Date())} &bull; You have {overdue.length} leads to follow up today
         </p>
       </motion.div>
@@ -52,7 +52,7 @@ export default function CounsellorDashboard() {
           { label: 'Admissions', value: enrolled.length, icon: GraduationCap },
         ].map((s) => (
           <div key={s.label} className="rounded-xl border border-[#3E3E3E] bg-[#282828] p-3 text-center shadow-lg hover:border-[#FFA116] transition-all cursor-pointer">
-            <div className="mx-auto mb-2 h-9 w-9 rounded-lg bg-[#1A1A1A] border border-[#3E3E3E] text-[#FFA116] flex items-center justify-center">
+            <div className="mx-auto mb-2 h-9 w-9 rounded-lg bg-[#1A1A1A] border border-[#3E3E3E] text-slate-300 flex items-center justify-center">
               <s.icon className="h-4 w-4" />
             </div>
             <p className="text-xl font-black text-white font-mono">{s.value}</p>

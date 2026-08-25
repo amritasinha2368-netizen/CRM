@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import {
   AreaChart, Area, PieChart, Pie, Cell, BarChart, Bar,
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from 'recharts';
 import { cn, formatCurrency, formatDate } from '@/lib/utils';
 import { useAppStore } from '@/store';
@@ -71,16 +71,6 @@ export default function Dashboard() {
     count: applications.filter((a) => a.courseId === c.id && a.status === 'enrolled').length,
   })), []);
 
-  const counsellorPerf = useMemo(() => {
-    const perf: Record<string, number> = {};
-    leads.forEach((l) => { if (l.assignedTo) perf[l.assignedTo] = (perf[l.assignedTo] || 0) + 1; });
-    return Object.entries(perf).map(([id, count]) => ({ name: id, count })).sort((a, b) => b.count - a.count).slice(0, 6);
-  }, []);
-
-  const revenueTrend = useMemo(() => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map((m, i) => ({
-    month: m, revenue: Math.floor(Math.random() * 300000) + 200000 + i * 50000,
-  })), []);
-
   const recentLeads = useMemo(() => [...leads].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5), []);
 
   const maxFunnel = Math.max(...funnelData.map((f) => f.count), 1);
@@ -99,22 +89,22 @@ export default function Dashboard() {
           <div>
             <div className="flex items-center gap-2 mb-1">
               <Sparkles className="h-4 w-4 text-[#FFA116]" />
-              <span className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">QuantNexa AI CRM &bull; Super Admin Intelligence Center</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">QuantNexa AI CRM &bull; Super Admin Intelligence Center</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white">
               {greeting}, {currentUser.name.split(' ')[0]} 👋
             </h1>
-            <p className="mt-1 text-xs font-bold text-slate-400">
-              <CalendarDays className="mr-1.5 inline h-3.5 w-3.5 text-[#FFA116]" />
+            <p className="mt-1 text-xs font-medium text-slate-400">
+              <CalendarDays className="mr-1.5 inline h-3.5 w-3.5 text-slate-400" />
               {formatDate(new Date())} &bull; System performance & metrics overview
             </p>
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/reports')}
-              className="flex items-center gap-2 rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-4 py-2.5 text-xs font-bold text-white hover:bg-[#383838] hover:text-[#FFA116] transition-all cursor-pointer"
+              className="flex items-center gap-2 rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-4 py-2.5 text-xs font-bold text-white hover:bg-[#383838] transition-all cursor-pointer"
             >
-              <FileBarChart className="h-4 w-4 text-[#FFA116]" />
+              <FileBarChart className="h-4 w-4 text-slate-300" />
               View Reports
             </button>
             <button
@@ -143,7 +133,7 @@ export default function Dashboard() {
       {/* Charts */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className={cardStyle}>
-          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Lead Acquisition Trend</h3></div>
+          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-white">Lead Acquisition Trend</h3></div>
           <div className="p-5">
             <ResponsiveContainer width="100%" height={260}>
               <AreaChart data={leadTrend}>
@@ -164,7 +154,7 @@ export default function Dashboard() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className={cardStyle}>
-          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Lead Source Distribution</h3></div>
+          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-white">Lead Source Distribution</h3></div>
           <div className="p-5">
             <ResponsiveContainer width="100%" height={260}>
               <PieChart>
@@ -179,7 +169,7 @@ export default function Dashboard() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className={cardStyle}>
-          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Conversion Funnel</h3></div>
+          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-white">Conversion Funnel</h3></div>
           <div className="p-5">
             <div className="space-y-3">
               {funnelData.map((f, i) => (
@@ -201,7 +191,7 @@ export default function Dashboard() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className={cardStyle}>
-          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Course-wise Admissions</h3></div>
+          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-white">Course-wise Admissions</h3></div>
           <div className="p-5">
             <ResponsiveContainer width="100%" height={260}>
               <BarChart data={courseAdmissions} barSize={28}>
@@ -221,15 +211,15 @@ export default function Dashboard() {
       {/* Recent Leads + Quick Actions */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className={cn(cardStyle, 'lg:col-span-2')}>
-          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Recent Leads</h3></div>
+          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-white">Recent Leads</h3></div>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-[#3E3E3E] bg-[#1A1A1A]">
-                  <th className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Name</th>
-                  <th className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Course</th>
-                  <th className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Status</th>
-                  <th className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-[#A0A0A0]">Source</th>
+                  <th className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-slate-400">Name</th>
+                  <th className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-slate-400">Course</th>
+                  <th className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-slate-400">Status</th>
+                  <th className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-slate-400">Source</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#3E3E3E]">
@@ -254,7 +244,7 @@ export default function Dashboard() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65 }} className={cardStyle}>
-          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Quick Actions</h3></div>
+          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-white">Quick Actions</h3></div>
           <div className="p-5 space-y-2.5">
             {[
               { label: 'Add New Lead', icon: Plus, href: '/leads' },
@@ -267,7 +257,7 @@ export default function Dashboard() {
                 onClick={() => navigate(action.href)}
                 className="flex w-full items-center gap-3 rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] p-3 text-left transition-all hover:border-[#FFA116] hover:bg-[#303030] cursor-pointer group"
               >
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#282828] text-[#FFA116] border border-[#3E3E3E] group-hover:bg-[#FFA116] group-hover:text-[#1A1A1A] transition-colors">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#282828] text-slate-300 border border-[#3E3E3E] group-hover:bg-[#FFA116] group-hover:text-[#1A1A1A] transition-colors">
                   <action.icon className="h-4 w-4" />
                 </div>
                 <span className="flex-1 text-xs font-bold text-white">{action.label}</span>
