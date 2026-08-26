@@ -568,15 +568,11 @@ export default function PublicEnrollmentForm() {
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => navigate('/leads')}
-                  className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-sky-600 hover:bg-sky-500 py-3 text-xs font-bold text-white shadow-lg transition-colors"
-                >
-                  <GraduationCap className="h-4 w-4" />
-                  View Lead in CRM Portal
-                </button>
+              <div className="flex flex-col gap-3 pt-2">
+                <div className="rounded-xl border border-sky-500/30 bg-sky-500/10 p-3.5 text-xs text-sky-200 flex items-center justify-center gap-2">
+                  <Phone className="h-4 w-4 text-sky-400 animate-pulse" />
+                  <span>Please keep your phone active. Counsellor <b>Priya Verma</b> will call you shortly.</span>
+                </div>
                 <button
                   type="button"
                   onClick={() => {
@@ -589,9 +585,9 @@ export default function PublicEnrollmentForm() {
                     setOtpVerified(false);
                     setOtpSent(false);
                   }}
-                  className="flex-1 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 py-3 text-xs font-bold text-slate-300 transition-colors"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 py-3 text-xs font-bold text-slate-300 transition-colors"
                 >
-                  Submit Another Response
+                  Submit Another Student Application
                 </button>
               </div>
             </motion.div>
