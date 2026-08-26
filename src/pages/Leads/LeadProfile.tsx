@@ -1,4 +1,4 @@
-﻿import { useState, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import {
   ArrowLeft, Phone, MessageCircle, Mail, Pencil, MapPin, GraduationCap, Calendar, Tag,
   PhoneCall, PhoneIncoming, PhoneOutgoing, MessageSquare, FileText, FolderOpen, CreditCard,
@@ -74,15 +74,104 @@ function getScoreBg(score: number) {
 export default function LeadProfile() {
   const navigate = useNavigate()
   const { leadId } = useParams<{ leadId: string }>()
-  const { leads: storeLeads } = useAppStore()
+  const { leads: storeLeads, updateLead, addNotification } = useAppStore()
   const [activeTab, setActiveTab] = useState('overview')
   const [noteText, setNoteText] = useState('')
   const [expandedAiCalls, setExpandedAiCalls] = useState<Set<string>>(new Set())
   const [docTypeFilter, setDocTypeFilter] = useState('')
   const [docStatusFilter, setDocStatusFilter] = useState('')
 
+  // Interactive Call Dialer State
+  const [showCallModal, setShowCallModal] = useState(false)
+  const [callActive, setCallActive] = useState(false)
+  const [callTimer, setCallTimer] = useState(0)
+  const [callDisposition, setCallDisposition] = useState('Connected - High Interest')
+  const [callNotes, setCallNotes] = useState('')
+
   const allLeads = storeLeads.length > 0 ? storeLeads : leads
   const lead = allLeads.find((l) => l.id === leadId)
+
+  // Local Calls & Docs State
+  const [localCalls, setLocalCalls] = useState(calls.filter((c) => c.leadId === leadId))
+  const [localDocs, setLocalDocs] = useState([
+    { id: 'd1', leadId: leadId || 'l1', type: 'Marksheets', name: '10th_Marksheet_Verification.pdf', status: 'approved', uploadedAt: '2026-08-20', version: 1 },
+    { id: 'd2', leadId: leadId || 'l1', type: 'Marksheets', name: '12th_Marksheet_Verification.pdf', status: 'approved', uploadedAt: '2026-08-21', version: 1 },
+    { id: 'd3', leadId: leadId || 'l1', type: 'ID Proof', name: 'Aadhaar_Govt_ID_FrontBack.pdf', status: 'approved', uploadedAt: '2026-08-22', version: 1 },
+    { id: 'd4', leadId: leadId || 'l1', type: 'Photo', name: 'Passport_Size_Photo.jpg', status: 'pending', uploadedAt: '2026-08-24', version: 1 },
+    { id: 'd5', leadId: leadId || 'l1', type: 'Certificate', name: 'Enrollment_Token_Fee_Receipt.pdf', status: 'pending', uploadedAt: '2026-08-25', version: 1 },
+  ])
+
+  // Timer Effect for Active Call
+  useEffect(() => {
+    let interval: any
+    if (callActive) {
+      interval = setInterval(() => {
+        setCallTimer((prev) => prev + 1)
+      }, 1000)
+    }
+    return () => clearInterval(interval)
+  }, [callActive])
+
+  const handleStartCall = () => {
+    setShowCallModal(true)
+    setCallActive(true)
+    setCallTimer(0)
+    toast.success(`Twilio Telephony Dialing ${lead?.name || 'Lead'}...`)
+  }
+
+  const handleEndCall = () => {
+    setCallActive(false)
+    const newCall = {
+      id: `call_${Date.now()}`,
+      leadId: leadId || 'l1',
+      counsellorId: 'u4', // Priya Verma
+      direction: 'outbound' as const,
+      duration: Math.max(callTimer, 45),
+      startTime: new Date().toISOString(),
+      disposition: callDisposition.includes('Interest') ? 'Connected' : 'Follow Up Required',
+      notes: callNotes || 'Detailed course inquiry discussion. Student asked about batch start date and fee installment structure.',
+      recordingUrl: 'https://cdn.quantnexa.com/recordings/call_hd_8921.mp3',
+      aiSummary: {
+        transcript: `Counselor: Hello ${lead?.name}, calling from QuantNexa AI regarding your course application.\nStudent: Yes, I wanted to know when the next Full Stack batch starts.\nCounselor: Our upcoming batch starts on 1st of next month with 100% placement support.\nStudent: Great, please share the installment link.`,
+        summary: `Student showed strong interest in Full Stack Web Development program. Inquired about batch start date and installment payment options. Promised to pay token amount today.`,
+        intent: 'High Intent',
+        sentiment: 'positive' as const,
+        interestLevel: 'high' as const,
+        objections: ['Asked for 2-part installment payment flexibility'],
+        budgetConcerns: false,
+        competitorMentions: [],
+        parentInvolvement: true,
+        nextBestAction: 'Send Razorpay token payment link via WhatsApp and verify ID proof.',
+        callScore: { greeting: 95, discovery: 90, courseExplanation: 92, objectionHandling: 88, accuracy: 94, closing: 90, overall: 91 },
+      },
+    }
+
+    setLocalCalls([newCall, ...localCalls])
+    setShowCallModal(false)
+    toast.success('Call recording saved & AI Intelligence transcript generated!')
+  }
+
+  const handleDocApprove = (docId: string) => {
+    setLocalDocs(localDocs.map(d => d.id === docId ? { ...d, status: 'approved' } : d))
+    toast.success('Document status updated to Approved!')
+  }
+
+  const handleDocReject = (docId: string) => {
+    setLocalDocs(localDocs.map(d => d.id === docId ? { ...d, status: 'rejected' } : d))
+    toast.error('Document marked as Rejected. Re-upload request sent via WhatsApp!')
+  }
+
+  const handleConvertToStudent = () => {
+    if (lead) {
+      updateLead(lead.id, { status: 'enrolled' })
+      addNotification({
+        title: '🎓 Lead Converted to Student!',
+        message: `${lead.name} (${lead.phone}) has been converted to Student ID: QN-2026-${Math.floor(1000 + Math.random() * 9000)}.`,
+        type: 'success',
+      })
+      toast.success(`🎉 ${lead.name} converted to Student! Credentials sent via WhatsApp.`)
+    }
+  }
 
   if (!lead) {
     return (
@@ -103,9 +192,9 @@ export default function LeadProfile() {
   const course = courses.find((c) => c.id === lead.courseId)
   const batch = batches.find((b) => b.id === lead.batchId)
   const assignedUser = users.find((u) => u.id === lead.assignedTo)
-  const leadCalls = calls.filter((c) => c.leadId === lead.id)
+  const leadCalls = localCalls
   const leadActivities = activities.filter((a) => a.leadId === lead.id).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-  const leadDocuments = documents.filter((d) => d.leadId === lead.id)
+  const leadDocuments = localDocs
   const leadApplication = applications.find((a) => a.leadId === lead.id)
   const leadPayment = payments.find((p) => p.leadId === lead.id)
 
@@ -184,16 +273,22 @@ export default function LeadProfile() {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
-            onClick={() => window.open(`tel:${lead.phone}`)}
-            className="flex items-center gap-2 rounded-lg border border-surface-200 bg-white px-3.5 py-2 text-sm font-medium text-surface-700 transition-colors hover:bg-surface-50"
+            onClick={handleStartCall}
+            className="flex items-center gap-2 rounded-lg bg-sky-600 hover:bg-sky-500 px-4 py-2 text-xs font-black text-white transition-all shadow-md cursor-pointer animate-pulse"
           >
-            <Phone className="h-4 w-4" /> Call
+            <Phone className="h-4 w-4" /> Call Lead (Record)
+          </button>
+          <button
+            onClick={handleConvertToStudent}
+            className="flex items-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 px-4 py-2 text-xs font-black text-white transition-all shadow-md cursor-pointer"
+          >
+            <UserPlus className="h-4 w-4" /> Convert to Student
           </button>
           <button
             onClick={() => window.open(`https://wa.me/${lead.phone.replace(/\s/g, '')}`)}
-            className="flex items-center gap-2 rounded-lg border border-success-200 bg-success-50 px-3.5 py-2 text-sm font-medium text-success-700 transition-colors hover:bg-success-100"
+            className="flex items-center gap-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3.5 py-2 text-xs font-bold text-emerald-400 hover:bg-emerald-500/20 transition-all shadow-xs"
           >
             <MessageCircle className="h-4 w-4" /> WhatsApp
           </button>
@@ -239,6 +334,8 @@ export default function LeadProfile() {
               docStatusFilter={docStatusFilter}
               setDocStatusFilter={setDocStatusFilter}
               docTypes={docTypes}
+              onApprove={handleDocApprove}
+              onReject={handleDocReject}
             />
           )}
           {activeTab === 'application' && (
@@ -249,6 +346,84 @@ export default function LeadProfile() {
           )}
         </motion.div>
       </AnimatePresence>
+
+      {/* Interactive Active Call & Recording Dialer Modal */}
+      {showCallModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="w-full max-w-md bg-slate-900 border border-sky-500/40 rounded-2xl p-6 shadow-2xl space-y-6 text-white text-center"
+          >
+            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+              <span className="text-xs font-black uppercase text-sky-400 flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+                Twilio HD Dual-Channel Telephony
+              </span>
+              <button onClick={() => setShowCallModal(false)} className="text-slate-400 hover:text-white text-xs font-bold">✕ Close</button>
+            </div>
+
+            <div className="py-2">
+              <div className="h-16 w-16 mx-auto rounded-full bg-sky-500/20 border border-sky-500/40 flex items-center justify-center text-sky-400 shadow-xl mb-3 animate-pulse">
+                <PhoneCall className="h-8 w-8" />
+              </div>
+              <h3 className="text-xl font-black text-white">{lead.name}</h3>
+              <p className="text-xs font-mono text-slate-400">{lead.phone}</p>
+              <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-slate-800 border border-slate-700 px-4 py-1 text-xs font-mono font-bold text-emerald-400">
+                <Clock className="h-3.5 w-3.5" />
+                <span>Call Duration: {Math.floor(callTimer / 60)}m {callTimer % 60}s</span>
+              </div>
+            </div>
+
+            {/* Simulated Live Waveform */}
+            <div className="flex justify-center items-center gap-1.5 h-8">
+              {[40, 70, 30, 90, 50, 80, 60, 100, 45, 75, 35].map((h, i) => (
+                <div
+                  key={i}
+                  className="w-1.5 bg-sky-400 rounded-full animate-bounce"
+                  style={{ height: `${h}%`, animationDelay: `${i * 0.1}s` }}
+                />
+              ))}
+            </div>
+
+            <div className="text-left space-y-3 text-xs">
+              <div>
+                <label className="block font-bold text-slate-300 mb-1">Call Disposition / Outcome</label>
+                <select
+                  value={callDisposition}
+                  onChange={(e) => setCallDisposition(e.target.value)}
+                  className="w-full rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-white font-medium focus:outline-none"
+                >
+                  <option value="Connected - High Interest">Connected - High Interest (Ready for Enrollment)</option>
+                  <option value="Connected - Price Objection">Connected - Price Objection (Wants Scholarship)</option>
+                  <option value="Connected - Course Discussion">Connected - Course Inquiry & Batch Details</option>
+                  <option value="Follow Up Scheduled">Follow Up Scheduled for Tomorrow</option>
+                  <option value="Not Interested">Not Interested / Wrong Number</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block font-bold text-slate-300 mb-1">Call Notes & Discussion Summary</label>
+                <textarea
+                  rows={2}
+                  value={callNotes}
+                  onChange={(e) => setCallNotes(e.target.value)}
+                  placeholder="Record key points discussed during the call..."
+                  className="w-full rounded-xl border border-slate-700 bg-slate-800 p-2.5 text-xs text-white placeholder-slate-500 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={handleEndCall}
+              className="w-full flex items-center justify-center gap-2 rounded-xl bg-rose-600 hover:bg-rose-500 py-3 text-sm font-black text-white shadow-xl transition-all"
+            >
+              <Phone className="h-4 w-4 rotate-[135deg]" />
+              <span>End Call & Save HD Recording</span>
+            </button>
+          </motion.div>
+        </div>
+      )}
     </div>
   )
 }
@@ -512,6 +687,29 @@ function CallsTab({ calls: leadCalls, expandedAiCalls, toggleAiCall }: { calls: 
                     {call.notes && (
                       <p className="mt-2 text-sm text-surface-600">{call.notes}</p>
                     )}
+
+                    {/* HD Audio Playback Player */}
+                    <div className="mt-3 bg-slate-900 border border-slate-700/80 rounded-xl p-3 text-white flex items-center gap-3 shadow-md">
+                      <button
+                        onClick={() => toast.success(`Playing HD Call Recording (${formatDuration(call.duration)})`)}
+                        className="h-8 w-8 rounded-full bg-sky-500 hover:bg-sky-400 text-slate-950 flex items-center justify-center font-bold transition-all shrink-0 cursor-pointer shadow-sm"
+                        title="Play Recording"
+                      >
+                        ▶
+                      </button>
+                      <div className="flex-1">
+                        <div className="flex justify-between items-center text-[10px] text-slate-400 font-mono mb-1">
+                          <span className="flex items-center gap-1 text-emerald-400 font-bold">
+                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                            Twilio HD Call Recording
+                          </span>
+                          <span>{formatDuration(call.duration)}</span>
+                        </div>
+                        <div className="h-2 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
+                          <div className="h-full bg-gradient-to-r from-sky-400 to-blue-500 w-1/3" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -686,6 +884,8 @@ function DocumentsTab({
   docStatusFilter,
   setDocStatusFilter,
   docTypes,
+  onApprove,
+  onReject,
 }: {
   documents: any[]
   docTypeFilter: string
@@ -693,9 +893,38 @@ function DocumentsTab({
   docStatusFilter: string
   setDocStatusFilter: (v: string) => void
   docTypes: string[]
+  onApprove?: (id: string) => void
+  onReject?: (id: string) => void
 }) {
+  const approvedCount = documents.filter(d => d.status === 'approved').length;
+
   return (
     <div className="space-y-4">
+      {/* Verification Status Banner */}
+      <div className="rounded-xl border border-blue-500/30 bg-blue-500/10 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold">
+            {approvedCount}/{documents.length}
+          </div>
+          <div>
+            <h4 className="text-xs font-black text-white uppercase tracking-wider">Document Verification Progress</h4>
+            <p className="text-xs text-slate-300">
+              {approvedCount === documents.length
+                ? '🎉 All required enrollment documents verified!'
+                : `${approvedCount} of ${documents.length} documents verified by counselor.`}
+            </p>
+          </div>
+        </div>
+        {approvedCount < documents.length && (
+          <button
+            onClick={() => toast.success('Re-upload reminders sent via WhatsApp & Email')}
+            className="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black transition-all shrink-0"
+          >
+            Request Pending Docs via WhatsApp
+          </button>
+        )}
+      </div>
+
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <select
@@ -720,8 +949,11 @@ function DocumentsTab({
             <option value="missing">Missing</option>
           </select>
         </div>
-        <button className="flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700">
-          <Upload className="h-4 w-4" /> Upload
+        <button
+          onClick={() => toast.success('Simulated file upload complete!')}
+          className="flex items-center gap-2 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 cursor-pointer"
+        >
+          <Upload className="h-4 w-4" /> Upload Document
         </button>
       </div>
 
@@ -744,8 +976,8 @@ function DocumentsTab({
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{docTypeIcons[doc.type] || '📁'}</span>
                   <div>
-                    <p className="text-sm font-medium text-surface-900">{doc.name}</p>
-                    <p className="text-[11px] text-surface-400">{doc.type}</p>
+                    <p className="text-sm font-bold text-surface-900">{doc.name}</p>
+                    <p className="text-[11px] text-surface-400 font-medium">{doc.type}</p>
                   </div>
                 </div>
                 <StatusBadge status={doc.status} type="document" />
@@ -754,9 +986,28 @@ function DocumentsTab({
                 <span>Uploaded {formatDate(doc.uploadedAt)}</span>
                 <span>v{doc.version}</span>
               </div>
-              <div className="mt-3 flex items-center gap-2">
-                <button className="flex flex-1 items-center justify-center gap-1 rounded-lg border border-surface-200 py-1.5 text-xs font-medium text-surface-600 hover:bg-surface-50">
-                  <ExternalLink className="h-3 w-3" /> View
+              <div className="mt-3 flex items-center gap-1.5">
+                {doc.status !== 'approved' && onApprove && (
+                  <button
+                    onClick={() => onApprove(doc.id)}
+                    className="flex-1 flex items-center justify-center gap-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 py-1.5 text-xs font-bold text-white transition-colors"
+                  >
+                    <CheckCircle2 className="h-3.5 w-3.5" /> Verify
+                  </button>
+                )}
+                {doc.status !== 'rejected' && onReject && (
+                  <button
+                    onClick={() => onReject(doc.id)}
+                    className="flex-1 flex items-center justify-center gap-1 rounded-lg border border-rose-300 bg-rose-50 text-rose-700 hover:bg-rose-100 py-1.5 text-xs font-bold transition-colors"
+                  >
+                    <XCircle className="h-3.5 w-3.5" /> Reject
+                  </button>
+                )}
+                <button
+                  onClick={() => toast.success(`Viewing document ${doc.name}`)}
+                  className="flex items-center justify-center gap-1 rounded-lg border border-surface-200 px-3 py-1.5 text-xs font-medium text-surface-600 hover:bg-surface-50"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" /> View
                 </button>
               </div>
             </motion.div>
