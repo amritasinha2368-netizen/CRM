@@ -437,4 +437,12 @@ html.light .bg-teal-200\/90, html.light .bg-teal-100 { background-color: #99f6e4
 html.light .bg-violet-200\/90, html.light .bg-violet-100 { background-color: #ddd6fe !important; color: #2e1065 !important; border-color: #a78bfa !important; }
 html.light .bg-amber-200\/90, html.light .bg-amber-100 { background-color: #fde68a !important; color: #451a03 !important; border-color: #fbbf24 !important; }
 html.light .bg-rose-200\/90, html.light .bg-rose-100, html.light .bg-rose-300 { background-color: #fecdd3 !important; color: #4c0519 !important; border-color: #fb7185 !important; }
-html.light .bg-fuchsia-200\/90, html.light .bg-fuchsia-100 { background-color: #f5d0fe !important; color: #701a75 !important; border-color: #e879f9 !important; }
+/* ─── QUANTNEXA LOGO LIGHT MODE DARK-TEXT TRANSFORM ─── */
+html.light .quantnexa-logo {
+  filter: brightness(0.18) contrast(180%) !important;
+}
+
+html.dark .quantnexa-logo,
+html:not(.light) .quantnexa-logo {
+  filter: brightness(1) contrast(100%) !important;
+}

@@ -29,11 +29,11 @@ export function GOGLogo({ size = 'md', className, animate = false }: GOGLogoProp
 
   return (
     <Wrapper {...wrapperProps} className={cn('inline-flex items-center shrink-0 cursor-pointer select-none', className)}>
-      <div className="bg-gradient-to-r from-sky-50 via-white to-blue-50 dark:from-slate-900 dark:to-slate-900 border border-blue-200 dark:border-slate-700/80 rounded-xl px-4 py-2.5 flex items-center justify-center shadow-md ring-1 ring-blue-100 dark:ring-0 transition-all">
+      <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700/80 rounded-xl px-4 py-2.5 flex items-center justify-center shadow-sm hover:shadow-md transition-all">
         <img
           src="/logo-original.png"
           alt="QuantNexa ai Solutions Pvt. Ltd."
-          className={cn('w-auto object-contain max-w-[280px] contrast-125', hClass)}
+          className={cn('w-auto object-contain max-w-[280px] quantnexa-logo', hClass)}
         />
       </div>
     </Wrapper>
@@ -43,12 +43,12 @@ export function GOGLogo({ size = 'md', className, animate = false }: GOGLogoProp
 export function GOGLogoMark({ size = 52, className }: { size?: number; className?: string }) {
   return (
     <div className={cn('inline-flex items-center justify-center shrink-0 cursor-pointer select-none', className)}>
-      <div className="bg-gradient-to-r from-sky-50 via-white to-blue-50 dark:from-slate-900 dark:to-slate-900 border border-blue-200 dark:border-slate-700/80 rounded-xl p-2 flex items-center justify-center shadow-md ring-1 ring-blue-100 dark:ring-0">
+      <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700/80 rounded-xl p-2 flex items-center justify-center shadow-sm">
         <img
           src="/logo-mark.png"
           alt="QuantNexa ai"
           style={{ height: size }}
-          className="w-auto object-contain contrast-125"
+          className="w-auto object-contain quantnexa-logo"
         />
       </div>
     </div>
