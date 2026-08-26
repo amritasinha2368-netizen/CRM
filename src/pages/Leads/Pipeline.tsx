@@ -69,10 +69,19 @@ const sourceLabels: Record<LeadSource, string> = {
   csv_import: 'CSV', api: 'API', landing_page: 'Landing Page', other: 'Other',
 }
 
-const sourceBadgeVariant: Record<LeadSource, 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info'> = {
-  website: 'info', google_ads: 'primary', meta_ads: 'primary', instagram: 'warning',
-  whatsapp: 'success', walk_in: 'default', referral: 'success', event: 'primary',
-  csv_import: 'default', api: 'info', landing_page: 'info', other: 'default',
+const sourceBadgeStyles: Record<LeadSource, string> = {
+  google_ads: 'bg-blue-100 dark:bg-blue-950/80 text-blue-950 dark:text-blue-300 border border-blue-300 dark:border-blue-500/50 font-black',
+  meta_ads: 'bg-amber-100 dark:bg-amber-950/80 text-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-500/50 font-black',
+  website: 'bg-sky-100 dark:bg-sky-950/80 text-sky-950 dark:text-sky-300 border border-sky-300 dark:border-sky-500/50 font-black',
+  referral: 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/50 font-black',
+  instagram: 'bg-fuchsia-100 dark:bg-fuchsia-950/80 text-fuchsia-950 dark:text-fuchsia-300 border border-fuchsia-300 dark:border-fuchsia-500/50 font-black',
+  landing_page: 'bg-indigo-100 dark:bg-indigo-950/80 text-indigo-950 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-500/50 font-black',
+  whatsapp: 'bg-teal-100 dark:bg-teal-950/80 text-teal-950 dark:text-teal-300 border border-teal-300 dark:border-teal-500/50 font-black',
+  event: 'bg-purple-100 dark:bg-purple-950/80 text-purple-950 dark:text-purple-300 border border-purple-300 dark:border-purple-500/50 font-black',
+  csv_import: 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-200 border border-slate-300 dark:border-slate-700 font-extrabold',
+  api: 'bg-indigo-100 dark:bg-indigo-950/80 text-indigo-950 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-500/50 font-black',
+  walk_in: 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/50 font-black',
+  other: 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-200 border border-slate-300 dark:border-slate-700 font-extrabold',
 }
 
 export default function Pipeline() {
@@ -244,9 +253,9 @@ export default function Pipeline() {
                               );
                             })()}
                             <div className="flex items-center justify-between pt-1 border-t border-[#3E3E3E]">
-                              <Badge variant={sourceBadgeVariant[lead.source]} className="text-[10px]">
+                              <span className={cn('inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold shadow-2xs', sourceBadgeStyles[lead.source] || 'bg-slate-100 text-slate-900 border border-slate-300')}>
                                 {sourceLabels[lead.source]}
-                              </Badge>
+                              </span>
                               <div className="flex items-center gap-1 text-[10px] font-medium text-slate-400">
                                 <Clock className="h-3 w-3 text-slate-400" />
                                 {getRelativeTime(lead.updatedAt)}

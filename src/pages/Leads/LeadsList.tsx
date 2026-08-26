@@ -58,18 +58,18 @@ const sourceLabels: Record<string, string> = {
   cold_call: 'Cold Call', direct: 'Direct',
 }
 
-const sourceBadgeVariant: Record<LeadSource, 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info'> = {
-  google_ads: 'info',
-  meta_ads: 'primary',
-  website: 'info',
-  referral: 'success',
-  instagram: 'warning',
-  landing_page: 'info',
-  whatsapp: 'success',
-  event: 'warning',
-  cold_call: 'default',
-  walk_in: 'success',
-  direct: 'default',
+const sourceBadgeStyles: Record<LeadSource, string> = {
+  google_ads: 'bg-blue-100 dark:bg-blue-950/80 text-blue-950 dark:text-blue-300 border border-blue-300 dark:border-blue-500/50 font-black',
+  meta_ads: 'bg-amber-100 dark:bg-amber-950/80 text-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-500/50 font-black',
+  website: 'bg-sky-100 dark:bg-sky-950/80 text-sky-950 dark:text-sky-300 border border-sky-300 dark:border-sky-500/50 font-black',
+  referral: 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/50 font-black',
+  instagram: 'bg-fuchsia-100 dark:bg-fuchsia-950/80 text-fuchsia-950 dark:text-fuchsia-300 border border-fuchsia-300 dark:border-fuchsia-500/50 font-black',
+  landing_page: 'bg-indigo-100 dark:bg-indigo-950/80 text-indigo-950 dark:text-indigo-300 border border-indigo-300 dark:border-indigo-500/50 font-black',
+  whatsapp: 'bg-teal-100 dark:bg-teal-950/80 text-teal-950 dark:text-teal-300 border border-teal-300 dark:border-teal-500/50 font-black',
+  event: 'bg-purple-100 dark:bg-purple-950/80 text-purple-950 dark:text-purple-300 border border-purple-300 dark:border-purple-500/50 font-black',
+  cold_call: 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-200 border border-slate-300 dark:border-slate-700 font-extrabold',
+  walk_in: 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/50 font-black',
+  direct: 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-200 border border-slate-300 dark:border-slate-700 font-extrabold',
 }
 
 const statusOptions: LeadStatus[] = [
@@ -539,9 +539,9 @@ export default function LeadsList() {
                       <StatusBadge status={lead.status} type="lead" />
                     </td>
                     <td className="px-4 py-3.5 whitespace-nowrap">
-                      <Badge variant={sourceBadgeVariant[lead.source]}>
+                      <span className={cn('inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-bold shadow-2xs', sourceBadgeStyles[lead.source] || 'bg-slate-100 text-slate-900 border border-slate-300')}>
                         {sourceLabels[lead.source]}
-                      </Badge>
+                      </span>
                     </td>
                     <td className="px-4 py-3.5 whitespace-nowrap">
                       {(() => {
