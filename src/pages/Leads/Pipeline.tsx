@@ -233,7 +233,7 @@ export default function Pipeline() {
                                       <span>Score</span>
                                       <span className={cn('font-mono font-bold', scoreStyle.text)}>{lead.leadScore}</span>
                                     </div>
-                                    <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[#1A1A1A]">
+                                    <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[#1A1A1A] light:bg-[#E2E8F0]">
                                       <div
                                         className={cn('h-full rounded-full transition-all', scoreStyle.bar)}
                                         style={{ width: `${lead.leadScore}%` }}

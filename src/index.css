@@ -332,6 +332,46 @@ html.light .bg-indigo-500\/20, html.light .bg-indigo-500\/15 { background-color:
 html.light .bg-cyan-500\/20, html.light .bg-cyan-500\/15 { background-color: #ecfeff !important; border-color: #a5f3fc !important; }
 html.light .bg-violet-500\/20, html.light .bg-violet-500\/15 { background-color: #f5f3ff !important; border-color: #ddd6fe !important; }
 
+/* Dark Badge Containers Overrides for Light Mode */
+html.light .bg-slate-800,
+html.light .bg-slate-900 {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light .bg-amber-950,
+html.light .bg-amber-950\/80,
+html.light .bg-amber-950\/60,
+html.light .bg-\[\#3A2E12\] {
+  background-color: #fef3c7 !important;
+  color: #78350f !important;
+  border-color: #fde68a !important;
+}
+
+html.light .bg-emerald-950,
+html.light .bg-emerald-950\/80,
+html.light .bg-\[\#132E1F\] {
+  background-color: #d1fae5 !important;
+  color: #065f46 !important;
+  border-color: #6ee7b7 !important;
+}
+
+html.light .bg-rose-950,
+html.light .bg-rose-950\/80,
+html.light .bg-\[\#3B181A\] {
+  background-color: #ffe4e6 !important;
+  color: #9f1239 !important;
+  border-color: #fca5a5 !important;
+}
+
+html.light .bg-blue-950,
+html.light .bg-blue-950\/80 {
+  background-color: #e0f2fe !important;
+  color: #0369a1 !important;
+  border-color: #7dd3fc !important;
+}
+
 /* Primary blue buttons keep white text in light mode */
 html.light .bg-blue-600,
 html.light .bg-blue-700,
