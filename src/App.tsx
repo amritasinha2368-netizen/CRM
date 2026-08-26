@@ -52,10 +52,14 @@ export default function App() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/enroll" element={<PublicEnrollmentForm />} />
       <Route path="/apply" element={<PublicEnrollmentForm />} />
+      <Route path="/enrollment" element={<PublicEnrollmentForm />} />
+      <Route path="/enrollment-form" element={<PublicEnrollmentForm />} />
+      <Route path="/public-enroll" element={<PublicEnrollmentForm />} />
 
       {/* Protected App Pages */}
       <Route element={<AppLayout />}>
         <Route path="/dashboard" element={<DashboardRouter />} />
+        <Route path="/enroll-preview" element={<PublicEnrollmentForm />} />
         <Route path="/leads" element={<LeadsList />} />
         <Route path="/my-leads" element={<LeadsList />} />
         <Route path="/leads/my" element={<LeadsList />} />

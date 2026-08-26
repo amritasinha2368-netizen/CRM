@@ -166,6 +166,16 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
 
       {/* Navigation Links */}
       <nav className="flex-1 overflow-y-auto px-2 py-2 space-y-0.5">
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => navigate('/enroll')}
+          className="mb-3 w-full flex items-center justify-center gap-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 px-3.5 py-2 text-xs font-bold text-white transition-all cursor-pointer shadow-md"
+          title="Open the Public Student Enrollment Form"
+        >
+          <Share2 className="h-4 w-4" />
+          {!collapsed && <span>Public Enrollment</span>}
+        </motion.button>
         {filteredItems.map((item) => {
           const Icon = item.icon;
           const iconColor = NAV_ICON_COLORS[item.path] || 'text-slate-400';

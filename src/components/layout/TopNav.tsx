@@ -103,9 +103,9 @@ export function TopNav({ onMenuToggle }: TopNavProps) {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => window.open('/enroll?source=instagram', '_blank')}
+            onClick={() => navigate('/enroll')}
             className="hidden items-center gap-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 px-3.5 py-2 text-xs font-bold text-white transition-all lg:flex cursor-pointer shadow-md"
-            title="Share or preview the Public Student Enrollment Form"
+            title="Open Public Student Enrollment Form"
           >
             <Share2 className="h-4 w-4" />
             Public Enrollment Form
