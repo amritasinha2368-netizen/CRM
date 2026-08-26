@@ -32,13 +32,13 @@ export default function Admissions() {
   );
 
   const pipelineStages = [
-    { label: 'Total', count: statusCounts.total || 0, color: 'bg-surface-500' },
-    { label: 'Submitted', count: statusCounts['submitted'] || 0, color: 'bg-blue-500' },
-    { label: 'Docs Pending', count: statusCounts['documents_pending'] || 0, color: 'bg-warning-500' },
-    { label: 'Verified', count: statusCounts['verified'] || 0, color: 'bg-cyan-500' },
-    { label: 'Approved', count: statusCounts['approved'] || 0, color: 'bg-success-500' },
-    { label: 'Enrolled', count: statusCounts['enrolled'] || 0, color: 'bg-primary-600' },
-    { label: 'Rejected', count: statusCounts['rejected'] || 0, color: 'bg-danger-500' },
+    { label: 'Total', count: statusCounts.total || 0, color: 'bg-gradient-to-r from-blue-600 to-indigo-600 shadow-sm' },
+    { label: 'Submitted', count: statusCounts['submitted'] || 0, color: 'bg-gradient-to-r from-cyan-500 to-blue-500 shadow-sm' },
+    { label: 'Docs Pending', count: statusCounts['documents_pending'] || 0, color: 'bg-gradient-to-r from-amber-500 to-orange-500 shadow-sm' },
+    { label: 'Verified', count: statusCounts['verified'] || 0, color: 'bg-gradient-to-r from-indigo-500 to-purple-500 shadow-sm' },
+    { label: 'Approved', count: statusCounts['approved'] || 0, color: 'bg-gradient-to-r from-emerald-500 to-teal-500 shadow-sm' },
+    { label: 'Enrolled', count: statusCounts['enrolled'] || 0, color: 'bg-gradient-to-r from-emerald-600 to-teal-700 shadow-sm' },
+    { label: 'Rejected', count: statusCounts['rejected'] || 0, color: 'bg-gradient-to-r from-rose-500 to-red-600 shadow-sm' },
   ];
 
   const maxPipeline = Math.max(...pipelineStages.map(s => s.count), 1);
@@ -64,8 +64,8 @@ export default function Admissions() {
         <KPICard title="Pending" value={(statusCounts['submitted'] || 0) + (statusCounts['documents_pending'] || 0) + (statusCounts['draft'] || 0)} change={0} changeType="neutral" icon={Clock} color="warning" />
       </div>
 
-      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="rounded-xl border border-surface-200 bg-white p-5">
-        <h2 className="text-sm font-semibold text-surface-900 mb-4">Applications Pipeline</h2>
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="rounded-xl border border-surface-200 bg-white p-5 shadow-sm">
+        <h2 className="text-sm font-bold text-surface-900 mb-4">Applications Pipeline</h2>
         <div className="space-y-3">
           {pipelineStages.map((stage, idx) => (
             <motion.div
@@ -75,8 +75,8 @@ export default function Admissions() {
               transition={{ delay: idx * 0.05 }}
               className="flex items-center gap-3"
             >
-              <span className="text-xs text-surface-500 w-24 text-right">{stage.label}</span>
-              <div className="flex-1 h-6 bg-surface-50 rounded-full overflow-hidden">
+              <span className="text-xs font-bold text-slate-700 dark:text-surface-500 w-28 text-right">{stage.label}</span>
+              <div className="flex-1 h-6 bg-slate-100 dark:bg-surface-50 rounded-full overflow-hidden border border-slate-200 dark:border-slate-800 p-0.5 shadow-inner">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${(stage.count / maxPipeline) * 100}%` }}
@@ -84,11 +84,11 @@ export default function Admissions() {
                   className={cn('h-full rounded-full flex items-center justify-end pr-2', stage.color)}
                 >
                   {stage.count > 0 && (
-                    <span className="text-[10px] font-bold text-white">{stage.count}</span>
+                    <span className="text-[10px] font-black text-white drop-shadow-xs">{stage.count}</span>
                   )}
                 </motion.div>
               </div>
-              <span className="text-xs font-medium text-surface-700 w-6 text-right">{stage.count}</span>
+              <span className="text-xs font-bold text-slate-900 dark:text-surface-700 w-8 text-right">{stage.count}</span>
             </motion.div>
           ))}
         </div>
