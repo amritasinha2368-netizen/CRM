@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, Plus, Bell, ChevronRight, Search, LogOut, Check, Shield } from 'lucide-react';
+import { Menu, Plus, Bell, ChevronRight, Search, LogOut, Check, Shield, Sun, Moon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store';
 import { SearchInput } from '@/components/ui/SearchInput';
@@ -26,7 +26,7 @@ interface TopNavProps {
 export function TopNav({ onMenuToggle }: TopNavProps) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { currentUser, notifications, markNotificationRead, markAllNotificationsRead, switchRole, logout } = useAppStore();
+  const { currentUser, notifications, markNotificationRead, markAllNotificationsRead, switchRole, logout, theme, toggleTheme } = useAppStore();
 
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -109,6 +109,19 @@ export function TopNav({ onMenuToggle }: TopNavProps) {
             <Plus className="h-4 w-4" />
             Add Lead
           </motion.button>
+
+          {/* Theme Mode Switcher */}
+          <button
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#303030] border border-[#3E3E3E] text-slate-300 hover:text-white hover:bg-[#383838] transition-all cursor-pointer shadow-xs"
+          >
+            {theme === 'dark' ? (
+              <Sun className="h-4.5 w-4.5 text-amber-400" />
+            ) : (
+              <Moon className="h-4.5 w-4.5 text-sky-400" />
+            )}
+          </button>
 
           {/* Notifications */}
           <div ref={notifRef} className="relative">

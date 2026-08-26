@@ -1,16 +1,26 @@
 import { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store';
 import { Sidebar } from './Sidebar';
 import { TopNav } from './TopNav';
-import { SmoothMouseGlow } from '@/components/ui/MouseGlow';
 
 export function AppLayout() {
-  const { sidebarCollapsed, toggleSidebar } = useAppStore();
+  const { sidebarCollapsed, toggleSidebar, theme } = useAppStore();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    }
+  }, [theme]);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -29,7 +39,10 @@ export function AppLayout() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#1A1A1A] text-[#EFF2F6]">
+    <div className={cn(
+      "flex h-screen overflow-hidden transition-colors duration-200",
+      theme === 'light' ? "bg-[#F8FAFC] text-[#0F172A]" : "bg-[#1A1A1A] text-[#EFF2F6]"
+    )}>
 
       {/* Desktop Sidebar */}
       <div className="hidden lg:flex">

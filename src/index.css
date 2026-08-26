@@ -181,53 +181,161 @@ textarea:focus, select:focus {
   box-shadow: 0 0 0 2px #1a1a1a, 0 0 0 4px #ffa116;
 }
 
-/* ─── SITE-WIDE LEETCODE DARK MODE OVERRIDES (ZERO WHITE LEAKS) ─── */
-.bg-white {
+/* ─── SITE-WIDE DARK MODE STYLING (ACTIVE WHEN html.dark OR DEFAULT) ─── */
+html.dark .bg-white, html:not(.light) .bg-white {
   background-color: #282828 !important;
   color: #ffffff !important;
   border-color: #3e3e3e !important;
 }
 
-.bg-surface-50, .bg-slate-50, .bg-gray-50, .bg-slate-100, .bg-gray-100 {
+html.dark .bg-surface-50, html.dark .bg-slate-50, html.dark .bg-gray-50, html:not(.light) .bg-surface-50, html:not(.light) .bg-slate-50 {
   background-color: #1a1a1a !important;
   color: #ffffff !important;
 }
 
-.bg-surface-100, .bg-slate-200, .bg-gray-200 {
+html.dark .bg-surface-100, html.dark .bg-slate-200, html:not(.light) .bg-surface-100, html:not(.light) .bg-slate-200 {
   background-color: #303030 !important;
   color: #ffffff !important;
 }
 
-.text-surface-900, .text-surface-800, .text-surface-700, .text-slate-900, .text-slate-800, .text-slate-700, .text-gray-900, .text-gray-800, .text-gray-700 {
+html.dark .text-surface-900, html.dark .text-slate-900, html.dark .text-slate-800, html:not(.light) .text-surface-900, html:not(.light) .text-slate-900 {
   color: #ffffff !important;
 }
 
-.text-surface-600, .text-surface-500, .text-surface-400, .text-slate-600, .text-slate-500, .text-slate-400, .text-gray-600, .text-gray-500, .text-gray-400 {
+html.dark .text-surface-600, html.dark .text-slate-500, html.dark .text-slate-400, html:not(.light) .text-surface-600, html:not(.light) .text-slate-500 {
   color: #a0a0a0 !important;
 }
 
-.border-surface-100, .border-surface-200, .border-surface-300, .border-slate-100, .border-slate-200, .border-slate-300, .border-gray-100, .border-gray-200, .border-gray-300 {
+html.dark .border-surface-100, html.dark .border-slate-200, html.dark .border-slate-300, html:not(.light) .border-surface-100, html:not(.light) .border-slate-200 {
   border-color: #3e3e3e !important;
 }
 
-input:not([type="checkbox"]):not([type="radio"]) {
+html.dark input:not([type="checkbox"]):not([type="radio"]), html:not(.light) input:not([type="checkbox"]):not([type="radio"]) {
   background-color: #1a1a1a !important;
   color: #ffffff !important;
   border-color: #3e3e3e !important;
 }
 
-input:focus {
-  border-color: #ffa116 !important;
-  background-color: #282828 !important;
-}
-
-/* Table header & row styling */
-th {
+html.dark th, html:not(.light) th {
   background-color: #1a1a1a !important;
   color: #a0a0a0 !important;
   border-color: #3e3e3e !important;
 }
 
-td {
+html.dark td, html:not(.light) td {
   border-color: #3e3e3e !important;
+}
+
+/* ─── LIGHT MODE THEME (WHITE & LIGHT BLUE) ─── */
+html.light {
+  color-scheme: light;
+}
+
+html.light body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+html.light h1, html.light h2, html.light h3, html.light h4, html.light h5, html.light h6 {
+  color: #0f172a !important;
+}
+
+html.light .bg-\[\#1A1A1A\],
+html.light .bg-\[\#282828\],
+html.light .bg-\[\#303030\] {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+html.light .border-\[\#3E3E3E\],
+html.light .border-\[\#555555\],
+html.light .divide-\[\#3E3E3E\] > * + * {
+  border-color: #e2e8f0 !important;
+}
+
+html.light header {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light aside {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light .text-white {
+  color: #0f172a !important;
+}
+
+html.light .text-slate-300,
+html.light .text-slate-400 {
+  color: #475569 !important;
+}
+
+html.light .text-slate-200 {
+  color: #1e293b !important;
+}
+
+html.light tr.bg-\[\#282828\],
+html.light tr.bg-\[\#222222\] {
+  background-color: #ffffff !important;
+}
+
+html.light tr.bg-\[\#303030\],
+html.light tr:hover {
+  background-color: #f0f9ff !important;
+}
+
+html.light th {
+  background-color: #f1f5f9 !important;
+  color: #475569 !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light td {
+  border-color: #e2e8f0 !important;
+  color: #1e293b !important;
+}
+
+html.light input:not([type="checkbox"]):not([type="radio"]),
+html.light select,
+html.light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light input:focus,
+html.light select:focus,
+html.light textarea:focus {
+  border-color: #0284c7 !important;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15) !important;
+  background-color: #ffffff !important;
+}
+
+html.light .bg-\[\#383838\],
+html.light .bg-\[\#303030\] {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light .hover\:bg-\[\#383838\]:hover,
+html.light .hover\:bg-\[\#303030\]:hover {
+  background-color: #e0f2fe !important;
+  color: #0284c7 !important;
+}
+
+html.light ::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #0284c7;
 }
