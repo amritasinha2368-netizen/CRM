@@ -132,15 +132,25 @@ export default function Applications() {
                 </div>
 
                 {app.status !== 'rejected' && currentStepIdx >= 0 && (
-                  <div className="mt-3 flex items-center gap-1">
-                    {statusSteps.map((step, i) => (
-                      <div key={step} className="flex items-center gap-1 flex-1">
-                        <div className={cn(
-                          'h-1.5 flex-1 rounded-full transition-colors',
-                          i <= currentStepIdx ? 'bg-primary-500' : 'bg-surface-100'
-                        )} />
-                      </div>
-                    ))}
+                  <div className="mt-3.5 flex items-center gap-1.5">
+                    {statusSteps.map((step, i) => {
+                      const isFilled = i <= currentStepIdx;
+                      let barStyle = 'bg-gradient-to-r from-sky-400 to-blue-500 shadow-[0_0_8px_rgba(56,189,248,0.5)]';
+                      if (app.status === 'documents_pending') {
+                        barStyle = 'bg-gradient-to-r from-amber-400 to-orange-500 shadow-[0_0_8px_rgba(251,191,36,0.5)]';
+                      } else if (app.status === 'verified' || app.status === 'approved' || app.status === 'enrolled') {
+                        barStyle = 'bg-gradient-to-r from-emerald-400 to-teal-500 shadow-[0_0_8px_rgba(52,211,153,0.5)]';
+                      }
+
+                      return (
+                        <div key={step} className="flex items-center gap-1 flex-1" title={`${step.replace(/_/g, ' ')} (${isFilled ? 'Completed' : 'Pending'})`}>
+                          <div className={cn(
+                            'h-2 flex-1 rounded-full transition-all duration-300',
+                            isFilled ? barStyle : 'bg-[#1A1A1A] border border-[#3E3E3E]'
+                          )} />
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </motion.div>
