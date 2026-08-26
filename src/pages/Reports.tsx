@@ -116,7 +116,20 @@ export default function Reports() {
     toast.success(`Exporting report as ${format.toUpperCase()}`);
   };
 
-  const renderReport = () => {
+const FUNNEL_BAR_COLORS = [
+  '#38BDF8', // Sky Blue (New Lead)
+  '#818CF8', // Indigo (Assigned Counsellor)
+  '#22D3EE', // Cyan (Contacted Lead)
+  '#34D399', // Emerald Green (Interested Student)
+  '#C084FC', // Purple (Counselling Session)
+  '#FB7185', // Rose Pink (Visited Campus)
+  '#2DD4BF', // Teal (Application Submitted)
+  '#A78BFA', // Violet (Documents Verified)
+  '#FBBF24', // Amber (Payment Pending)
+  '#10B981', // Green (Student Enrolled)
+];
+
+const renderReport = () => {
     switch (activeReport) {
       case 'lead_funnel':
         return (
@@ -124,37 +137,35 @@ export default function Reports() {
             <div className="h-96">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={leadFunnelData} layout="vertical" margin={{ left: 40, right: 30, top: 10, bottom: 10 }}>
-                  <defs>
-                    <linearGradient id="amberGradient" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#FFA116" />
-                      <stop offset="100%" stopColor="#E08800" />
-                    </linearGradient>
-                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#3E3E3E" horizontal={false} />
                   <XAxis type="number" tick={{ fontSize: 11, fill: '#A0A0A0' }} stroke="#3E3E3E" />
                   <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: '#FFFFFF', fontWeight: 'bold' }} width={160} stroke="#3E3E3E" />
                   <Tooltip
                     contentStyle={{ backgroundColor: '#1A1A1A', borderColor: '#3E3E3E', borderRadius: '8px', color: '#fff' }}
-                    cursor={{ fill: 'rgba(255, 161, 22, 0.08)' }}
+                    cursor={{ fill: 'rgba(56, 189, 248, 0.08)' }}
                   />
-                  <Bar dataKey="count" fill="url(#amberGradient)" radius={[0, 6, 6, 0]} barSize={22} />
+                  <Bar dataKey="count" radius={[0, 6, 6, 0]} barSize={22}>
+                    {leadFunnelData.map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={FUNNEL_BAR_COLORS[index % FUNNEL_BAR_COLORS.length]} />
+                    ))}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
             {/* Stat Cards */}
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-5 lg:grid-cols-5">
-              {leadFunnelData.slice(0, 5).map((d) => (
-                <div key={d.name} className="rounded-xl bg-[#1A1A1A] border border-[#3E3E3E] p-4 text-center hover:border-[#FFA116] transition-all">
-                  <p className="text-2xl font-black text-[#FFA116] font-mono">{d.count}</p>
+              {leadFunnelData.slice(0, 5).map((d, idx) => (
+                <div key={d.name} className="rounded-xl bg-[#1A1A1A] border border-[#3E3E3E] p-4 text-center hover:border-slate-500 transition-all">
+                  <p className="text-2xl font-black font-mono" style={{ color: FUNNEL_BAR_COLORS[idx] }}>{d.count}</p>
                   <p className="text-xs font-bold text-white mt-1">{d.name}</p>
                 </div>
               ))}
             </div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-5 lg:grid-cols-5">
-              {leadFunnelData.slice(5).map((d) => (
-                <div key={d.name} className="rounded-xl bg-[#1A1A1A] border border-[#3E3E3E] p-4 text-center hover:border-[#FFA116] transition-all">
-                  <p className="text-2xl font-black text-[#2CBB5D] font-mono">{d.count}</p>
+              {leadFunnelData.slice(5).map((d, idx) => (
+                <div key={d.name} className="rounded-xl bg-[#1A1A1A] border border-[#3E3E3E] p-4 text-center hover:border-slate-500 transition-all">
+                  <p className="text-2xl font-black font-mono" style={{ color: FUNNEL_BAR_COLORS[idx + 5] }}>{d.count}</p>
                   <p className="text-xs font-bold text-white mt-1">{d.name}</p>
                 </div>
               ))}
@@ -375,7 +386,7 @@ export default function Reports() {
           <select
             value={datePreset}
             onChange={e => setDatePreset(e.target.value)}
-            className="rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3.5 py-2 text-xs font-bold text-white outline-none focus:border-[#FFA116] cursor-pointer"
+            className="rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3.5 py-2 text-xs font-bold text-white outline-none focus:border-blue-500 cursor-pointer"
           >
             <option value="today">Today</option>
             <option value="this_week">This Week</option>
@@ -386,21 +397,21 @@ export default function Reports() {
           <div className="flex items-center gap-1.5">
             <button
               onClick={() => handleExport('csv')}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-[#FFA116] transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-sky-400 transition-colors cursor-pointer"
             >
-              <Download className="h-3.5 w-3.5 text-[#FFA116]" /> CSV
+              <Download className="h-3.5 w-3.5 text-sky-400" /> CSV
             </button>
             <button
               onClick={() => handleExport('excel')}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-[#FFA116] transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-sky-400 transition-colors cursor-pointer"
             >
-              <Download className="h-3.5 w-3.5 text-[#FFA116]" /> Excel
+              <Download className="h-3.5 w-3.5 text-sky-400" /> Excel
             </button>
             <button
               onClick={() => handleExport('pdf')}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-[#FFA116] transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-sky-400 transition-colors cursor-pointer"
             >
-              <Download className="h-3.5 w-3.5 text-[#FFA116]" /> PDF
+              <Download className="h-3.5 w-3.5 text-sky-400" /> PDF
             </button>
           </div>
         </div>
@@ -421,13 +432,13 @@ export default function Reports() {
               className={cn(
                 'rounded-xl border p-3 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center gap-2',
                 isActive
-                  ? 'border-[#FFA116] bg-[#383838] text-white shadow-lg ring-1 ring-[#FFA116]/50'
+                  ? 'border-blue-500 bg-[#303030] text-white shadow-lg ring-1 ring-blue-500/50'
                   : 'border-[#3E3E3E] bg-[#282828] text-slate-300 hover:border-[#555555] hover:bg-[#303030]'
               )}
             >
               <div className={cn(
                 'flex h-9 w-9 items-center justify-center rounded-lg border transition-colors',
-                isActive ? 'bg-[#FFA116] text-[#1A1A1A] border-[#FFA116]' : 'bg-[#1A1A1A] text-[#FFA116] border-[#3E3E3E]'
+                isActive ? 'bg-blue-600 text-white border-blue-500 shadow-sm' : 'bg-[#1A1A1A] text-sky-400 border-[#3E3E3E]'
               )}>
                 <Icon className="h-4 w-4" />
               </div>
@@ -449,7 +460,7 @@ export default function Reports() {
           <h3 className="text-base font-extrabold text-white">
             {reportCategories.find(c => c.id === activeReport)?.label} Analytics
           </h3>
-          <span className="text-xs font-mono font-bold text-[#FFA116]">
+          <span className="text-xs font-mono font-bold text-sky-400">
             Updated Just Now
           </span>
         </div>
