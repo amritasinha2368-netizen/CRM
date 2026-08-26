@@ -191,12 +191,24 @@ export default function LeadsList() {
     setSearch('')
   }
 
-  const getScoreColor = (score: number) => {
-    if (score >= 80) return 'bg-[#2CBB5D]'
-    if (score >= 60) return 'bg-[#FFA116]'
-    if (score >= 40) return 'bg-[#FFB800]'
-    return 'bg-[#FF2D55]'
-  }
+  const getScoreBarStyle = (score: number, leadId: string) => {
+    const palettes = [
+      { bar: 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.4)]', text: 'text-emerald-400' },
+      { bar: 'bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.4)]', text: 'text-sky-400' },
+      { bar: 'bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.4)]', text: 'text-purple-400' },
+      { bar: 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.4)]', text: 'text-amber-400' },
+      { bar: 'bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.4)]', text: 'text-teal-400' },
+      { bar: 'bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.4)]', text: 'text-rose-400' },
+      { bar: 'bg-indigo-400 shadow-[0_0_8px_rgba(129,140,248,0.4)]', text: 'text-indigo-400' },
+      { bar: 'bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.4)]', text: 'text-cyan-400' },
+    ];
+    let hash = 0;
+    for (let i = 0; i < leadId.length; i++) {
+      hash = leadId.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const index = Math.abs(hash + score) % palettes.length;
+    return palettes[index];
+  };
 
   return (
     <div className="space-y-6 pb-12">
@@ -525,15 +537,20 @@ export default function LeadsList() {
                       </Badge>
                     </td>
                     <td className="px-4 py-3.5 whitespace-nowrap">
-                      <div className="flex items-center gap-2 whitespace-nowrap">
-                        <div className="h-1.5 w-16 overflow-hidden rounded-full bg-[#1A1A1A]">
-                          <div
-                            className={cn('h-full rounded-full transition-all', getScoreColor(lead.leadScore))}
-                            style={{ width: `${lead.leadScore}%` }}
-                          />
-                        </div>
-                        <span className="text-xs font-bold text-sky-400 font-mono">{lead.leadScore}</span>
-                      </div>
+                      {(() => {
+                        const style = getScoreBarStyle(lead.leadScore, lead.id);
+                        return (
+                          <div className="flex items-center gap-2 whitespace-nowrap">
+                            <div className="h-1.5 w-16 overflow-hidden rounded-full bg-[#1A1A1A]">
+                              <div
+                                className={cn('h-full rounded-full transition-all', style.bar)}
+                                style={{ width: `${lead.leadScore}%` }}
+                              />
+                            </div>
+                            <span className={cn('text-xs font-bold font-mono', style.text)}>{lead.leadScore}</span>
+                          </div>
+                        );
+                      })()}
                     </td>
                     <td className="px-4 py-3.5 whitespace-nowrap">
                       {assignedUser ? (
