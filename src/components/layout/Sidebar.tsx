@@ -114,21 +114,21 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
         <AnimatePresence mode="wait">
           {!collapsed ? (
             <motion.div key="full" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="flex-1 cursor-pointer py-1" onClick={() => navigate('/')}>
-              <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-xl px-4 py-3 flex items-center justify-center shadow-sm transition-all">
+              <div className="bg-gradient-to-r from-sky-50 via-white to-blue-50 dark:from-slate-900 dark:to-slate-900 border border-blue-200 dark:border-slate-700/80 rounded-xl px-4 py-3 flex items-center justify-center shadow-md ring-1 ring-blue-100 dark:ring-0 transition-all">
                 <img
                   src="/logo-original.png"
                   alt="QuantNexa ai Solutions Pvt. Ltd."
-                  className="h-16 sm:h-20 w-auto max-w-[260px] object-contain"
+                  className="h-16 sm:h-20 w-auto max-w-[260px] object-contain contrast-125"
                 />
               </div>
             </motion.div>
           ) : (
             <motion.div key="mini" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} className="cursor-pointer flex justify-center py-1" onClick={() => navigate('/')}>
-              <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-xl p-2.5 flex items-center justify-center shadow-sm">
+              <div className="bg-gradient-to-r from-sky-50 via-white to-blue-50 dark:from-slate-900 dark:to-slate-900 border border-blue-200 dark:border-slate-700/80 rounded-xl p-2.5 flex items-center justify-center shadow-md ring-1 ring-blue-100 dark:ring-0">
                 <img
                   src="/logo-mark.png"
                   alt="QuantNexa ai"
-                  className="h-13 w-auto object-contain"
+                  className="h-13 w-auto object-contain contrast-125"
                 />
               </div>
             </motion.div>
