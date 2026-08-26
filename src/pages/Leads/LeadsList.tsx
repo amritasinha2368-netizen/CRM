@@ -17,6 +17,8 @@ import AddLeadModal from './AddLeadModal'
 import toast from 'react-hot-toast'
 import type { LeadSource, LeadStatus } from '@/types'
 
+const ITEMS_PER_PAGE = 10;
+
 const AVATAR_COLOR_PALETTES = [
   'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
   'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30',
