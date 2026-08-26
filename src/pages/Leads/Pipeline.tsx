@@ -47,7 +47,7 @@ const getAvatarStyle = (index: number) => {
   return AVATAR_COLOR_PALETTES[index % AVATAR_COLOR_PALETTES.length];
 };
 
-const getScoreBarStyle = (score: number, leadId: string) => {
+const getScoreBarStyle = (index: number) => {
   const palettes = [
     { bar: 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.4)]', text: 'text-emerald-400' },
     { bar: 'bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.4)]', text: 'text-sky-400' },
@@ -57,13 +57,10 @@ const getScoreBarStyle = (score: number, leadId: string) => {
     { bar: 'bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.4)]', text: 'text-rose-400' },
     { bar: 'bg-indigo-400 shadow-[0_0_8px_rgba(129,140,248,0.4)]', text: 'text-indigo-400' },
     { bar: 'bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.4)]', text: 'text-cyan-400' },
+    { bar: 'bg-violet-400 shadow-[0_0_8px_rgba(167,139,250,0.4)]', text: 'text-violet-400' },
+    { bar: 'bg-fuchsia-400 shadow-[0_0_8px_rgba(232,121,249,0.4)]', text: 'text-fuchsia-400' },
   ];
-  let hash = 0;
-  for (let i = 0; i < leadId.length; i++) {
-    hash = leadId.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const idx = Math.abs(hash + score) % palettes.length;
-  return palettes[idx];
+  return palettes[index % palettes.length];
 };
 
 const sourceLabels: Record<LeadSource, string> = {
@@ -210,7 +207,7 @@ export default function Pipeline() {
                             )}
                           >
                             {(() => {
-                              const scoreStyle = getScoreBarStyle(lead.leadScore, lead.id);
+                              const scoreStyle = getScoreBarStyle(index);
                               return (
                                 <>
                                   <div className="mb-2 flex items-start justify-between">
