@@ -14,16 +14,16 @@
   --color-primary-800: #915000;
   --color-primary-900: #6b3900;
 
-  /* LeetCode Dark Surfaces */
-  --color-surface-50: #1a1a1a;  /* LeetCode Main Dark Background */
-  --color-surface-100: #282828; /* LeetCode Container / Card Background */
-  --color-surface-200: #303030; /* LeetCode Hover / Active Card */
-  --color-surface-300: #3e3e3e; /* LeetCode Border / Divider */
-  --color-surface-400: #555555;
-  --color-surface-500: #8a8a8a; /* LeetCode Secondary Text */
-  --color-surface-600: #a0a0a0;
-  --color-surface-700: #cccccc;
-  --color-surface-800: #eff2f6; /* LeetCode Primary Text */
+  /* High Contrast Surfaces & Text Tokens */
+  --color-surface-50: #1a1a1a;  /* Main Dark Background */
+  --color-surface-100: #282828; /* Container / Card Background */
+  --color-surface-200: #303030; /* Hover / Active Card */
+  --color-surface-300: #3e3e3e; /* Border / Divider */
+  --color-surface-400: #cbd5e1; /* High-Contrast Slate 300 (Was #555555) */
+  --color-surface-500: #e2e8f0; /* High-Contrast Slate 200 (Was #8a8a8a) */
+  --color-surface-600: #f1f5f9;
+  --color-surface-700: #f8fafc;
+  --color-surface-800: #eff2f6; /* Primary Text */
   --color-surface-900: #ffffff;
 
   --color-accent-50: #fff8e6;
