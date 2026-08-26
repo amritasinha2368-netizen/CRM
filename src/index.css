@@ -226,7 +226,7 @@ html.dark td, html:not(.light) td {
   border-color: #3e3e3e !important;
 }
 
-/* ─── LIGHT MODE THEME (WHITE & LIGHT BLUE / HIGH CONTRAST) ─── */
+/* ─── LIGHT MODE THEME (WHITE & LIGHT BLUE / ULTRA HIGH CONTRAST) ─── */
 html.light {
   color-scheme: light;
 }
@@ -238,21 +238,37 @@ html.light body {
 
 html.light h1, html.light h2, html.light h3, html.light h4, html.light h5, html.light h6 {
   color: #0f172a !important;
+  font-weight: 800 !important;
 }
 
 /* Background surfaces in light mode */
 html.light .bg-\[\#1A1A1A\],
 html.light .bg-\[\#282828\],
 html.light .bg-\[\#303030\],
-html.light .bg-\[\#222222\] {
+html.light .bg-\[\#222222\],
+html.light .bg-surface-100,
+html.light .bg-surface-50 {
   background-color: #ffffff !important;
   color: #0f172a !important;
+}
+
+/* Card Containers & Panels */
+html.light .card-premium,
+html.light .card-style,
+html.light .glass,
+html.light .glass-strong {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 2px 4px -2px rgba(15, 23, 42, 0.04) !important;
 }
 
 /* Borders in light mode */
 html.light .border-\[\#3E3E3E\],
 html.light .border-\[\#555555\],
 html.light .border-surface-300,
+html.light .border-surface-200,
+html.light .border-surface-100,
 html.light .divide-\[\#3E3E3E\] > * + * {
   border-color: #cbd5e1 !important;
 }
@@ -276,19 +292,45 @@ html.light aside .bg-\[\#1A1A1A\] {
   background-color: #ffffff !important;
 }
 
-/* Text overrides in light mode */
+/* Text overrides in light mode - ALL TEXT CRISP DARK SLATE */
 html.light .text-white,
 html.light .text-slate-100,
-html.light .text-slate-200 {
+html.light .text-slate-200,
+html.light .text-\[\#EFF2F6\],
+html.light .text-surface-900,
+html.light .text-surface-800 {
   color: #0f172a !important;
 }
 
 html.light .text-slate-300,
 html.light .text-slate-400,
 html.light .text-slate-500,
-html.light .text-\[\#A0A0A0\] {
-  color: #475569 !important;
+html.light .text-\[\#A0A0A0\],
+html.light .text-surface-600,
+html.light .text-surface-500 {
+  color: #334155 !important;
 }
+
+/* Light Mode Badges & Avatars High-Contrast Color Overrides */
+html.light .text-sky-300, html.light .text-sky-400 { color: #0369a1 !important; }
+html.light .text-emerald-300, html.light .text-emerald-400 { color: #047857 !important; }
+html.light .text-purple-300, html.light .text-purple-400 { color: #7e22ce !important; }
+html.light .text-amber-300, html.light .text-amber-400 { color: #b45309 !important; }
+html.light .text-teal-300, html.light .text-teal-400 { color: #0f766e !important; }
+html.light .text-rose-300, html.light .text-rose-400 { color: #be123c !important; }
+html.light .text-indigo-300, html.light .text-indigo-400 { color: #4338ca !important; }
+html.light .text-cyan-300, html.light .text-cyan-400 { color: #0e7490 !important; }
+html.light .text-violet-300, html.light .text-violet-400 { color: #6d28d9 !important; }
+
+html.light .bg-sky-500\/20, html.light .bg-sky-500\/15 { background-color: #f0f9ff !important; border-color: #bae6fd !important; }
+html.light .bg-emerald-500\/20, html.light .bg-emerald-500\/15 { background-color: #ecfdf5 !important; border-color: #a7f3d0 !important; }
+html.light .bg-purple-500\/20, html.light .bg-purple-500\/15 { background-color: #f3e8ff !important; border-color: #e9d5ff !important; }
+html.light .bg-amber-500\/20, html.light .bg-amber-500\/15 { background-color: #fffbeb !important; border-color: #fde68a !important; }
+html.light .bg-teal-500\/20, html.light .bg-teal-500\/15 { background-color: #f0fdfa !important; border-color: #99f6e4 !important; }
+html.light .bg-rose-500\/20, html.light .bg-rose-500\/15 { background-color: #fff1f2 !important; border-color: #fecdd3 !important; }
+html.light .bg-indigo-500\/20, html.light .bg-indigo-500\/15 { background-color: #eef2ff !important; border-color: #c7d2fe !important; }
+html.light .bg-cyan-500\/20, html.light .bg-cyan-500\/15 { background-color: #ecfeff !important; border-color: #a5f3fc !important; }
+html.light .bg-violet-500\/20, html.light .bg-violet-500\/15 { background-color: #f5f3ff !important; border-color: #ddd6fe !important; }
 
 /* Primary blue buttons keep white text in light mode */
 html.light .bg-blue-600,
@@ -345,7 +387,8 @@ html.light tr:hover {
 
 html.light td {
   border-color: #e2e8f0 !important;
-  color: #1e293b !important;
+  color: #0f172a !important;
+  font-weight: 600 !important;
 }
 
 /* Form inputs, selects & textareas in light mode */
@@ -355,6 +398,7 @@ html.light textarea {
   background-color: #ffffff !important;
   color: #0f172a !important;
   border-color: #94a3b8 !important;
+  font-weight: 600 !important;
 }
 
 html.light input:focus,
@@ -372,12 +416,13 @@ html.light .recharts-cartesian-grid line {
 
 html.light .recharts-text,
 html.light .recharts-cartesian-axis-tick-value {
-  fill: #1e293b !important;
-  font-weight: 700 !important;
+  fill: #0f172a !important;
+  font-weight: 800 !important;
 }
 
 html.light .recharts-legend-item-text {
   color: #0f172a !important;
+  font-weight: 700 !important;
 }
 
 html.light .recharts-default-tooltip {
