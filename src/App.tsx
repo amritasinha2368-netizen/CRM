@@ -28,6 +28,8 @@ import Templates from './pages/Templates';
 import Documents from './pages/Documents';
 import Settings from './pages/Settings';
 
+import PublicEnrollmentForm from './pages/PublicEnrollmentForm';
+
 function DashboardRouter() {
   const { currentUser } = useAppStore();
   const userRole = currentUser?.role || 'super_admin';
@@ -48,6 +50,8 @@ export default function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/enroll" element={<PublicEnrollmentForm />} />
+      <Route path="/apply" element={<PublicEnrollmentForm />} />
 
       {/* Protected App Pages */}
       <Route element={<AppLayout />}>

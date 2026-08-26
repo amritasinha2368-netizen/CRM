@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Upload, Download, UserPlus, Filter, X, Eye, Phone, PhoneCall,
   MessageCircle, MoreVertical, Trash2, CheckSquare, Square,
-  ChevronLeft, ChevronRight, Inbox, UserCheck, FileSpreadsheet, Send, Pencil,
+  ChevronLeft, ChevronRight, Inbox, UserCheck, FileSpreadsheet, Send, Pencil, Share2,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAppStore } from '@/store'
@@ -229,8 +229,16 @@ export default function LeadsList() {
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <button
+            onClick={() => window.open('/enroll?source=instagram', '_blank')}
+            className="flex items-center gap-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3.5 py-2 text-xs font-bold text-emerald-400 hover:bg-emerald-500/20 transition-all shadow-xs cursor-pointer"
+            title="Open Public Student Enrollment Form"
+          >
+            <Share2 className="h-4 w-4 text-emerald-400" />
+            Public Enrollment Form
+          </button>
+          <button
             onClick={() => setImportModalOpen(true)}
-            className="flex items-center gap-2 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#383838] hover:text-sky-400"
+            className="flex items-center gap-2 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-[#383838] hover:text-sky-400 cursor-pointer"
           >
             <Upload className="h-4 w-4 text-sky-400" />
             Import
