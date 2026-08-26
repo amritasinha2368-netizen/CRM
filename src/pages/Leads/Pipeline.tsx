@@ -32,15 +32,15 @@ const stages: Stage[] = [
 ]
 
 const AVATAR_COLOR_PALETTES = [
-  'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
-  'bg-sky-500/20 text-sky-300 border border-sky-500/30',
-  'bg-purple-500/20 text-purple-300 border border-purple-500/30',
-  'bg-amber-500/20 text-amber-300 border border-amber-500/30',
-  'bg-teal-500/20 text-teal-300 border border-teal-500/30',
-  'bg-rose-500/20 text-rose-300 border border-rose-500/30',
-  'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30',
-  'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30',
-  'bg-violet-500/20 text-violet-300 border border-violet-500/30',
+  'bg-emerald-200 dark:bg-emerald-500/20 text-emerald-950 dark:text-emerald-300 border border-emerald-400 dark:border-emerald-500/30 font-black',
+  'bg-sky-200 dark:bg-sky-500/20 text-sky-950 dark:text-sky-300 border border-sky-400 dark:border-sky-500/30 font-black',
+  'bg-purple-200 dark:bg-purple-500/20 text-purple-950 dark:text-purple-300 border border-purple-400 dark:border-purple-500/30 font-black',
+  'bg-amber-200 dark:bg-amber-500/20 text-amber-950 dark:text-amber-300 border border-amber-400 dark:border-amber-500/30 font-black',
+  'bg-teal-200 dark:bg-teal-500/20 text-teal-950 dark:text-teal-300 border border-teal-400 dark:border-teal-500/30 font-black',
+  'bg-rose-200 dark:bg-rose-500/20 text-rose-950 dark:text-rose-300 border border-rose-400 dark:border-rose-500/30 font-black',
+  'bg-indigo-200 dark:bg-indigo-500/20 text-indigo-950 dark:text-indigo-300 border border-indigo-400 dark:border-indigo-500/30 font-black',
+  'bg-cyan-200 dark:bg-cyan-500/20 text-cyan-950 dark:text-cyan-300 border border-cyan-400 dark:border-cyan-500/30 font-black',
+  'bg-violet-200 dark:bg-violet-500/20 text-violet-950 dark:text-violet-300 border border-violet-400 dark:border-violet-500/30 font-black',
 ];
 
 const getAvatarStyle = (index: number) => {
