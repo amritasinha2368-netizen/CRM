@@ -16,23 +16,23 @@ import { leads, courses, applications, payments, calls } from '@/data/mockData';
 import KPICard from '@/components/ui/KPICard';
 import StatusBadge from '@/components/ui/StatusBadge';
 
-const CHART_COLORS = ['#38BDF8', '#10B981', '#C084FC', '#F43F5E', '#2DD4BF', '#F59E0B', '#818CF8', '#A78BFA'];
+const CHART_COLORS = ['#0284C7', '#10B981', '#9333EA', '#E11D48', '#0D9488', '#D97706', '#4F46E5', '#0891B2'];
 
 const renderCustomPieLabel = ({ cx, cy, midAngle, outerRadius, name, value }: any) => {
   const RADIAN = Math.PI / 180;
-  const radius = outerRadius + 18;
+  const radius = outerRadius + 20;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const isLight = typeof document !== 'undefined' && document.documentElement.classList.contains('light');
 
   return (
     <text
       x={x}
       y={y}
-      fill="#FFFFFF"
+      fill={isLight ? '#0F172A' : '#FFFFFF'}
       textAnchor={x > cx ? 'start' : 'end'}
       dominantBaseline="central"
       className="text-[11px] font-black tracking-wide font-mono"
-      style={{ filter: 'drop-shadow(0px 1px 3px rgba(0,0,0,0.9))' }}
     >
       {`${name}: ${value}`}
     </text>

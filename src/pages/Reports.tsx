@@ -189,24 +189,24 @@ const renderReport = () => {
                     dataKey="value"
                     label={({ cx, cy, midAngle, outerRadius, name, value }: any) => {
                       const RADIAN = Math.PI / 180;
-                      const radius = outerRadius + 16;
+                      const radius = outerRadius + 18;
                       const x = cx + radius * Math.cos(-midAngle * RADIAN);
                       const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                      const isLight = typeof document !== 'undefined' && document.documentElement.classList.contains('light');
                       return (
                         <text
                           x={x}
                           y={y}
-                          fill="#FFFFFF"
+                          fill={isLight ? '#0F172A' : '#FFFFFF'}
                           textAnchor={x > cx ? 'start' : 'end'}
                           dominantBaseline="central"
                           className="text-[11px] font-black tracking-wide font-mono"
-                          style={{ filter: 'drop-shadow(0px 1px 3px rgba(0,0,0,0.9))' }}
                         >
                           {`${name}: ${value}`}
                         </text>
                       );
                     }}
-                    labelLine={{ stroke: '#94A3B8', strokeWidth: 1.5 }}
+                    labelLine={{ stroke: typeof document !== 'undefined' && document.documentElement.classList.contains('light') ? '#475569' : '#94A3B8', strokeWidth: 1.5 }}
                   >
                     {sourceData.map((_, i) => (
                       <Cell key={i} fill={FUNNEL_BAR_COLORS[i % FUNNEL_BAR_COLORS.length]} />
