@@ -114,21 +114,21 @@ export function Sidebar({ collapsed = false, onToggle, isMobile = false, onClose
         <AnimatePresence mode="wait">
           {!collapsed ? (
             <motion.div key="full" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="flex-1 cursor-pointer py-1" onClick={() => navigate('/')}>
-              <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 flex items-center justify-center shadow-xl hover:shadow-2xl transition-all">
+              <div className="bg-slate-900 border border-slate-700/80 rounded-xl px-4 py-3 flex items-center justify-center shadow-xl hover:shadow-2xl transition-all">
                 <img
                   src="/logo-original.png"
                   alt="QuantNexa ai Solutions Pvt. Ltd."
-                  className="h-16 sm:h-20 w-auto max-w-[260px] object-contain"
+                  className="h-16 sm:h-20 w-auto max-w-[260px] object-contain drop-shadow-md"
                 />
               </div>
             </motion.div>
           ) : (
             <motion.div key="mini" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} className="cursor-pointer flex justify-center py-1" onClick={() => navigate('/')}>
-              <div className="bg-white border border-slate-200 rounded-xl p-2.5 flex items-center justify-center shadow-md">
+              <div className="bg-slate-900 border border-slate-700/80 rounded-xl p-2.5 flex items-center justify-center shadow-md">
                 <img
                   src="/logo-mark.png"
                   alt="QuantNexa ai"
-                  className="h-13 w-auto object-contain"
+                  className="h-13 w-auto object-contain drop-shadow-md"
                 />
               </div>
             </motion.div>
