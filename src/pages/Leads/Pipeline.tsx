@@ -178,11 +178,11 @@ export default function Pipeline() {
           {stages.map((stage) => (
             <div key={stage.id} className="flex w-[300px] min-w-[300px] flex-col">
               {/* Column Header */}
-              <div className={cn('rounded-t-xl bg-gradient-to-r px-4 py-3 shadow-md', stage.gradient)}>
+              <div className={cn('rounded-t-xl bg-gradient-to-r px-4 py-3 shadow-md pipeline-stage-header', stage.gradient)}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-black text-[#1A1A1A] uppercase tracking-wider">{stage.label}</span>
-                    <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#1A1A1A]/30 px-1.5 text-[10px] font-black text-white">
+                    <span className="text-xs font-black text-white dark:text-white uppercase tracking-wider drop-shadow-xs">{stage.label}</span>
+                    <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-black/30 dark:bg-white/20 px-1.5 text-[10px] font-black text-white">
                       {leadsByStage[stage.id]?.length || 0}
                     </span>
                   </div>
