@@ -16,7 +16,28 @@ import { leads, courses, applications, payments, calls } from '@/data/mockData';
 import KPICard from '@/components/ui/KPICard';
 import StatusBadge from '@/components/ui/StatusBadge';
 
-const CHART_COLORS = ['#FFA116', '#2CBB5D', '#007AFF', '#FFB800', '#FF2D55', '#38BDF8', '#E08800'];
+const CHART_COLORS = ['#38BDF8', '#10B981', '#C084FC', '#F43F5E', '#2DD4BF', '#F59E0B', '#818CF8', '#A78BFA'];
+
+const renderCustomPieLabel = ({ cx, cy, midAngle, outerRadius, name, value }: any) => {
+  const RADIAN = Math.PI / 180;
+  const radius = outerRadius + 18;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text
+      x={x}
+      y={y}
+      fill="#FFFFFF"
+      textAnchor={x > cx ? 'start' : 'end'}
+      dominantBaseline="central"
+      className="text-[11px] font-black tracking-wide font-mono"
+      style={{ filter: 'drop-shadow(0px 1px 3px rgba(0,0,0,0.9))' }}
+    >
+      {`${name}: ${value}`}
+    </text>
+  );
+};
 
 const funnelStages = ['new', 'contacted', 'interested', 'counselling', 'application', 'enrolled'] as const;
 const funnelLabels: Record<string, string> = {
@@ -140,15 +161,15 @@ export default function Dashboard() {
               <AreaChart data={leadTrend}>
                 <defs>
                   <linearGradient id="leadGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#FFA116" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#FFA116" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#38BDF8" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#38BDF8" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#3E3E3E" />
                 <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#FFFFFF', fontWeight: 'bold' }} stroke="#3E3E3E" />
                 <YAxis tick={{ fontSize: 11, fill: '#A0A0A0' }} stroke="#3E3E3E" />
                 <Tooltip contentStyle={{ backgroundColor: '#1A1A1A', borderColor: '#3E3E3E', borderRadius: '8px', color: '#fff' }} />
-                <Area type="monotone" dataKey="leads" stroke="#FFA116" strokeWidth={2.5} fill="url(#leadGrad)" />
+                <Area type="monotone" dataKey="leads" stroke="#38BDF8" strokeWidth={2.5} fill="url(#leadGrad)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -172,8 +193,8 @@ export default function Dashboard() {
                     outerRadius={68}
                     dataKey="value"
                     paddingAngle={3}
-                    label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
-                    labelLine={{ stroke: '#38BDF8', strokeWidth: 1.5 }}
+                    label={renderCustomPieLabel}
+                    labelLine={{ stroke: '#94A3B8', strokeWidth: 1.5 }}
                   >
                     {sourceData.map((_, i) => (
                       <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} stroke="#282828" strokeWidth={2} />

@@ -183,14 +183,33 @@ const renderReport = () => {
                     data={sourceData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={70}
-                    outerRadius={110}
+                    innerRadius={65}
+                    outerRadius={105}
                     paddingAngle={4}
                     dataKey="value"
-                    label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                    label={({ cx, cy, midAngle, outerRadius, name, value }: any) => {
+                      const RADIAN = Math.PI / 180;
+                      const radius = outerRadius + 16;
+                      const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                      const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                      return (
+                        <text
+                          x={x}
+                          y={y}
+                          fill="#FFFFFF"
+                          textAnchor={x > cx ? 'start' : 'end'}
+                          dominantBaseline="central"
+                          className="text-[11px] font-black tracking-wide font-mono"
+                          style={{ filter: 'drop-shadow(0px 1px 3px rgba(0,0,0,0.9))' }}
+                        >
+                          {`${name}: ${value}`}
+                        </text>
+                      );
+                    }}
+                    labelLine={{ stroke: '#94A3B8', strokeWidth: 1.5 }}
                   >
                     {sourceData.map((_, i) => (
-                      <Cell key={i} fill={LEETCODE_COLORS[i % LEETCODE_COLORS.length]} />
+                      <Cell key={i} fill={FUNNEL_BAR_COLORS[i % FUNNEL_BAR_COLORS.length]} />
                     ))}
                   </Pie>
                   <Tooltip contentStyle={{ backgroundColor: '#1A1A1A', borderColor: '#3E3E3E', borderRadius: '8px', color: '#fff' }} />
