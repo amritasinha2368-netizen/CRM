@@ -5,7 +5,7 @@ import {
   LayoutDashboard, Users, UserCheck, GitBranch, CalendarClock, Phone,
   GraduationCap, FileText, UserPlus, CreditCard, BookOpen, Megaphone,
   BarChart3, UsersRound, Workflow, MessageSquare, FolderOpen, Settings,
-  Bell, HelpCircle, LogOut, ChevronLeft, ChevronRight, Shield,
+  Bell, HelpCircle, LogOut, ChevronLeft, ChevronRight, Shield, Share2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store';
