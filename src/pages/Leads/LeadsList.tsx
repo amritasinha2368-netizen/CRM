@@ -31,14 +31,8 @@ const AVATAR_COLOR_PALETTES = [
   'bg-violet-500/20 text-violet-300 border border-violet-500/30',
 ];
 
-const getAvatarStyle = (str?: string) => {
-  const safeStr = str || 'Lead';
-  let hash = 0;
-  for (let i = 0; i < safeStr.length; i++) {
-    hash = safeStr.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const index = Math.abs(hash) % AVATAR_COLOR_PALETTES.length;
-  return AVATAR_COLOR_PALETTES[index];
+const getAvatarStyle = (index: number) => {
+  return AVATAR_COLOR_PALETTES[index % AVATAR_COLOR_PALETTES.length];
 };
 
 const CHECKBOX_COLOR_PALETTES = [
@@ -53,14 +47,8 @@ const CHECKBOX_COLOR_PALETTES = [
   { checked: 'text-violet-400', unchecked: 'text-violet-500/50 hover:text-violet-400' },
 ];
 
-const getCheckboxStyle = (str?: string) => {
-  const safeStr = str || 'Lead';
-  let hash = 0;
-  for (let i = 0; i < safeStr.length; i++) {
-    hash = safeStr.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const index = Math.abs(hash) % CHECKBOX_COLOR_PALETTES.length;
-  return CHECKBOX_COLOR_PALETTES[index];
+const getCheckboxStyle = (index: number) => {
+  return CHECKBOX_COLOR_PALETTES[index % CHECKBOX_COLOR_PALETTES.length];
 };
 
 const sourceLabels: Record<string, string> = {
@@ -311,7 +299,7 @@ export default function LeadsList() {
                   <select
                     value={courseFilter}
                     onChange={(e) => { setCourseFilter(e.target.value); setPage(1) }}
-                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-[#FFA116] focus:outline-none"
+                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-blue-500 focus:outline-none"
                   >
                     <option value="">All Courses</option>
                     {courses.map((c) => (
@@ -320,11 +308,11 @@ export default function LeadsList() {
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-[11px] font-bold text-[#FFA116]">Status</label>
+                  <label className="mb-1 block text-[11px] font-bold text-slate-300">Status</label>
                   <select
                     value={statusFilter}
                     onChange={(e) => { setStatusFilter(e.target.value); setPage(1) }}
-                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-[#FFA116] focus:outline-none"
+                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-blue-500 focus:outline-none"
                   >
                     <option value="">All Statuses</option>
                     {statusOptions.map((s) => (
@@ -333,11 +321,11 @@ export default function LeadsList() {
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-[11px] font-bold text-[#FFA116]">Source</label>
+                  <label className="mb-1 block text-[11px] font-bold text-slate-300">Source</label>
                   <select
                     value={sourceFilter}
                     onChange={(e) => { setSourceFilter(e.target.value); setPage(1) }}
-                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-[#FFA116] focus:outline-none"
+                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-blue-500 focus:outline-none"
                   >
                     <option value="">All Sources</option>
                     {(Object.keys(sourceLabels) as LeadSource[]).map((s) => (
@@ -346,11 +334,11 @@ export default function LeadsList() {
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-[11px] font-bold text-[#FFA116]">City</label>
+                  <label className="mb-1 block text-[11px] font-bold text-slate-300">City</label>
                   <select
                     value={cityFilter}
                     onChange={(e) => { setCityFilter(e.target.value); setPage(1) }}
-                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-[#FFA116] focus:outline-none"
+                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-blue-500 focus:outline-none"
                   >
                     <option value="">All Cities</option>
                     {cities.map((c) => (
@@ -359,11 +347,11 @@ export default function LeadsList() {
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-[11px] font-bold text-[#FFA116]">Counsellor</label>
+                  <label className="mb-1 block text-[11px] font-bold text-slate-300">Counsellor</label>
                   <select
                     value={assignedFilter}
                     onChange={(e) => { setAssignedFilter(e.target.value); setPage(1) }}
-                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-[#FFA116] focus:outline-none"
+                    className="w-full rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-1.5 text-xs text-white focus:border-blue-500 focus:outline-none"
                   >
                     <option value="">All Counsellors</option>
                     {counsellorsList.map((u) => (
@@ -384,7 +372,7 @@ export default function LeadsList() {
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
-                className="inline-flex items-center gap-1.5 rounded-md bg-[#383838] border border-[#FFA116] px-2.5 py-1 text-xs font-bold text-[#FFA116]"
+                className="inline-flex items-center gap-1.5 rounded-md bg-sky-500/15 border border-sky-500/30 px-2.5 py-1 text-xs font-bold text-sky-300"
               >
                 {f.label}
                 <button onClick={f.clear} className="rounded-full p-0.5 hover:bg-[#555555] text-white">
@@ -409,31 +397,31 @@ export default function LeadsList() {
             initial={{ y: -10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -10, opacity: 0 }}
-            className="flex items-center gap-3 rounded-xl border border-[#FFA116] bg-[#303030] p-3 shadow-lg"
+            className="flex items-center gap-3 rounded-xl border border-blue-500/40 bg-[#282828] p-3 shadow-lg"
           >
-            <span className="text-xs font-black text-[#FFA116]">
+            <span className="text-xs font-black text-sky-400">
               {selectedIds.size} selected
             </span>
             <div className="flex items-center gap-2">
               <button
                 onClick={handleBulkAssign}
-                className="flex items-center gap-1.5 rounded-lg bg-[#282828] border border-[#3E3E3E] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#383838]"
+                className="flex items-center gap-1.5 rounded-lg bg-[#303030] border border-[#3E3E3E] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#383838]"
               >
-                <UserCheck className="h-3.5 w-3.5 text-[#FFA116]" />
+                <UserCheck className="h-3.5 w-3.5 text-sky-400" />
                 Assign
               </button>
               <button
                 onClick={handleBulkExport}
-                className="flex items-center gap-1.5 rounded-lg bg-[#282828] border border-[#3E3E3E] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#383838]"
+                className="flex items-center gap-1.5 rounded-lg bg-[#303030] border border-[#3E3E3E] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#383838]"
               >
-                <FileSpreadsheet className="h-3.5 w-3.5 text-[#FFA116]" />
+                <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-400" />
                 Export
               </button>
               <button
                 onClick={handleBulkMessage}
-                className="flex items-center gap-1.5 rounded-lg bg-[#282828] border border-[#3E3E3E] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#383838]"
+                className="flex items-center gap-1.5 rounded-lg bg-[#303030] border border-[#3E3E3E] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#383838]"
               >
-                <Send className="h-3.5 w-3.5 text-[#FFA116]" />
+                <Send className="h-3.5 w-3.5 text-teal-400" />
                 Message
               </button>
               <button
@@ -514,15 +502,15 @@ export default function LeadsList() {
                     <td className="px-4 py-3.5 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                       <button onClick={() => toggleSelect(lead.id)}>
                         {selectedIds.has(lead.id) ? (
-                          <CheckSquare className={cn('h-4 w-4 transition-all', getCheckboxStyle(lead.id).checked)} />
+                          <CheckSquare className={cn('h-4 w-4 transition-all', getCheckboxStyle(i).checked)} />
                         ) : (
-                          <Square className={cn('h-4 w-4 transition-all', getCheckboxStyle(lead.id).unchecked)} />
+                          <Square className={cn('h-4 w-4 transition-all', getCheckboxStyle(i).unchecked)} />
                         )}
                       </button>
                     </td>
                     <td className="px-4 py-3.5 whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className={cn('flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-xs font-black shadow-xs', getAvatarStyle(lead.name))}>
+                        <div className={cn('flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-xs font-black shadow-xs', getAvatarStyle(i))}>
                           {getInitials(lead.name)}
                         </div>
                         <div className="min-w-0">
@@ -605,19 +593,19 @@ export default function LeadsList() {
                             >
                               <button
                                 onClick={() => { navigate(`/leads/${lead.id}`); setActiveDropdown(null) }}
-                                className="flex w-full items-center gap-2 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#383838] hover:text-[#FFA116]"
+                                className="flex w-full items-center gap-2 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#383838] hover:text-sky-400"
                               >
                                 <Eye className="h-4 w-4" /> View
                               </button>
                               <button
                                 onClick={() => { toast.success('Edit mode'); setActiveDropdown(null) }}
-                                className="flex w-full items-center gap-2 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#383838] hover:text-[#FFA116]"
+                                className="flex w-full items-center gap-2 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#383838] hover:text-sky-400"
                               >
                                 <Pencil className="h-4 w-4" /> Edit
                               </button>
                               <button
                                 onClick={() => { window.open(`tel:${lead.phone}`); setActiveDropdown(null) }}
-                                className="flex w-full items-center gap-2 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#383838] hover:text-[#FFA116]"
+                                className="flex w-full items-center gap-2 px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#383838] hover:text-sky-400"
                               >
                                 <PhoneCall className="h-4 w-4" /> Call
                               </button>
@@ -659,7 +647,7 @@ export default function LeadsList() {
               disabled={page === 1}
               className={cn(
                 'flex h-8 w-8 items-center justify-center rounded-lg transition-colors border border-[#3E3E3E]',
-                page === 1 ? 'cursor-not-allowed text-slate-600 bg-[#1A1A1A]' : 'text-white bg-[#282828] hover:bg-[#383838] hover:text-[#FFA116]',
+                page === 1 ? 'cursor-not-allowed text-slate-600 bg-[#1A1A1A]' : 'text-white bg-[#282828] hover:bg-[#383838] hover:text-sky-400',
               )}
             >
               <ChevronLeft className="h-4 w-4" />
@@ -680,10 +668,10 @@ export default function LeadsList() {
                   key={pageNum}
                   onClick={() => setPage(pageNum)}
                   className={cn(
-                    'flex h-8 w-8 items-center justify-center rounded-lg text-xs font-black transition-colors border border-[#3E3E3E]',
+                    'flex h-8 w-8 items-center justify-center rounded-lg text-xs font-black transition-colors border',
                     pageNum === page
-                      ? 'bg-[#FFA116] text-[#1A1A1A] border-[#FFA116]'
-                      : 'bg-[#282828] text-white hover:bg-[#383838]',
+                      ? 'bg-blue-600 text-white border-blue-500 shadow-md font-extrabold'
+                      : 'bg-[#282828] text-white border-[#3E3E3E] hover:bg-[#383838] hover:text-sky-400',
                   )}
                 >
                   {pageNum}
@@ -695,7 +683,7 @@ export default function LeadsList() {
               disabled={page === totalPages}
               className={cn(
                 'flex h-8 w-8 items-center justify-center rounded-lg transition-colors border border-[#3E3E3E]',
-                page === totalPages ? 'cursor-not-allowed text-slate-600 bg-[#1A1A1A]' : 'text-white bg-[#282828] hover:bg-[#383838] hover:text-[#FFA116]',
+                page === totalPages ? 'cursor-not-allowed text-slate-600 bg-[#1A1A1A]' : 'text-white bg-[#282828] hover:bg-[#383838] hover:text-sky-400',
               )}
             >
               <ChevronRight className="h-4 w-4" />
