@@ -76,23 +76,23 @@ export default function SuperAdminDashboard() {
       {/* Charts */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className={cardStyle}>
-          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Lead Acquisition Trend</h3></div>
+          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-white">Lead Acquisition Trend</h3></div>
           <div className="p-5">
             <ResponsiveContainer width="100%" height={240}>
               <AreaChart data={leadTrend}>
-                <defs><linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#FFA116" stopOpacity={0.4} /><stop offset="95%" stopColor="#FFA116" stopOpacity={0} /></linearGradient></defs>
+                <defs><linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#38BDF8" stopOpacity={0.4} /><stop offset="95%" stopColor="#38BDF8" stopOpacity={0} /></linearGradient></defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#3E3E3E" />
                 <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#A0A0A0' }} stroke="#3E3E3E" />
                 <YAxis tick={{ fontSize: 11, fill: '#A0A0A0' }} stroke="#3E3E3E" />
                 <Tooltip contentStyle={{ backgroundColor: '#1A1A1A', borderColor: '#3E3E3E', borderRadius: '8px', color: '#fff' }} />
-                <Area type="monotone" dataKey="leads" stroke="#FFA116" strokeWidth={2.5} fillOpacity={1} fill="url(#lg1)" />
+                <Area type="monotone" dataKey="leads" stroke="#38BDF8" strokeWidth={2.5} fillOpacity={1} fill="url(#lg1)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className={cardStyle}>
-          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-[#FFA116]">Lead Source Distribution</h3></div>
+          <div className="px-5 py-4 border-b border-[#3E3E3E]"><h3 className="text-xs font-bold uppercase tracking-wider text-white">Lead Source Distribution</h3></div>
           <div className="p-5 flex items-center justify-center">
             <ResponsiveContainer width="100%" height={240}>
               <PieChart>

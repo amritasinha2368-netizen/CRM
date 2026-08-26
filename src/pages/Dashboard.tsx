@@ -49,6 +49,15 @@ const cardStyle = 'rounded-xl border border-[#3E3E3E] bg-[#282828] shadow-xl';
 const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.06 } } };
 const item = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
+const FUNNEL_STAGE_GRADIENTS = [
+  'bg-gradient-to-r from-sky-500 to-blue-600',
+  'bg-gradient-to-r from-cyan-500 to-teal-500',
+  'bg-gradient-to-r from-emerald-500 to-green-600',
+  'bg-gradient-to-r from-purple-500 to-indigo-600',
+  'bg-gradient-to-r from-violet-500 to-fuchsia-600',
+  'bg-gradient-to-r from-rose-500 to-pink-600',
+];
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const currentUser = useAppStore((s) => s.currentUser);
@@ -239,7 +248,7 @@ export default function Dashboard() {
                       initial={{ width: 0 }}
                       animate={{ width: `${(f.count / maxFunnel) * 100}%` }}
                       transition={{ delay: 0.5 + i * 0.08, duration: 0.6 }}
-                      className="absolute inset-y-0 left-0 rounded-lg bg-gradient-to-r from-[#FFA116] to-[#E08800]"
+                      className={cn('absolute inset-y-0 left-0 rounded-lg shadow-md', FUNNEL_STAGE_GRADIENTS[i % FUNNEL_STAGE_GRADIENTS.length])}
                     />
                     <span className="relative z-10 flex h-full items-center px-3 text-xs font-mono font-black text-white">{f.count}</span>
                   </div>
