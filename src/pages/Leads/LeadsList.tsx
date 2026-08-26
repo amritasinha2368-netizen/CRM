@@ -41,6 +41,28 @@ const getAvatarStyle = (str?: string) => {
   return AVATAR_COLOR_PALETTES[index];
 };
 
+const CHECKBOX_COLOR_PALETTES = [
+  { checked: 'text-emerald-400', unchecked: 'text-emerald-500/50 hover:text-emerald-400' },
+  { checked: 'text-sky-400', unchecked: 'text-sky-500/50 hover:text-sky-400' },
+  { checked: 'text-purple-400', unchecked: 'text-purple-500/50 hover:text-purple-400' },
+  { checked: 'text-amber-400', unchecked: 'text-amber-500/50 hover:text-amber-400' },
+  { checked: 'text-teal-400', unchecked: 'text-teal-500/50 hover:text-teal-400' },
+  { checked: 'text-rose-400', unchecked: 'text-rose-500/50 hover:text-rose-400' },
+  { checked: 'text-indigo-400', unchecked: 'text-indigo-500/50 hover:text-indigo-400' },
+  { checked: 'text-cyan-400', unchecked: 'text-cyan-500/50 hover:text-cyan-400' },
+  { checked: 'text-violet-400', unchecked: 'text-violet-500/50 hover:text-violet-400' },
+];
+
+const getCheckboxStyle = (str?: string) => {
+  const safeStr = str || 'Lead';
+  let hash = 0;
+  for (let i = 0; i < safeStr.length; i++) {
+    hash = safeStr.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % CHECKBOX_COLOR_PALETTES.length;
+  return CHECKBOX_COLOR_PALETTES[index];
+};
+
 const sourceLabels: Record<string, string> = {
   website: 'Website', google_ads: 'Google Ads', meta_ads: 'Meta Ads', instagram: 'Instagram',
   whatsapp: 'WhatsApp', walk_in: 'Walk-in', referral: 'Referral', event: 'Event',
@@ -492,9 +514,9 @@ export default function LeadsList() {
                     <td className="px-4 py-3.5 whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
                       <button onClick={() => toggleSelect(lead.id)}>
                         {selectedIds.has(lead.id) ? (
-                          <CheckSquare className="h-4 w-4 text-blue-500" />
+                          <CheckSquare className={cn('h-4 w-4 transition-all', getCheckboxStyle(lead.id).checked)} />
                         ) : (
-                          <Square className="h-4 w-4 text-[#555555]" />
+                          <Square className={cn('h-4 w-4 transition-all', getCheckboxStyle(lead.id).unchecked)} />
                         )}
                       </button>
                     </td>

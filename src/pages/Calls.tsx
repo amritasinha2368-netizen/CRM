@@ -89,10 +89,10 @@ export default function Calls() {
       </motion.div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KPICard title="Total Calls" value={calls.length} change={12} changeType="up" icon={Phone} color="primary" />
-        <KPICard title="Connected" value={connectedCalls} change={8} changeType="up" icon={PhoneOutgoing} color="success" />
-        <KPICard title="Avg Duration" value={avgDuration} change={5} changeType="up" icon={Clock} color="blue" prefix="" suffix="s" />
-        <KPICard title="Calls Today" value={callsToday || 3} change={0} changeType="neutral" icon={PhoneIncoming} color="warning" />
+        <KPICard title="Total Calls" value={calls.length} change={12} changeType="up" icon={Phone} color="cyan" />
+        <KPICard title="Connected" value={connectedCalls} change={8} changeType="up" icon={PhoneOutgoing} color="emerald" />
+        <KPICard title="Avg Duration" value={avgDuration} change={5} changeType="up" icon={Clock} color="indigo" prefix="" suffix="s" />
+        <KPICard title="Calls Today" value={callsToday || 3} change={0} changeType="neutral" icon={PhoneIncoming} color="amber" />
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">

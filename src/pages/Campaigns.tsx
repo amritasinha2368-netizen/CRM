@@ -70,10 +70,10 @@ export default function Campaigns() {
       </motion.div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KPICard title="Total Spend" value={totalSpend} change={8} changeType="up" icon={IndianRupee} color="primary" prefix="₹" />
-        <KPICard title="Total Leads" value={totalLeads} change={15} changeType="up" icon={Users} color="blue" />
-        <KPICard title="Conversions" value={totalConversions} change={10} changeType="up" icon={Target} color="success" />
-        <KPICard title="Avg CPL" value={avgCPL} change={5} changeType="down" icon={TrendingUp} color="warning" prefix="₹" />
+        <KPICard title="Total Spend" value={totalSpend} change={8} changeType="up" icon={IndianRupee} color="purple" prefix="₹" />
+        <KPICard title="Total Leads" value={totalLeads} change={15} changeType="up" icon={Users} color="cyan" />
+        <KPICard title="Conversions" value={totalConversions} change={10} changeType="up" icon={Target} color="emerald" />
+        <KPICard title="Avg CPL" value={avgCPL} change={5} changeType="down" icon={TrendingUp} color="amber" prefix="₹" />
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">

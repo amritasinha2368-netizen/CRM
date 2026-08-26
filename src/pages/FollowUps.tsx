@@ -120,13 +120,13 @@ export default function FollowUps() {
       </motion.div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KPICard title="Total Pending" value={followUps.filter(f => f.status === 'pending').length} change={5} changeType="up" icon={Clock} color="primary" />
-        <KPICard title="Overdue" value={categorized.overdue.length} change={12} changeType="down" icon={AlertTriangle} color="danger" />
-        <KPICard title="Today's Follow-ups" value={categorized.dueToday.length} change={0} changeType="neutral" icon={CalendarCheck} color="blue" />
+        <KPICard title="Total Pending" value={followUps.filter(f => f.status === 'pending').length} change={5} changeType="up" icon={Clock} color="amber" />
+        <KPICard title="Overdue" value={categorized.overdue.length} change={12} changeType="down" icon={AlertTriangle} color="rose" />
+        <KPICard title="Today's Follow-ups" value={categorized.dueToday.length} change={0} changeType="neutral" icon={CalendarCheck} color="cyan" />
         <KPICard title="Completed Today" value={categorized.completed.filter(f => {
           const d = new Date(f.dueDate);
           return d >= todayStart && d < todayEnd;
-        }).length} change={8} changeType="up" icon={CheckCircle2} color="success" />
+        }).length} change={8} changeType="up" icon={CheckCircle2} color="emerald" />
       </div>
 
       <div className="space-y-4">
