@@ -117,16 +117,16 @@ export default function Reports() {
   };
 
 const FUNNEL_BAR_COLORS = [
-  '#38BDF8', // Sky Blue (New Lead)
-  '#818CF8', // Indigo (Assigned Counsellor)
-  '#22D3EE', // Cyan (Contacted Lead)
-  '#34D399', // Emerald Green (Interested Student)
-  '#C084FC', // Purple (Counselling Session)
-  '#FB7185', // Rose Pink (Visited Campus)
-  '#2DD4BF', // Teal (Application Submitted)
-  '#A78BFA', // Violet (Documents Verified)
-  '#FBBF24', // Amber (Payment Pending)
-  '#10B981', // Green (Student Enrolled)
+  '#00B4D8', // 1. Sky Blue (New Lead)
+  '#9D4EDD', // 2. Electric Purple (Assigned Counsellor)
+  '#06D6A0', // 3. Mint Cyan (Contacted Lead)
+  '#FFD166', // 4. Bright Yellow (Interested Student)
+  '#F72585', // 5. Hot Magenta (Counselling Session)
+  '#FF6B35', // 6. Deep Orange / Coral (Visited Campus)
+  '#2EC4B6', // 7. Emerald Green (Application Submitted)
+  '#4EA8DE', // 8. Royal Indigo (Documents Verified)
+  '#7209B7', // 9. Violet Lavender (Payment Pending)
+  '#38B000', // 10. Bright Spring Green (Student Enrolled)
 ];
 
 const renderReport = () => {
@@ -315,7 +315,11 @@ const renderReport = () => {
                   <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#FFFFFF', fontWeight: 'bold' }} stroke="#3E3E3E" />
                   <YAxis tick={{ fontSize: 11, fill: '#A0A0A0' }} stroke="#3E3E3E" />
                   <Tooltip contentStyle={{ backgroundColor: '#1A1A1A', borderColor: '#3E3E3E', borderRadius: '8px', color: '#fff' }} />
-                  <Bar dataKey="count" fill="#FFA116" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="count" radius={[6, 6, 0, 0]}>
+                    {callDispositionData.map((_, i) => (
+                      <Cell key={`call-cell-${i}`} fill={FUNNEL_BAR_COLORS[i % FUNNEL_BAR_COLORS.length]} />
+                    ))}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -386,7 +390,7 @@ const renderReport = () => {
           <select
             value={datePreset}
             onChange={e => setDatePreset(e.target.value)}
-            className="rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3.5 py-2 text-xs font-bold text-white outline-none focus:border-blue-500 cursor-pointer"
+            className="rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3.5 py-2 text-xs font-bold text-white outline-none focus:border-[#FFA116] cursor-pointer"
           >
             <option value="today">Today</option>
             <option value="this_week">This Week</option>
@@ -397,21 +401,21 @@ const renderReport = () => {
           <div className="flex items-center gap-1.5">
             <button
               onClick={() => handleExport('csv')}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-sky-400 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-[#FFA116] transition-colors cursor-pointer"
             >
-              <Download className="h-3.5 w-3.5 text-sky-400" /> CSV
+              <Download className="h-3.5 w-3.5 text-[#FFA116]" /> CSV
             </button>
             <button
               onClick={() => handleExport('excel')}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-sky-400 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-[#FFA116] transition-colors cursor-pointer"
             >
-              <Download className="h-3.5 w-3.5 text-sky-400" /> Excel
+              <Download className="h-3.5 w-3.5 text-[#FFA116]" /> Excel
             </button>
             <button
               onClick={() => handleExport('pdf')}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-sky-400 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#3E3E3E] bg-[#282828] px-3 py-2 text-xs font-bold text-white hover:bg-[#383838] hover:text-[#FFA116] transition-colors cursor-pointer"
             >
-              <Download className="h-3.5 w-3.5 text-sky-400" /> PDF
+              <Download className="h-3.5 w-3.5 text-[#FFA116]" /> PDF
             </button>
           </div>
         </div>
@@ -432,13 +436,13 @@ const renderReport = () => {
               className={cn(
                 'rounded-xl border p-3 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center gap-2',
                 isActive
-                  ? 'border-blue-500 bg-[#303030] text-white shadow-lg ring-1 ring-blue-500/50'
+                  ? 'border-[#FFA116] bg-[#383838] text-white shadow-lg ring-1 ring-[#FFA116]/50'
                   : 'border-[#3E3E3E] bg-[#282828] text-slate-300 hover:border-[#555555] hover:bg-[#303030]'
               )}
             >
               <div className={cn(
                 'flex h-9 w-9 items-center justify-center rounded-lg border transition-colors',
-                isActive ? 'bg-blue-600 text-white border-blue-500 shadow-sm' : 'bg-[#1A1A1A] text-sky-400 border-[#3E3E3E]'
+                isActive ? 'bg-[#FFA116] text-[#1A1A1A] border-[#FFA116]' : 'bg-[#1A1A1A] text-[#FFA116] border-[#3E3E3E]'
               )}>
                 <Icon className="h-4 w-4" />
               </div>
@@ -460,7 +464,7 @@ const renderReport = () => {
           <h3 className="text-base font-extrabold text-white">
             {reportCategories.find(c => c.id === activeReport)?.label} Analytics
           </h3>
-          <span className="text-xs font-mono font-bold text-sky-400">
+          <span className="text-xs font-mono font-bold text-[#FFA116]">
             Updated Just Now
           </span>
         </div>
