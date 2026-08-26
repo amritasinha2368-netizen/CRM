@@ -19,12 +19,12 @@ interface Stage {
 
 const stages: Stage[] = [
   { id: 'new', label: 'New Lead', gradient: 'from-sky-500 to-blue-600' },
-  { id: 'assigned', label: 'Assigned Counsellor', gradient: 'from-blue-500 to-indigo-600' },
+  { id: 'assigned', label: 'Assigned Counsellor', gradient: 'from-indigo-500 to-purple-600' },
   { id: 'contacted', label: 'Contacted Lead', gradient: 'from-cyan-500 to-teal-600' },
   { id: 'interested', label: 'Interested Student', gradient: 'from-emerald-500 to-green-600' },
   { id: 'counselling', label: 'Counselling Session', gradient: 'from-purple-500 to-violet-600' },
-  { id: 'visit', label: 'Visited Campus / Portal', gradient: 'from-indigo-500 to-blue-600' },
-  { id: 'application', label: 'Application Submitted', gradient: 'from-teal-500 to-emerald-600' },
+  { id: 'visit', label: 'Visited Campus / Portal', gradient: 'from-pink-500 to-rose-600' },
+  { id: 'application', label: 'Application Submitted', gradient: 'from-teal-500 to-cyan-600' },
   { id: 'documents', label: 'Documents Verified', gradient: 'from-violet-500 to-purple-600' },
   { id: 'payment', label: 'Payment Pending', gradient: 'from-amber-500 to-orange-600' },
   { id: 'enrolled', label: 'Student Enrolled', gradient: 'from-emerald-600 to-teal-700' },
@@ -33,24 +33,37 @@ const stages: Stage[] = [
 
 const AVATAR_COLOR_PALETTES = [
   'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
-  'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30',
   'bg-sky-500/20 text-sky-300 border border-sky-500/30',
   'bg-purple-500/20 text-purple-300 border border-purple-500/30',
   'bg-amber-500/20 text-amber-300 border border-amber-500/30',
   'bg-teal-500/20 text-teal-300 border border-teal-500/30',
   'bg-rose-500/20 text-rose-300 border border-rose-500/30',
+  'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30',
   'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30',
   'bg-violet-500/20 text-violet-300 border border-violet-500/30',
 ];
 
-const getAvatarStyle = (str?: string) => {
-  const safeStr = str || 'Lead';
+const getAvatarStyle = (index: number) => {
+  return AVATAR_COLOR_PALETTES[index % AVATAR_COLOR_PALETTES.length];
+};
+
+const getScoreBarStyle = (score: number, leadId: string) => {
+  const palettes = [
+    { bar: 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.4)]', text: 'text-emerald-400' },
+    { bar: 'bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.4)]', text: 'text-sky-400' },
+    { bar: 'bg-purple-400 shadow-[0_0_8px_rgba(192,132,252,0.4)]', text: 'text-purple-400' },
+    { bar: 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.4)]', text: 'text-amber-400' },
+    { bar: 'bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.4)]', text: 'text-teal-400' },
+    { bar: 'bg-rose-400 shadow-[0_0_8px_rgba(251,113,133,0.4)]', text: 'text-rose-400' },
+    { bar: 'bg-indigo-400 shadow-[0_0_8px_rgba(129,140,248,0.4)]', text: 'text-indigo-400' },
+    { bar: 'bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.4)]', text: 'text-cyan-400' },
+  ];
   let hash = 0;
-  for (let i = 0; i < safeStr.length; i++) {
-    hash = safeStr.charCodeAt(i) + ((hash << 5) - hash);
+  for (let i = 0; i < leadId.length; i++) {
+    hash = leadId.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const index = Math.abs(hash) % AVATAR_COLOR_PALETTES.length;
-  return AVATAR_COLOR_PALETTES[index];
+  const idx = Math.abs(hash + score) % palettes.length;
+  return palettes[idx];
 };
 
 const sourceLabels: Record<LeadSource, string> = {
@@ -134,7 +147,7 @@ export default function Pipeline() {
         <select
           value={courseFilter}
           onChange={(e) => setCourseFilter(e.target.value)}
-          className="rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-2 text-xs text-white focus:border-[#FFA116] focus:outline-none"
+          className="rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-2 text-xs text-white focus:border-blue-500 focus:outline-none"
         >
           <option value="">All Courses</option>
           {courses.map((c) => (
@@ -144,7 +157,7 @@ export default function Pipeline() {
         <select
           value={sourceFilter}
           onChange={(e) => setSourceFilter(e.target.value)}
-          className="rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-2 text-xs text-white focus:border-[#FFA116] focus:outline-none"
+          className="rounded-lg border border-[#3E3E3E] bg-[#1A1A1A] px-3 py-2 text-xs text-white focus:border-blue-500 focus:outline-none"
         >
           <option value="">All Sources</option>
           {(Object.keys(sourceLabels) as LeadSource[]).map((s) => (
@@ -196,41 +209,43 @@ export default function Pipeline() {
                                 : 'hover:border-[#555555] hover:bg-[#303030]',
                             )}
                           >
-                            <div className="mb-2 flex items-start justify-between">
-                              <div className="flex items-center gap-2.5">
-                                <div className={cn('flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg text-[10px] font-black shadow-xs', getAvatarStyle(lead.name))}>
-                                  {getInitials(lead.name)}
-                                </div>
-                                <div className="min-w-0">
-                                  <p className="text-xs font-bold text-white truncate">{lead.name}</p>
-                                  <p className="text-[10px] text-sky-400 font-mono">{lead.id}</p>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="mb-2 flex items-center gap-1.5 text-xs font-mono font-bold text-slate-300">
-                              <Phone className="h-3 w-3 text-slate-400" />
-                              {lead.phone}
-                            </div>
-                            <p className="mb-2 text-xs text-white font-bold truncate">
-                              {courses.find((c) => c.id === lead.courseId)?.name || '-'}
-                            </p>
-                            <div className="mb-2.5">
-                              <div className="flex items-center justify-between text-[10px] text-slate-400 font-bold">
-                                <span>Score</span>
-                                <span className="font-mono text-[#FFA116]">{lead.leadScore}</span>
-                              </div>
-                              <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[#1A1A1A]">
-                                <div
-                                  className={cn(
-                                    'h-full rounded-full',
-                                    lead.leadScore >= 80 ? 'bg-[#2CBB5D]' :
-                                    lead.leadScore >= 60 ? 'bg-[#FFA116]' :
-                                    lead.leadScore >= 40 ? 'bg-[#FFB800]' : 'bg-[#FF2D55]'
-                                  )}
-                                  style={{ width: `${lead.leadScore}%` }}
-                                />
-                              </div>
-                            </div>
+                            {(() => {
+                              const scoreStyle = getScoreBarStyle(lead.leadScore, lead.id);
+                              return (
+                                <>
+                                  <div className="mb-2 flex items-start justify-between">
+                                    <div className="flex items-center gap-2.5">
+                                      <div className={cn('flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg text-[10px] font-black shadow-xs', getAvatarStyle(index))}>
+                                        {getInitials(lead.name)}
+                                      </div>
+                                      <div className="min-w-0">
+                                        <p className="text-xs font-bold text-white truncate">{lead.name}</p>
+                                        <p className="text-[10px] text-sky-400 font-mono">{lead.id}</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="mb-2 flex items-center gap-1.5 text-xs font-mono font-bold text-slate-300">
+                                    <Phone className="h-3 w-3 text-slate-400" />
+                                    {lead.phone}
+                                  </div>
+                                  <p className="mb-2 text-xs text-white font-bold truncate">
+                                    {courses.find((c) => c.id === lead.courseId)?.name || '-'}
+                                  </p>
+                                  <div className="mb-2.5">
+                                    <div className="flex items-center justify-between text-[10px] text-slate-400 font-bold">
+                                      <span>Score</span>
+                                      <span className={cn('font-mono font-bold', scoreStyle.text)}>{lead.leadScore}</span>
+                                    </div>
+                                    <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[#1A1A1A]">
+                                      <div
+                                        className={cn('h-full rounded-full transition-all', scoreStyle.bar)}
+                                        style={{ width: `${lead.leadScore}%` }}
+                                      />
+                                    </div>
+                                  </div>
+                                </>
+                              );
+                            })()}
                             <div className="flex items-center justify-between pt-1 border-t border-[#3E3E3E]">
                               <Badge variant={sourceBadgeVariant[lead.source]} className="text-[10px]">
                                 {sourceLabels[lead.source]}
