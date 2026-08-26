@@ -30,8 +30,6 @@ export function AppLayout() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#1A1A1A] text-[#EFF2F6]">
-      {/* Subtle LeetCode orange glow effect */}
-      <SmoothMouseGlow color="rgba(255, 161, 22, 0.03)" size={600} />
 
       {/* Desktop Sidebar */}
       <div className="hidden lg:flex">
